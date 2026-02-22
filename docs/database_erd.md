@@ -157,6 +157,7 @@ erDiagram
     FormSubmission {
         string id PK "UUID"
         string formId FK "Mã FormDefinition"
+        string eventId FK "Optional: Article ID (bài viết Sự kiện) mà khách submit đăng ký"
         json data "Lưu trữ toàn bộ thông tin User Submit dạng JSON key-value (Map với tên của FormField)"
         datetime createdAt "Ngày giờ nộp form"
     }
@@ -187,3 +188,4 @@ erDiagram
 - **`Media` & `MediaAlbum`**: Tách bạch MinIO S3 File upload (`Media`) và logic tổ chức tập tin theo sự kiện (`MediaAlbum`). Frontend khi gọi `Album` sẽ tận dụng cấu trúc SEO (`slug`, `metaTitle`) để index bộ ảnh lên Google Images cực chuẩn.
 - **`FormDefinition` & `FormField`**: Khi admin Backend tạo form "Tri ân" có 3 trường (Họ tên, Khóa, Lời chúc) thì Backend sẽ tạo 1 row `FormDefinition` kèm với 3 rows tương ứng ở dạng schema `FormField`.
 - **`FormSubmission`**: Record JSON này giải quyết việc lưu data không ràng buộc số lượng cột. Admin tạo bao nhiêu Field thì data Object sẽ serialize tự động và map chính xác.
+- **`Xuất dữ liệu (Export CSV/Excel)`**: Bảng `FormSubmission` có cột `eventId` liên kết trực tiếp với bài báo sự kiện. Admin khi vào CMS chỉ cần chọn Sự kiện -> Backend Query filter theo `eventId` -> Chuyển đổi chuỗi `json data` thành các cột Array -> Stream trả file Excel tải về thẳng trình duyệt.

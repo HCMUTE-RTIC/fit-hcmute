@@ -60,9 +60,25 @@ sequenceDiagram
     
     NestJS-->>NextJS: Trả về trạng thái HTTP 201 Created Status
     NextJS-->>User: Đóng Form và Hiển thị Modal/Toast Message 100%: "Gửi thành công! Cám ơn bạn đã quan tâm chương trình 25 năm..."
+    
+    %% 5. Quá trình Admin quản lý và Xuất File Excel (Tính năng mới)
+    Note over User, DB: TRẠNG THÁI 4: CMS ADMIN TRUY XUẤT VÀ TẢI FILE EXCEL DATA (EXPORT)
+    
+    actor Admin as Quản trị viên (CMS)
+    Admin->>NextJS: Truy cập trang Quản lý Bài viết / Sự kiện, nhấn nút "Xuất CSV/Excel Form"
+    NextJS->>NestJS: Gửi Request GET `/api/forms/{slug}/export?eventId=xxx`
+    NestJS->>DB: Query bảng `FormSubmission` lọc theo `eventId`
+    DB-->>NestJS: Trả về mảng JSON chứa hàng ngàn records đăng ký
+    
+    Note right of NestJS: Backend thực hiện biến đổi (Parse) <br/> mảng JSON Object thành cấu trúc Flat (2D Array)
+    NestJS->>NestJS: Stream Parse 2D Array sang định dạng `.csv` hoặc `.xlsx` (Dùng thư viện xml2js, exceljs...)
+    
+    NestJS-->>NextJS: Trả về Binary File Download Header (Content-Disposition: attachment)
+    NextJS-->>Admin: Trình duyệt tự tải xuống thư mục máy tính file `danh-sach-su-kien.xlsx`
 ```
 
 ## Các thành phần cốt lõi được triển khai trong luồng
 - **Type Checking Dynamically:** Backend NestJS không hardcode các trường (họ tên, email). Việc Validate nằm việc map thông số `type` và `required` lấy từ `FormField` dưới DataBase thay vì Class Validator truyền thống của NestJS.
 - **Micro Storage Layer Context:** Hệ thống Upload (MinIO S3) được bóc tách hoàn toàn độc lập với form submit. File tải lên trước, Backend nhận link sau đó chèn link URL vào Form JSON data, cuối cùng mới submit JSON data thành record cuối, đảm bảo không rớt dữ liệu văn bản nếu ảnh load quá nặng.
 - **Client Render (NextJS):** Component form của NextJS sử dụng kỹ thuật Render Engine động đọc config JSON và vòng lặp `map()` hiển thị component Input, Select hay Checkbox có sẵn của hệ thống UI mà không cần can thiệp code cứng.
+- **Stream Excel Pipeline:** Thay vì để Frontend tải một cục JSON vài Megabytes về rồi mới xuất Excel làm treo trình duyệt Máy tính của Admin, luồng hiện tại đẩy toàn bộ gánh nặng Parse `JSON` -> `Excel` cho CPU của NestJS Backend và stream file nhị phân về.
