@@ -1,0 +1,129 @@
+# ==============================================================================
+# MÔI TRƯỜNG MÁY CHỦ SẢN PHẨM (PRODUCTION DEPLOYMENT) - SETUP SERVER TRƯỜNG
+# ==============================================================================
+# BẢO MẬT: File này Kín Cổng Cao Tường. Không ai bên ngoài quét được Port
+# của DB hoặc Redis. Tất cả lưu lượng đi trỏ từ Cổng HTTPS 443 -> NGINX -> Nội bộ.
+# Lệnh chạy: docker-compose -f docker-compose.prod.yml up -d
+
+services:
+  # 1. POSTGRES SQL (DB Kín)
+  postgres_prod:
+    image: postgres:16-alpine
+    container_name: p_postgres_prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-SYS_ADMIN_HCMUTE}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-VERY_Sc3cr3t_P@ssw0rd}
+      POSTGRES_DB: ${POSTGRES_DB:-fit_25years_prod}
+    # [QUAN TRỌNG] : Bỏ trắng 'ports'. DB chỉ giao tiếp nội mạng.
+    expose:
+      - 5432
+    volumes:
+      - pg_data_prod:/var/lib/postgresql/data
+    networks:
+      - fit_hcmute_prod_network
+
+  # 2. REDIS (Caching Kín)
+  redis_prod:
+    image: redis:7-alpine
+    container_name: p_redis_prod
+    restart: unless-stopped
+    command: redis-server --requirepass PROD_REDIS_s3cx_xxyy
+    # [QUAN TRỌNG] : Bỏ trắng 'ports'. Redis chỉ giao tiếp nội mạng Backend.
+    expose:
+      - 6379
+    volumes:
+      - redis_data_prod:/data
+    networks:
+      - fit_hcmute_prod_network
+
+  # 3. MINIO S3 (Tệp tin Ảnh Web)
+  minio_prod:
+    image: minio/minio:latest
+    container_name: p_minio_prod
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-s3_admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-s3_admin_Secure_Key}
+      MINIO_DOMAIN: "media.fit25.hcmute.edu.vn" # Thay = Domain phụ của Trường
+    command: server /data --console-address ":9001"
+    ports:
+      - "127.0.0.1:9000:9000" # Expose S3 qua Local Only để Nginx Proxy pass ra Domain
+      - "127.0.0.1:9001:9001" # Web Console chỉ mở ở Localhost VPS
+    volumes:
+      - minio_data_prod:/data
+    networks:
+      - fit_hcmute_prod_network
+
+  # 4. MINIO SCRIPT TẠO BUCKETS (Chạy 1 Lần)
+  create_bucket_prod:
+    image: minio/mc
+    container_name: p_minio_mc_prod
+    depends_on:
+      - minio_prod
+    entrypoint: >
+      /bin/sh -c " sleep 10; /usr/bin/mc alias set myminio http://minio_prod:9000 s3_admin s3_admin_Secure_Key; /usr/bin/mc mb myminio/media-fit; /usr/bin/mc anonymous set public myminio/media-fit; exit 0; "
+    networks:
+      - fit_hcmute_prod_network
+
+  # 5. BACKEND NESTJS CORE (Application) 
+  backend_api:
+    # Sau này sẽ map image từ Github Container Reg hoặc Dockerfile Build local
+    image: nestjs-backend:latest
+    container_name: p_backend
+    restart: unless-stopped
+    depends_on:
+      - postgres_prod
+      - redis_prod
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://SYS_ADMIN_HCMUTE:VERY_Sc3cr3t_P@ssw0rd@postgres_prod:5432/fit_25years_prod?schema=public
+      REDIS_HOST: redis_prod
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: PROD_REDIS_s3cx_xxyy
+    expose:
+      - 3000 # Cổng API Backend nội bộ
+    networks:
+      - fit_hcmute_prod_network
+
+  # 6. FRONTEND NEXTJS (Web App SSR Server)
+  frontend_web:
+    image: nextjs-frontend:latest
+    container_name: p_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend_api
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: https://api.fit25.hcmute.edu.vn # Lệnh gọi từ Client
+    expose:
+      - 3001 # Cổng Web nội bộ
+    networks:
+      - fit_hcmute_prod_network
+
+  # 7. NGINX REVERSE PROXY (Kẻ Gác Cổng)
+  nginx_proxy:
+    image: nginx:alpine
+    container_name: p_nginx_proxy
+    restart: always
+    ports:
+      - "80:80" # Mở toang Cổng Website HTTP public
+      - "443:443" # Mở toang Cổng Website HTTPS public
+    volumes:
+      - ./deploy/nginx:/etc/nginx/conf.d:ro # Load cấu hình vhost
+      # - ./certbot/conf:/etc/letsencrypt # Dành cho TSK-601 Cài SSL Let's Encrypt
+    depends_on:
+      - frontend_web
+      - backend_api
+    networks:
+      - fit_hcmute_prod_network
+
+volumes:
+  pg_data_prod:
+  redis_data_prod:
+  minio_data_prod:
+
+
+networks:
+  fit_hcmute_prod_network:
+    driver: bridge

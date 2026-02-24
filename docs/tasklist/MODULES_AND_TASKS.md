@@ -37,7 +37,7 @@ Dưới đây là danh sách phân rã toàn bộ System thành 7 Modules chính
         *   Viết script `seed.ts` để tự động chèn 1 tài khoản Super Admin `admin@fit.hcmute` (mật khẩu Bcrypt) khi khởi động DB lần đầu.
 - [ ] **TSK-104** `[FE_Public]` Khởi tạo NextJS App Router. Cài đặt Component System. (Estimate: 8h - Priority: High)
     *   **Description:**
-        *   Khởi tạo `npx create-next-app@latest frontend`. Chọn Typescript, Tailwind.
+        *   Khởi tạo `pnpm create next-app@latest frontend`. Chọn Typescript, Tailwind.
         *   Cài đặt thư viện: `framer-motion`, `lucide-react`, `magic-ui` (Shadcn-UI).
         *   Đổ mã Hex Màu từ Figma vào file `tailwind.config.js`. Tạo ra thư mục `src/components/ui/` rỗng.
 

@@ -1,0 +1,240 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 1. TÀI KHOẢN & QUẢN TRỊ 
+// ==========================================
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      Role     @default(AUTHOR)
+  name      String   @db.VarChar(100)
+  avatar    String?  @db.VarChar(500)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  articles  Article[]
+  auditLogs AuditLog[]
+  media     Media[]
+  albums    MediaAlbum[]
+
+  @@map("users")
+}
+
+enum Role {
+  SUPER_ADMIN
+  EDITOR
+  AUTHOR
+}
+
+// ==========================================
+// 1.1 AUDIT LOGS
+// ==========================================
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid @map("user_id")
+  action    String   @db.VarChar(50) // CREATE, UPDATE, DELETE
+  entity    String   @db.VarChar(50) // Article, Media, User
+  entityId  String   @db.Uuid @map("entity_id")
+  oldValues Json?    @map("old_values")
+  newValues Json?    @map("new_values")
+  ipAddress String?  @db.VarChar(45) @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
+// ==========================================
+// 2. TÀI NGUYÊN MEDIA & THƯ VIỆN CHỦ ĐỀ
+// ==========================================
+model MediaAlbum {
+  id              String   @id @default(uuid()) @db.Uuid
+  title           String   @db.VarChar(255)
+  slug            String   @unique @db.VarChar(255)
+  description     String?  @db.Text
+  coverPhotoId    String?  @db.Uuid @map("cover_photo_id")
+  metaTitle       String?  @db.VarChar(255) @map("meta_title")
+  metaDescription String?  @db.Text @map("meta_description")
+  createdBy       String   @db.Uuid @map("created_by")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [createdBy], references: [id])
+  medias  Media[]
+
+  @@map("media_albums")
+}
+
+model Media {
+  id         String   @id @default(uuid()) @db.Uuid
+  albumId    String?  @db.Uuid @map("album_id")
+  key        String   @unique @db.VarChar(500)
+  url        String   @db.VarChar(1000)
+  fileName   String   @db.VarChar(255) @map("file_name")
+  mimeType   String   @db.VarChar(100) @map("mime_type")
+  size       Int
+  category   MediaCategory @default(IMAGE)
+  uploadedBy String   @db.Uuid @map("uploaded_by")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user   User        @relation(fields: [uploadedBy], references: [id])
+  album  MediaAlbum? @relation(fields: [albumId], references: [id], onDelete: SetNull)
+
+  @@map("media")
+}
+
+enum MediaCategory {
+  IMAGE
+  VIDEO
+  PDF_YEARBOOK
+  ATTACHMENT
+}
+
+// ==========================================
+// 3. QUẢN LÝ NỘI DUNG (TIN TỨC, SỰ KIỆN & SEO)
+// ==========================================
+model Article {
+  id              String   @id @default(uuid()) @db.Uuid
+  title           String   @db.VarChar(255)
+  slug            String   @unique @db.VarChar(255)
+  summary         String?  @db.Text
+  content         String   @db.Text
+  thumbnail       String?  @db.VarChar(500)
+  category        ArticleCategory @default(NEWS)
+  authorId        String   @db.Uuid @map("author_id")
+  metaTitle       String?  @db.VarChar(255) @map("meta_title")
+  metaDescription String?  @db.Text @map("meta_description")
+  focusKeywords   String?  @db.VarChar(255) @map("focus_keywords")
+  status          ArticleStatus @default(DRAFT)
+  viewCount       Int      @default(0) @map("view_count")
+  isPinned        Boolean  @default(false) @map("is_pinned")
+  publishedAt     DateTime? @map("published_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  author           User            @relation(fields: [authorId], references: [id])
+  formDefinitions  FormDefinition? // Sự kiện 1 bài viết có thể có 1 form đăng ký
+
+  @@map("articles")
+}
+
+enum ArticleCategory {
+  NEWS
+  EVENT
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ==========================================
+// 4. HÀNH TRÌNH 25 NĂM & THÀNH TỰU
+// ==========================================
+model Milestone {
+  id          String   @id @default(uuid()) @db.Uuid
+  year        Int
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  image       String?  @db.VarChar(500)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("milestones")
+}
+
+model Achievement {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  category    String   @db.VarChar(100)
+  metrics     Json     // VD: { "value": 300, "unit": "Sinh viên" }
+  order       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("achievements")
+}
+
+model Alumni {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(100)
+  course    String   @db.VarChar(50) // VD: "Khóa 2008"
+  position  String   @db.VarChar(100)
+  company   String   @db.VarChar(100)
+  quote     String   @db.Text
+  avatar    String?  @db.VarChar(500)
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("alumni")
+}
+
+// ==========================================
+// 5. DYNAMIC FORM (FORM ĐỘNG TÙY BIẾN CHO CMS)
+// ==========================================
+model FormDefinition {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(255)
+  description String?  @db.Text
+  eventId     String?  @unique @db.Uuid @map("event_id") // Khoá Liên kết 1-1 tới Sự Kiện (Article)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  event       Article?          @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  fields      FormField[]
+  submissions FormSubmission[]
+
+  @@map("form_definitions")
+}
+
+model FormField {
+  id        String   @id @default(uuid()) @db.Uuid
+  formId    String   @db.Uuid @map("form_id")
+  name      String   @db.VarChar(100) // Key lưu trữ (VD: "full_name")
+  label     String   @db.VarChar(255) // Label hiển thị (VD: "Họ và tên")
+  type      FieldType @default(TEXT)
+  required  Boolean  @default(false)
+  options   Json?    // Dành cho list SELECT hoặc RADIO ['K20', 'K21']
+  order     Int      @default(0)
+
+  form      FormDefinition @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@map("form_fields")
+}
+
+enum FieldType {
+  TEXT
+  TEXTAREA
+  EMAIL
+  PHONE
+  SELECT
+  RADIO
+  CHECKBOX
+  FILE
+}
+
+model FormSubmission {
+  id        String   @id @default(uuid()) @db.Uuid
+  formId    String   @db.Uuid @map("form_id")
+  eventId   String?  @db.Uuid @map("event_id") // Tham chiếu phụ EventID để làm tính năng Lọc ra xuất EXCEL
+  data      Json     // Lưu trữ câu trả lời { "full_name": "A", "email": "a@mail.com" }
+  createdAt DateTime @default(now()) @map("created_at")
+
+  form      FormDefinition @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("form_submissions")
+}
