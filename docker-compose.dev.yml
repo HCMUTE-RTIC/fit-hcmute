@@ -51,7 +51,9 @@ services:
     volumes:
       - minio_data_dev:/data
     networks:
-      - fit_hcmute_dev_network
+      fit_hcmute_dev_network:
+        aliases:
+          - minio-dev
 
   # 4. MINIO CLIENT (Script Tự động tạo Bucket khi MinIO vừa khởi động xong)
   create_bucket_dev:
@@ -60,7 +62,7 @@ services:
     depends_on:
       - minio_dev
     entrypoint: >
-      /bin/sh -c " sleep 5; /usr/bin/mc alias set myminio http://minio_dev:9000 admin_minio admin_minio_1234; /usr/bin/mc mb myminio/fit-25-media-dev; /usr/bin/mc anonymous set public myminio/fit-25-media-dev; exit 0; "
+      /bin/sh -c " sleep 5; /usr/bin/mc alias set myminio http://minio-dev:9000 admin_minio admin_minio_1234; /usr/bin/mc mb myminio/fit-25-media-dev || true; /usr/bin/mc anonymous set public myminio/fit-25-media-dev || true; exit 0; "
     networks:
       - fit_hcmute_dev_network
 

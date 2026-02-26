@@ -53,7 +53,9 @@ services:
     volumes:
       - minio_data_prod:/data
     networks:
-      - fit_hcmute_prod_network
+      fit_hcmute_prod_network:
+        aliases:
+          - minio-prod
 
   # 4. MINIO SCRIPT TẠO BUCKETS (Chạy 1 Lần)
   create_bucket_prod:
@@ -62,7 +64,7 @@ services:
     depends_on:
       - minio_prod
     entrypoint: >
-      /bin/sh -c " sleep 10; /usr/bin/mc alias set myminio http://minio_prod:9000 s3_admin s3_admin_Secure_Key; /usr/bin/mc mb myminio/media-fit; /usr/bin/mc anonymous set public myminio/media-fit; exit 0; "
+      /bin/sh -c " sleep 10; /usr/bin/mc alias set myminio http://minio-prod:9000 s3_admin s3_admin_Secure_Key; /usr/bin/mc mb myminio/media-fit || true; /usr/bin/mc anonymous set public myminio/media-fit || true; exit 0; "
     networks:
       - fit_hcmute_prod_network
 

@@ -4,8 +4,7 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-// import { MinioModule } from './common/minio/minio.module';
-// import { MediaModule } from './media/media.module';
+import { MediaModule } from './media/media.module';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
 
 @Module({
@@ -14,10 +13,9 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
     PrismaModule,
     UsersModule,
     AuthModule,
-    // MinioModule,
-    // MediaModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
