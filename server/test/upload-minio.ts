@@ -44,7 +44,7 @@ async function runTest() {
         console.log('2️⃣  Test API Upload ảnh lẻ: POST /media/upload ...');
         const form1 = new FormData();
         form1.append('file', blob, 'test-image.jpg');
-        form1.append('albumId', 'album-ky-yeu-01');
+        // form1.append('albumId', 'album-ky-yeu-01');
 
         const uploadReq = await fetch('http://localhost:3000/media/upload', {
             method: 'POST',
