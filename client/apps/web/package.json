@@ -7,8 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint . --ignore-pattern .next/",
+    "lint:fix": "eslint . --ignore-pattern .next/ --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
