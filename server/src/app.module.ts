@@ -8,6 +8,7 @@ import { MediaModule } from './media/media.module';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { RedisCacheModule } from './common/redis-cache/redis-cache.module';
 import { ArticlesModule } from './articles/articles.module';
+import { AlbumsModule } from './albums/albums.module';
 
 @Module({
   imports: [
@@ -18,8 +19,9 @@ import { ArticlesModule } from './articles/articles.module';
     AuthModule,
     MediaModule,
     ArticlesModule,
+    AlbumsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
