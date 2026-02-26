@@ -6,8 +6,8 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class MediaService {
     private minioClient: Minio.Client;
-    // Trùng khớp với bucket name 'media-fit' đã được script docker tạo sẵn
-    private readonly bucketName = process.env.MINIO_BUCKET_NAME || 'media-fit';
+    // Trùng khớp với bucket name 'fit-25-media-dev' đã được script docker tạo sẵn
+    private readonly bucketName = process.env.MINIO_BUCKET_NAME || 'fit-25-media-dev';
 
     constructor(private prisma: PrismaService) {
         this.minioClient = new Minio.Client({
@@ -58,9 +58,9 @@ export class MediaService {
             });
 
             return mediaRecord;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Lỗi khi upload MinIO SDK:', error);
-            throw new InternalServerErrorException('Không thể tải file lên hệ thống lưu trữ S3.');
+            throw new InternalServerErrorException(`Không thể tải file lên hệ thống lưu trữ S3. Chi tiết: ${error.message || error}`);
         }
     }
 
