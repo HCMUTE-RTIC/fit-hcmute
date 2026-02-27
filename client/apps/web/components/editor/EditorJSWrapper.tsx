@@ -17,7 +17,7 @@ export default function EditorJSWrapper({
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Tải EditorJS & Plugins qua CDN
+    // Tải EditorJS & Plugins qua CDN (tuần tự: core trước, plugins sau)
     const scripts = [
       "https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.31.3/dist/editorjs.umd.min.js",
       "https://cdn.jsdelivr.net/npm/@editorjs/header@latest/dist/bundle.js",
@@ -26,32 +26,39 @@ export default function EditorJSWrapper({
       "https://cdn.jsdelivr.net/npm/@editorjs/embed@latest/dist/bundle.js",
     ];
 
-    let loadedCount = 0;
+    let cancelled = false;
 
-    const checkReady = () => {
-      loadedCount++;
-      if (loadedCount === scripts.length) {
+    const loadScript = (src: string): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) {
+          resolve();
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => resolve();
+        script.onerror = () => {
+          console.error(`Failed to load Editor.js script: ${src}`);
+          resolve(); // resolve anyway so remaining scripts still load
+        };
+        document.body.appendChild(script);
+      });
+    };
+
+    const loadAllScripts = async () => {
+      for (const src of scripts) {
+        if (cancelled) return;
+        await loadScript(src);
+      }
+      if (!cancelled) {
         setIsReady(true);
       }
     };
 
-    scripts.forEach((src) => {
-      if (document.querySelector(`script[src="${src}"]`)) {
-        checkReady();
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = src;
-      script.async = true;
-      script.onload = checkReady;
-      script.onerror = () => {
-        console.error(`Failed to load Editor.js script: ${src}`);
-        checkReady();
-      };
-      document.body.appendChild(script);
-    });
+    loadAllScripts();
 
     return () => {
+      cancelled = true;
       if (editorRef.current && editorRef.current.destroy) {
         editorRef.current.destroy();
         editorRef.current = null;
@@ -61,9 +68,18 @@ export default function EditorJSWrapper({
 
   useEffect(() => {
     if (isReady && !editorRef.current) {
-      // Init Editor
+      // UMD bundle exports module object — constructor is at .default
       // @ts-ignore
-      const EditorJS = window.EditorJS;
+      const EditorJSModule = window.EditorJS;
+      const EditorJS = EditorJSModule?.default || EditorJSModule;
+
+      if (typeof EditorJS !== "function") {
+        console.error(
+          "EditorJS constructor not found on window.EditorJS",
+          EditorJSModule,
+        );
+        return;
+      }
 
       const editorData =
         typeof value === "string" && value.length > 0

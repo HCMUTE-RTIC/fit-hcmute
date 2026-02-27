@@ -33,7 +33,15 @@ const navigation: NavItem[] = [
       { name: "Thêm bài viết", href: "/admin/articles/new" },
     ],
   },
-  { name: "Thư viện Ảnh", href: "/admin/albums", icon: ImageIcon },
+  {
+    name: "Thư viện Ảnh",
+    href: "/admin/albums",
+    icon: ImageIcon,
+    children: [
+      { name: "Danh sách", href: "/admin/albums" },
+      { name: "Thêm album mới", href: "/admin/albums/new" },
+    ],
+  },
   { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
   { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity },
   { name: "Cấu hình", href: "/admin/settings", icon: Settings },
@@ -59,23 +67,10 @@ export function Sidebar({
     let changed = false;
     navigation.forEach((item) => {
       if (item.children) {
-        // If exact match or nested route
-        const isChildActive = item.children.some(
-          (child) =>
-            pathname === child.href ||
-            (child.href !== "/admin/articles" &&
-              pathname?.startsWith(`${child.href}/`)),
-        );
-        // Special case for /admin/articles since it's the root of the others
-        if (
-          pathname === "/admin/articles" ||
-          pathname?.startsWith("/admin/articles/")
-        ) {
-          if (item.name === "Bài viết") {
-            if (!newExpanded[item.name]) {
-              newExpanded[item.name] = true;
-              changed = true;
-            }
+        if (pathname === item.href || pathname?.startsWith(`${item.href}/`)) {
+          if (!newExpanded[item.name]) {
+            newExpanded[item.name] = true;
+            changed = true;
           }
         }
       }
@@ -92,7 +87,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#24303F] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 
+      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#24303F] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 overflow-x-hidden
       ${sidebarOpen ? "w-64 translate-x-0" : "w-20 -translate-x-full xl:translate-x-0"}`}
     >
       {/* Brand */}
@@ -118,7 +113,7 @@ export function Sidebar({
             </svg>
           </div>
           <span
-            className={`text-xl font-bold text-slate-900 dark:text-white transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`text-xl font-bold text-slate-900 dark:text-white transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
           >
             FIT CMS
           </span>
@@ -136,7 +131,7 @@ export function Sidebar({
         className={`flex flex-1 flex-col overflow-y-auto py-4 space-y-1 ${sidebarOpen ? "px-4" : "px-2 xl:px-4"}`}
       >
         <div
-          className={`text-xs font-semibold text-slate-400 dark:text-slate-500 mb-4 px-2 uppercase tracking-wider ${!sidebarOpen && "xl:hidden"}`}
+          className={`text-xs font-semibold text-slate-400 dark:text-slate-500 mb-4 px-2 uppercase tracking-wider ${!sidebarOpen ? "hidden" : "block"}`}
         >
           Menu chính
         </div>
@@ -178,14 +173,14 @@ export function Sidebar({
                       aria-hidden="true"
                     />
                     <span
-                      className={`transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+                      className={`transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
                     >
                       {item.name}
                     </span>
                   </div>
                   {/* Chevron Icon for Dropdown */}
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${!sidebarOpen ? "xl:hidden" : "block"} ${isExpanded ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform duration-200 ${!sidebarOpen ? "hidden" : "block"} ${isExpanded ? "rotate-180" : ""}`}
                   />
                 </button>
               ) : (
@@ -211,7 +206,7 @@ export function Sidebar({
                     aria-hidden="true"
                   />
                   <span
-                    className={`transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+                    className={`transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
                   >
                     {item.name}
                   </span>
@@ -259,12 +254,12 @@ export function Sidebar({
             alt="User"
           />
           <span
-            className={`flex-1 truncate text-left font-medium text-slate-700 dark:text-slate-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`flex-1 truncate text-left font-medium text-slate-700 dark:text-slate-300 ${!sidebarOpen ? "hidden" : "block"}`}
           >
             Tài khoản
           </span>
           <LogOut
-            className={`h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 ${!sidebarOpen ? "hidden" : "block"}`}
           />
         </button>
       </div>
