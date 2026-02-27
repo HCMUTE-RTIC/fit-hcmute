@@ -15,24 +15,21 @@ const imgKhoiNghiep = "/temp.jpg";
 const videos = [
   {
     id: 1,
-    thumbnail:
-      "https://images.unsplash.com/photo-1743327584769-d5d13093b624?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1bml2ZXJzaXR5JTIwZ3JhZHVhdGlvbiUyMGNlcmVtb255JTIwY2VsZWJyYXRpb24lMjBWaWV0bmFtfGVufDF8fHx8MTc3MjE5MDI4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+    thumbnail: "/temp.jpg",
     title: "Lễ Kỷ Niệm 25 Năm Thành Lập Khoa CNTT",
     duration: "8:45",
     size: "large",
   },
   {
     id: 2,
-    thumbnail:
-      "https://images.unsplash.com/photo-1559146820-a75deba24b58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWNoJTIwY29uZmVyZW5jZSUyMGxlY3R1cmUlMjBwcmVzZW50YXRpb24lMjBzY3JlZW58ZW58MXx8fHwxNzcyMTkwMjg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    thumbnail: "/temp.jpg",
     title: "Hội Thảo Quốc Tế AI & Machine Learning",
     duration: "8:45",
     size: "small",
   },
   {
     id: 3,
-    thumbnail:
-      "https://images.unsplash.com/photo-1563807894776-69847a125909?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwaW5ub3ZhdGlvbiUyMGhhY2thdGhvbiUyMGNvZGluZyUyMGV2ZW50fGVufDF8fHx8MTc3MjE5MDI4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+    thumbnail: "/temp.jpg",
     title: "Ngày Hội Khởi Nghiệp 2022 – Sáng Tạo Không Giới Hạn",
     duration: "8:45",
     size: "medium-left",
@@ -169,7 +166,7 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("Tất cả");
 
   return (
-    <div className="min-h-screen" style={{ paddingTop: "140px" }}>
+    <div className="min-h-screen" style={{ paddingTop: "120px" }}>
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
         style={{

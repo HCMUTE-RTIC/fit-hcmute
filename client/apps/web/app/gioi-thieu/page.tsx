@@ -95,7 +95,7 @@ export default function GioiThieu() {
   const visible = [0, 1, 2].map((offset) => galleryImages[(currentSlide + offset) % total]);
 
   return (
-    <div className="min-h-screen" style={{ paddingTop: "140px" }}>
+    <div className="min-h-screen" style={{ paddingTop: "120px" }}>
       {/* ─── Section 1: Hero ─────────────────────────────────────────────── */}
       <section
         style={{

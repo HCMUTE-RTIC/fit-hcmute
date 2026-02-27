@@ -244,7 +244,7 @@ function SecondaryCard({ article, delay = 0 }: { article: Article; delay?: numbe
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function News() {
   return (
-    <div className="min-h-screen" style={{ paddingTop: "140px" }}>
+    <div className="min-h-screen" style={{ paddingTop: "120px" }}>
       {/* ─── Hero Section ────────────────────────────────────────────────── */}
       <section
         style={{
