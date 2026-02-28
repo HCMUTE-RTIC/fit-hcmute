@@ -20,6 +20,12 @@
   --text-h3: 24px; /* Card titles */
   --text-body: 16px; /* Body text */
   
+  /* Font Weights - Design System */
+  --font-weight-display: 800; /* Display/H1 - Bold 800 */
+  --font-weight-h2: 700; /* H2 - Bold 700 */
+  --font-weight-h3: 600; /* H3 - SemiBold 600 */
+  --font-weight-body: 400; /* Body - Regular 400 */
+  
   /* Spacing & Grid */
   --spacing-section: 120px; /* Section padding top/bottom */
   --spacing-gutter: 24px; /* Grid gutter */

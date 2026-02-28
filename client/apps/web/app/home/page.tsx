@@ -65,7 +65,7 @@ export default function Home() {
                   boxShadow: "0px 4px 20px 0px rgba(212, 175, 55, 0.4)",
                 }}
               >
-                1999 - 2024
+                2000 - 2025
               </div>
             </motion.div>
 
@@ -74,7 +74,6 @@ export default function Home() {
               className="font-extrabold mb-6 leading-tight text-white"
               style={{
                 fontSize: "clamp(48px, 8vw, 96px)",
-                fontFamily: "'Inter', sans-serif",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -162,7 +161,6 @@ export default function Home() {
               style={{
                 fontSize: "clamp(32px, 5vw, 48px)",
                 color: "#1e3a8a",
-                fontFamily: "'Inter', sans-serif",
               }}
             >
               Triết lý đào tạo

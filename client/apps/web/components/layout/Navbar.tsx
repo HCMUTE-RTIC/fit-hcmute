@@ -50,13 +50,13 @@ export default function Navbar() {
       <div style={{ backgroundColor: "var(--color-primary-900)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-0.5 flex items-center justify-between">
           <div className="flex items-center space-x-4 sm:space-x-6 text-white text-xs">
-            <a href="tel:02838962131" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
+            <a href="tel:+84-028-37221223-8370" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
               <Phone size={12} />
-              <span className="hidden sm:inline">Liên hệ</span>
+              <span className="hidden sm:inline">(+84 - 028) 37221223 - 8370</span>
             </a>
-            <a href="mailto:bmc@hcmute.edu.vn" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
+            <a href="mailto:kcntt@hcmute.edu.vn" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
               <Mail size={12} />
-              <span className="hidden sm:inline">bmc@hcmute.edu.vn</span>
+              <span className="hidden sm:inline">kcntt@hcmute.edu.vn</span>
             </a>
           </div>
         </div>

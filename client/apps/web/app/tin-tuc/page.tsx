@@ -266,7 +266,6 @@ export default function News() {
                 fontSize: "clamp(32px, 5vw, 48px)",
                 lineHeight: "72px",
                 color: "#1e3a8a",
-                fontFamily: "'Inter', sans-serif",
               }}
             >
               TIN TỨC &amp; SỰ KIỆN

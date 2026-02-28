@@ -56,11 +56,15 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-2" style={{ color: 'var(--color-text-gray)' }}>
                 <Phone size={18} />
-                <span>(028) 3896 2131</span>
+                <a href="tel:+84-028-37221223-8370" className="hover:opacity-80 transition-opacity">
+                  (+84 - 028) 37221223 - 8370
+                </a>
               </li>
               <li className="flex items-center space-x-2" style={{ color: 'var(--color-text-gray)' }}>
                 <Mail size={18} />
-                <span>fit@hcmute.edu.vn</span>
+                <a href="mailto:kcntt@hcmute.edu.vn" className="hover:opacity-80 transition-opacity">
+                  kcntt@hcmute.edu.vn
+                </a>
               </li>
             </ul>
           </div>

@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import "../styles/theme.css";
@@ -6,8 +6,9 @@ import { Providers } from "@/components/providers";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-const fontSans = Geist({
-  subsets: ["latin"],
+const fontSans = Inter({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "600", "700", "800"],
   variable: "--font-sans",
 });
 

@@ -117,7 +117,6 @@ export default function GioiThieu() {
                 fontSize: "clamp(32px, 5vw, 48px)",
                 lineHeight: "72px",
                 color: "#1e3a8a",
-                fontFamily: "'Inter', sans-serif",
               }}
             >
               VỀ KHOA CÔNG NGHỆ THÔNG TIN
