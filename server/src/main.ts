@@ -13,6 +13,13 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('api');
+
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://fit.hcmute.edu.vn'],
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
