@@ -172,7 +172,7 @@ export default function Alumni() {
           >
             <h2
               className="font-bold text-center mb-8"
-              style={{ fontSize: "var(--text-h3)", color: "var(--color-primary-900)" }}
+              style={{ fontSize: "32px", color: "var(--color-primary-600)" }}
             >
               GỬI LỜI CHÚC & ĐĂNG KÝ THAM DỰ
             </h2>
@@ -218,15 +218,16 @@ export default function Alumni() {
                     value={formData.fullName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
                     style={{
-                      borderColor: "var(--color-border)",
+                      borderColor: "#E2E8F0",
+                      color: "#1e293b",
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = "var(--color-primary-600)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--color-border)";
+                      e.target.style.borderColor = "#E2E8F0";
                     }}
                     placeholder="Nguyễn Văn A"
                   />
@@ -249,15 +250,16 @@ export default function Alumni() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
                     style={{
-                      borderColor: "var(--color-border)",
+                      borderColor: "#E2E8F0",
+                      color: "#1e293b",
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = "var(--color-primary-600)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--color-border)";
+                      e.target.style.borderColor = "#E2E8F0";
                     }}
                     placeholder="email@example.com"
                   />
@@ -279,17 +281,18 @@ export default function Alumni() {
                     name="graduationYear"
                     value={formData.graduationYear}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
                     style={{
-                      borderColor: "var(--color-border)",
+                      borderColor: "#E2E8F0",
+                      color: "#1e293b",
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = "var(--color-primary-600)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--color-border)";
+                      e.target.style.borderColor = "#E2E8F0";
                     }}
-                    placeholder="Khóa 2015 hoặc 2019"
+                   
                   />
                 </div>
 
@@ -309,61 +312,22 @@ export default function Alumni() {
                     value={formData.attendEvent}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
                     style={{
-                      borderColor: "var(--color-border)",
+                      borderColor: "#E2E8F0",
+                      color: "#1e293b",
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = "var(--color-primary-600)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--color-border)";
+                      e.target.style.borderColor = "#E2E8F0";
                     }}
                   >
-                    <option value="no">Chưa chắc chắn</option>
-                    <option value="yes">Có, tôi sẽ tham dự</option>
-                    <option value="maybe">Có thể</option>
+                    <option value="no">Không</option>
+                    <option value="yes">Có</option>
                   </select>
                 </div>
-
-                {/* Number of Guests */}
-                {formData.attendEvent === "yes" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <label
-                      htmlFor="numberOfGuests"
-                      className="flex items-center space-x-2 mb-2 font-semibold"
-                      style={{ color: "var(--color-primary-900)" }}
-                    >
-                      <User size={18} />
-                      <span>Số lượng khách đi cùng</span>
-                    </label>
-                    <select
-                      id="numberOfGuests"
-                      name="numberOfGuests"
-                      value={formData.numberOfGuests}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors"
-                      style={{
-                        borderColor: "var(--color-border)",
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = "var(--color-primary-600)";
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.borderColor = "var(--color-border)";
-                      }}
-                    >
-                      <option value="1">Chỉ mình tôi</option>
-                      <option value="2">2 người</option>
-                      <option value="3-5">3-5 người</option>
-                      <option value=">5">Trên 5 người</option>
-                    </select>
-                  </motion.div>
-                )}
 
                 {/* Message */}
                 <div>
@@ -382,15 +346,16 @@ export default function Alumni() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors resize-none bg-white text-gray-900"
                     style={{
-                      borderColor: "var(--color-border)",
+                      borderColor: "#E2E8F0",
+                      color: "#1e293b",
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = "var(--color-primary-600)";
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = "var(--color-border)";
+                      e.target.style.borderColor = "#E2E8F0";
                     }}
                     placeholder="Chia sẻ kỷ niệm đẹp của bạn với Khoa CNTT hoặc gửi lời chúc mừng nhân dịp 25 năm thành lập..."
                   />
@@ -399,8 +364,8 @@ export default function Alumni() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all flex items-center justify-center space-x-2"
-                  style={{ backgroundColor: "var(--color-primary-900)" }}
+                  className="w-full py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all flex items-center justify-center space-x-2 text-lg"
+                  style={{ backgroundColor: "var(--color-primary-600)" }}
                 >
                   <Send size={20} />
                   <span>Gửi lời chúc</span>
