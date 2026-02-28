@@ -23,7 +23,7 @@ export class AlbumsService {
   async create(userId: string, dto: CreateAlbumDto) {
     const slug = await this.generateUniqueSlug(dto.title);
 
-    let coverPhotoId = null;
+    let coverPhotoId: string | null = null;
     if (dto.mediaIds && dto.mediaIds.length > 0) {
       coverPhotoId = dto.mediaIds[0];
     }
