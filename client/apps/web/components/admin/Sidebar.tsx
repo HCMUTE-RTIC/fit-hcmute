@@ -87,7 +87,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#24303F] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 overflow-x-hidden
+      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white/80 dark:bg-[#1A222C]/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 transition-all duration-300 overflow-x-hidden
       ${sidebarOpen ? "w-64 translate-x-0" : "w-20 -translate-x-full xl:translate-x-0"}`}
     >
       {/* Brand */}
@@ -95,7 +95,7 @@ export function Sidebar({
         className={`flex h-20 shrink-0 items-center px-6 border-b border-transparent ${!sidebarOpen && "xl:px-0 xl:justify-center"}`}
       >
         <Link href="/admin" className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white font-bold text-xl shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-xl shrink-0 shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all">
             <svg
               width="18"
               height="18"
@@ -153,19 +153,19 @@ export function Sidebar({
                     if (!sidebarOpen) setSidebarOpen(true);
                     toggleMenu(item.name);
                   }}
-                  className={`group relative flex items-center justify-between rounded-sm py-2.5 font-medium transition-colors duration-200 w-full
+                  className={`group relative flex items-center justify-between rounded-lg py-2.5 font-medium transition-all duration-200 w-full
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
                     ${
                       isActive && !isExpanded
-                        ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-500"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
-                      className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
+                      className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
                         isActive
                           ? "text-blue-600 dark:text-blue-500"
                           : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
@@ -187,18 +187,18 @@ export function Sidebar({
                 // Regular Link Button
                 <Link
                   href={item.href}
-                  className={`group relative flex items-center gap-3 rounded-sm py-2.5 font-medium transition-colors duration-200 
+                  className={`group relative flex items-center gap-3 rounded-lg py-2.5 font-medium transition-all duration-200 
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
                     ${
                       isActive
-                        ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-500"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white hover:-translate-y-0.5"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <item.icon
-                    className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
+                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
                       isActive
                         ? "text-blue-600 dark:text-blue-500"
                         : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
@@ -222,11 +222,11 @@ export function Sidebar({
                       <Link
                         key={child.name}
                         href={child.href}
-                        className={`group relative flex items-center rounded-md py-2 px-3 text-sm font-medium transition-colors duration-200 
+                        className={`group relative flex items-center rounded-lg py-2 px-3 text-sm font-medium transition-all duration-200 
                           ${
                             isChildActive
-                              ? "bg-slate-50 dark:bg-slate-800/50 text-blue-600 dark:text-blue-500"
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                              ? "bg-blue-50/30 dark:bg-blue-500/5 text-blue-600 dark:text-blue-400"
+                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50/50 dark:hover:bg-slate-800/30 hover:translate-x-1"
                           }
                         `}
                       >

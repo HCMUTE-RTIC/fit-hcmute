@@ -57,7 +57,7 @@ export default function AlbumsList() {
         </nav>
       </div>
 
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#24303F] shadow-sm overflow-hidden transition-colors duration-300">
+      <div className="rounded-2xl border border-slate-200/50 dark:border-slate-700/50 bg-white/70 dark:bg-[#1A222C]/70 backdrop-blur-xl shadow-sm overflow-hidden transition-all duration-300">
         {/* Card Header & Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-slate-200 dark:border-slate-700 gap-4">
           <div>
@@ -72,7 +72,7 @@ export default function AlbumsList() {
           <div className="flex items-center gap-3">
             <Link
               href="/admin/albums/new"
-              className="inline-flex items-center gap-2 rounded-md bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all"
             >
               <Plus className="h-4 w-4" />
               Tạo Album mới
@@ -81,7 +81,7 @@ export default function AlbumsList() {
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 bg-white dark:bg-[#24303F] border-b border-slate-100 dark:border-slate-700/50">
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 bg-transparent border-b border-slate-100 dark:border-slate-700/50">
           <div className="relative w-full sm:max-w-xs">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <Search
@@ -91,13 +91,13 @@ export default function AlbumsList() {
             </div>
             <input
               type="text"
-              className="block w-full rounded-md border border-slate-200 dark:border-slate-700 bg-transparent py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+              className="block w-full rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
               placeholder="Tìm kiếm album..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-[#24303F] font-medium transition-colors">
+          <button className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-full bg-white/50 dark:bg-slate-800/50 font-medium transition-all hover:bg-slate-50 dark:hover:bg-slate-700">
             <Filter className="h-4 w-4" />
             Bộ lọc
           </button>
@@ -134,11 +134,11 @@ export default function AlbumsList() {
                   <th scope="col" className="px-6 py-4 text-right"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50 bg-white dark:bg-[#24303F]">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50 bg-transparent">
                 {filteredData.map((album) => (
                   <tr
                     key={album.id}
-                    className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors"
+                    className="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <input
@@ -148,7 +148,7 @@ export default function AlbumsList() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <div className="h-12 w-16 flex-shrink-0 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                        <div className="h-12 w-16 shrink-0 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700">
                           {album.coverPhoto?.url ? (
                             <img
                               src={album.coverPhoto.url}
