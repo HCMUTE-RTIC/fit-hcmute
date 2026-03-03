@@ -10,11 +10,8 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { RedisCacheModule } from './common/redis-cache/redis-cache.module';
 import { ArticlesModule } from './articles/articles.module';
 import { AlbumsModule } from './albums/albums.module';
-<<<<<<< HEAD
-import { FormsModule } from 'src/forms/forms.module';
-=======
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
->>>>>>> 9b3d66a699509a7e1ae28c63183d68a136fa5139
+import { FormsModule } from 'src/forms/forms.module';
 
 @Module({
   imports: [
