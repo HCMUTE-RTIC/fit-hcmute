@@ -45,8 +45,8 @@ export function Header({
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 flex w-full h-20 bg-white dark:bg-[#24303F] drop-shadow-sm dark:shadow-none transition-colors duration-300">
-      <div className="flex flex-1 items-center justify-between px-4 shadow-sm md:px-6 2xl:px-11">
+    <header className="sticky top-0 z-40 flex w-full h-20 bg-white/70 dark:bg-[#1A222C]/70 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 transition-colors duration-300">
+      <div className="flex flex-1 items-center justify-between px-4 md:px-6 2xl:px-11">
         {/* Left Side: Toggle button & Search */}
         <div className="flex items-center gap-2 sm:gap-4">
           <button
@@ -70,7 +70,7 @@ export function Header({
                 <input
                   type="text"
                   placeholder="Tìm kiếm nhanh..."
-                  className="w-full bg-transparent pl-9 pr-4 text-slate-900 dark:text-slate-100 focus:outline-none xl:w-125 dark:placeholder-slate-500"
+                  className="w-full bg-slate-100/50 dark:bg-slate-800/50 rounded-full py-2 pl-10 pr-4 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/30 xl:w-125 dark:placeholder-slate-500 transition-all border border-transparent focus:border-blue-500/30"
                 />
               </div>
             </form>
