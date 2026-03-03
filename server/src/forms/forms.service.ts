@@ -9,6 +9,8 @@ import {
   UpdateFormDefinitionDto,
 } from './dto/create-form.dto';
 import { generateSlug } from '../common/utils/slug.util';
+import { validateFieldType } from '../common/utils/validation.util';
+import { SubmitFormDto } from 'src/forms/dto/submit-form.dto';
 
 @Injectable()
 export class FormsService {
@@ -95,5 +97,48 @@ export class FormsService {
 
   async remove(id: string) {
     return this.prisma.formDefinition.delete({ where: { id } });
+  }
+
+  async submit(slug: string, dto: SubmitFormDto) {
+    const formDef = await this.prisma.formDefinition.findUnique({
+      where: { slug },
+      include: { fields: { orderBy: { order: 'asc' } } },
+    });
+
+    if (!formDef) throw new NotFoundException(`Form definition not found`);
+
+    const submissionData = dto.data;
+    const cleanData: Record<string, any> = {};
+
+    for (const field of formDef.fields) {
+      const userValue = submissionData[field.name];
+
+      if (
+        field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
+        throw new BadRequestException(`Trường "${field.label}" là bắt buộc`);
+      }
+
+      if (
+        !field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
+        continue;
+      }
+
+      if (userValue !== undefined) {
+        validateFieldType(field.label, field.type, userValue, field.options);
+        cleanData[field.name] = userValue;
+      }
+    }
+
+    return this.prisma.formSubmission.create({
+      data: {
+        formId: formDef.id,
+        eventId: formDef.eventId,
+        data: cleanData,
+      },
+    });
   }
 }
