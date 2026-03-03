@@ -11,6 +11,7 @@ import { RedisCacheModule } from './common/redis-cache/redis-cache.module';
 import { ArticlesModule } from './articles/articles.module';
 import { AlbumsModule } from './albums/albums.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
+import { FormsModule } from 'src/forms/forms.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     MediaModule,
     ArticlesModule,
     AlbumsModule,
+    FormsModule,
   ],
   controllers: [AppController],
   providers: [
