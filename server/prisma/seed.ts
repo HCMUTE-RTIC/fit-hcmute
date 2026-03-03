@@ -32,6 +32,81 @@ async function main() {
   console.log(`✅ Super Admin created: ${adminUser.email}`);
   console.log(`🔑 Default Password (SHA256 for now): ${defaultPassword}`);
   console.log('⚠️ REMEMBER TO CHANGE THIS PASSWORD IN PRODUCTION!');
+
+  // 2. Create Dummy Albums
+  const album1 = await prisma.mediaAlbum.upsert({
+    where: { slug: 'ky-niem-25-nam-thanh-lap-khoa' },
+    update: {},
+    create: {
+      title: 'Kỷ niệm 25 năm thành lập khoa CNTT',
+      slug: 'ky-niem-25-nam-thanh-lap-khoa',
+      description: 'Chùm ảnh kỷ niệm chặng đường 25 năm xây dựng và phát triển.',
+      createdBy: adminUser.id,
+    }
+  });
+
+  const album2 = await prisma.mediaAlbum.upsert({
+    where: { slug: 'hoi-thao-cong-nghe-ai-2025' },
+    update: {},
+    create: {
+      title: 'Hội thảo Công nghệ AI 2025',
+      slug: 'hoi-thao-cong-nghe-ai-2025',
+      description: 'Những khoảnh khắc tại hội thảo AI do sinh viên và giảng viên khoa tổ chức.',
+      createdBy: adminUser.id,
+    }
+  });
+
+  console.log(`✅ Dummy Albums created`);
+
+  // 3. Create Dummy Articles
+  await prisma.article.upsert({
+    where: { slug: 'chao-mung-ky-niem-25-nam' },
+    update: {},
+    create: {
+      title: 'Chào mừng kỷ niệm 25 năm thành lập khoa CNTT',
+      slug: 'chao-mung-ky-niem-25-nam',
+      summary: 'Hoạt động hướng tới kỷ niệm 25 năm thành lập Khoa Công Nghệ Thông Tin (2001 - 2026).',
+      content: '<p>Chi tiết bài viết kỷ niệm 25 năm thành lập...</p>',
+      category: 'NEWS',
+      status: 'PUBLISHED',
+      authorId: adminUser.id,
+      viewCount: 1250,
+      thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=100&h=100&fit=crop'
+    }
+  });
+
+  await prisma.article.upsert({
+    where: { slug: 'danh-sach-sinh-vien-tieu-bieu-2026' },
+    update: {},
+    create: {
+      title: 'Danh sách sinh viên tiêu biểu niên khóa 2022-2026',
+      slug: 'danh-sach-sinh-vien-tieu-bieu-2026',
+      summary: 'Vinh danh các sinh viên xuất sắc.',
+      content: '<p>Danh sách các sinh viên đạt thành tích cao...</p>',
+      category: 'EVENT',
+      status: 'PUBLISHED',
+      authorId: adminUser.id,
+      viewCount: 342,
+      thumbnail: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=100&h=100&fit=crop'
+    }
+  });
+
+  await prisma.article.upsert({
+    where: { slug: 'lich-nghi-tet-nguyen-dan-2027' },
+    update: {},
+    create: {
+      title: 'Thông báo lịch nghỉ Tết Nguyên Đán 2027',
+      slug: 'lich-nghi-tet-nguyen-dan-2027',
+      summary: 'Lịch nghỉ Tết cho sinh viên toàn trường.',
+      content: '<p>Sinh viên sẽ được nghỉ Tết từ ngày...</p>',
+      category: 'NEWS',
+      status: 'DRAFT',
+      authorId: adminUser.id,
+      viewCount: 0,
+    }
+  });
+
+  console.log(`✅ Dummy Articles created`);
 }
 
 main()

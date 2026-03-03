@@ -1,60 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Plus, Filter, Download, MoreVertical } from "lucide-react";
-
-type Article = {
-  id: string;
-  title: string;
-  slug: string;
-  status: "DRAFT" | "PUBLISHED";
-  author: string;
-  createdAt: string;
-  views: number;
-  image?: string;
-};
-
-const dummyData: Article[] = [
-  {
-    id: "1",
-    title: "Chào mừng kỷ niệm 25 năm thành lập khoa CNTT",
-    slug: "chao-mung-ky-niem-25-nam",
-    status: "PUBLISHED",
-    author: "Admin",
-    createdAt: "25 Th02, 2026",
-    views: 1250,
-    image:
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=100&h=100&fit=crop",
-  },
-  {
-    id: "2",
-    title: "Hội thảo Công nghệ Trí tuệ Nhân tạo 2026",
-    slug: "hoi-thao-ai-2026",
-    status: "DRAFT",
-    author: "Editor 1",
-    createdAt: "26 Th02, 2026",
-    views: 0,
-    image:
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=100&h=100&fit=crop",
-  },
-  {
-    id: "3",
-    title: "Danh sách sinh viên tiêu biểu niên khóa 2022-2026",
-    slug: "sinh-vien-tieu-bieu-2026",
-    status: "PUBLISHED",
-    author: "Admin",
-    createdAt: "27 Th02, 2026",
-    views: 342,
-    image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=100&h=100&fit=crop",
-  },
-];
+import { Search, Plus, Filter, Download, MoreVertical, Edit, Trash2 } from "lucide-react";
+import { ArticlesService, Article } from "@/services/articles.service";
 
 export default function ArticleList() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredData = dummyData.filter((article) =>
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  const fetchArticles = async () => {
+    try {
+      setIsLoading(true);
+      const data = await ArticlesService.findAll();
+      setArticles(data);
+    } catch (err: any) {
+      setError("Không thể tải danh sách bài viết");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xoá bài viết này?")) return;
+    
+    try {
+      await ArticlesService.remove(id);
+      fetchArticles(); // Refresh list
+    } catch (err: any) {
+      alert("Xoá bài viết thất bại: " + err.message);
+    }
+  };
+
+  const filteredData = articles.filter((article) =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
@@ -80,7 +64,7 @@ export default function ArticleList() {
         </nav>
       </div>
 
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#24303F] shadow-sm overflow-hidden transition-colors duration-300">
+      <div className="rounded-2xl border border-slate-200/50 dark:border-slate-700/50 bg-white/70 dark:bg-[#1A222C]/70 backdrop-blur-xl shadow-sm overflow-hidden transition-all duration-300">
         {/* Card Header & Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-slate-200 dark:border-slate-700 gap-4">
           <div>
@@ -98,7 +82,7 @@ export default function ArticleList() {
             </button>
             <Link
               href="/admin/articles/new"
-              className="inline-flex items-center gap-2 rounded-md bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all"
             >
               <Plus className="h-4 w-4" />
               Thêm bài viết
@@ -107,7 +91,7 @@ export default function ArticleList() {
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 bg-white dark:bg-[#24303F] border-b border-slate-100 dark:border-slate-700/50">
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 bg-transparent border-b border-slate-100 dark:border-slate-700/50">
           <div className="relative w-full sm:max-w-xs">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <Search
@@ -117,13 +101,13 @@ export default function ArticleList() {
             </div>
             <input
               type="text"
-              className="block w-full rounded-md border border-slate-200 dark:border-slate-700 bg-transparent py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0"
+              className="block w-full rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
               placeholder="Tìm kiếm..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-[#24303F] font-medium transition-colors">
+          <button className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-full bg-white/50 dark:bg-slate-800/50 font-medium transition-all hover:bg-slate-50 dark:hover:bg-slate-700">
             <Filter className="h-4 w-4" />
             Bộ lọc
           </button>
@@ -134,97 +118,101 @@ export default function ArticleList() {
           <table className="min-w-full text-left text-sm text-slate-600 dark:text-slate-300 border-collapse">
             <thead className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
               <tr>
-                <th scope="col" className="px-6 py-4">
-                  <input
-                    type="checkbox"
-                    className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 dark:bg-slate-700"
-                  />
-                </th>
-                <th scope="col" className="px-6 py-4">
-                  Bài viết
-                </th>
-                <th scope="col" className="px-6 py-4">
-                  Danh mục
-                </th>
-                <th scope="col" className="px-6 py-4">
-                  Tác giả
-                </th>
-                <th scope="col" className="px-6 py-4">
-                  Trạng thái
-                </th>
-                <th scope="col" className="px-6 py-4">
-                  Ngày tạo
-                </th>
-                <th scope="col" className="px-6 py-4 text-right"></th>
+                <th scope="col" className="px-6 py-4">Bài viết</th>
+                <th scope="col" className="px-6 py-4">Danh mục</th>
+                <th scope="col" className="px-6 py-4">Trạng thái</th>
+                <th scope="col" className="px-6 py-4">Lượt xem</th>
+                <th scope="col" className="px-6 py-4">Ngày tạo</th>
+                <th scope="col" className="px-6 py-4 text-right">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50 bg-white dark:bg-[#24303F]">
-              {filteredData.map((article) => (
-                <tr
-                  key={article.id}
-                  className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 dark:bg-slate-700"
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="h-10 w-12 flex-shrink-0 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                        {article.image && (
-                          <img
-                            src={article.image}
-                            alt=""
-                            className="h-full w-full object-cover"
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-medium text-slate-900 dark:text-white line-clamp-1 max-w-xs">
-                          {article.title}
-                        </div>
-                        <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
-                          /{article.slug}
-                        </div>
-                      </div>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50 bg-transparent">
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-slate-500">
+                    <div className="flex justify-center items-center gap-2">
+                      <svg className="h-5 w-5 animate-spin text-blue-600" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Đang tải dữ liệu...
                     </div>
                   </td>
-                  <td className="px-6 py-4">Tin tức</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {article.author}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {article.status === "PUBLISHED" ? (
-                      <span className="text-emerald-500 font-medium">
-                        Đã xuất bản
-                      </span>
-                    ) : (
-                      <span className="text-amber-500 font-medium">
-                        Bản nháp
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {article.createdAt}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
-                      <MoreVertical className="h-5 w-5" />
-                    </button>
-                  </td>
                 </tr>
-              ))}
-              {filteredData.length === 0 && (
+              ) : error ? (
                 <tr>
-                  <td
-                    colSpan={7}
-                    className="py-10 text-center text-sm text-slate-500 dark:text-slate-400"
-                  >
+                  <td colSpan={6} className="px-6 py-10 text-center text-red-500">{error}</td>
+                </tr>
+              ) : filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-10 text-center text-slate-500 dark:text-slate-400">
                     Không tìm thấy bài viết nào.
                   </td>
                 </tr>
+              ) : (
+                filteredData.map((article) => (
+                  <tr key={article.id} className="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-4">
+                        <div className="h-10 w-12 shrink-0 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center">
+                          {article.thumbnail ? (
+                            <img src={article.thumbnail} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            <span className="text-xs text-slate-400">No Img</span>
+                          )}
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-900 dark:text-white line-clamp-1 max-w-xs" title={article.title}>
+                            {article.title}
+                          </div>
+                          <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+                            /{article.slug}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                        ${article.category === 'NEWS' 
+                          ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300' 
+                          : 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'}`}
+                      >
+                        {article.category === 'NEWS' ? 'TIN TỨC' : 'SỰ KIỆN'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {article.status === "PUBLISHED" ? (
+                        <span className="text-emerald-500 font-medium">Đã xuất bản</span>
+                      ) : article.status === "DRAFT" ? (
+                        <span className="text-amber-500 font-medium">Bản nháp</span>
+                      ) : (
+                        <span className="text-slate-500 font-medium">Lưu trữ</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-700 dark:text-slate-300">
+                      {article.viewCount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(article.createdAt).toLocaleDateString('vi-VN')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link href={`/admin/articles/edit/${article.id}`}>
+                          <button className="p-1.5 text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors" title="Chỉnh sửa">
+                            <Edit className="h-4 w-4" />
+                          </button>
+                        </Link>
+                        <button 
+                          onClick={() => handleDelete(article.id)}
+                          className="p-1.5 text-slate-500 hover:text-red-600 dark:hover:text-red-400 bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                          title="Xóa"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

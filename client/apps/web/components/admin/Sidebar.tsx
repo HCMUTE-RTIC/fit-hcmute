@@ -33,7 +33,15 @@ const navigation: NavItem[] = [
       { name: "Thêm bài viết", href: "/admin/articles/new" },
     ],
   },
-  { name: "Thư viện Ảnh", href: "/admin/albums", icon: ImageIcon },
+  {
+    name: "Thư viện Ảnh",
+    href: "/admin/albums",
+    icon: ImageIcon,
+    children: [
+      { name: "Danh sách", href: "/admin/albums" },
+      { name: "Thêm album mới", href: "/admin/albums/new" },
+    ],
+  },
   { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
   { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity },
   { name: "Cấu hình", href: "/admin/settings", icon: Settings },
@@ -59,23 +67,10 @@ export function Sidebar({
     let changed = false;
     navigation.forEach((item) => {
       if (item.children) {
-        // If exact match or nested route
-        const isChildActive = item.children.some(
-          (child) =>
-            pathname === child.href ||
-            (child.href !== "/admin/articles" &&
-              pathname?.startsWith(`${child.href}/`)),
-        );
-        // Special case for /admin/articles since it's the root of the others
-        if (
-          pathname === "/admin/articles" ||
-          pathname?.startsWith("/admin/articles/")
-        ) {
-          if (item.name === "Bài viết") {
-            if (!newExpanded[item.name]) {
-              newExpanded[item.name] = true;
-              changed = true;
-            }
+        if (pathname === item.href || pathname?.startsWith(`${item.href}/`)) {
+          if (!newExpanded[item.name]) {
+            newExpanded[item.name] = true;
+            changed = true;
           }
         }
       }
@@ -92,7 +87,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#24303F] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 
+      className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-white/80 dark:bg-[#1A222C]/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 transition-all duration-300 overflow-x-hidden
       ${sidebarOpen ? "w-64 translate-x-0" : "w-20 -translate-x-full xl:translate-x-0"}`}
     >
       {/* Brand */}
@@ -100,7 +95,7 @@ export function Sidebar({
         className={`flex h-20 shrink-0 items-center px-6 border-b border-transparent ${!sidebarOpen && "xl:px-0 xl:justify-center"}`}
       >
         <Link href="/admin" className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white font-bold text-xl shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-xl shrink-0 shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-500 hover:-translate-y-0.5 transition-all">
             <svg
               width="18"
               height="18"
@@ -118,7 +113,7 @@ export function Sidebar({
             </svg>
           </div>
           <span
-            className={`text-xl font-bold text-slate-900 dark:text-white transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`text-xl font-bold text-slate-900 dark:text-white transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
           >
             FIT CMS
           </span>
@@ -136,7 +131,7 @@ export function Sidebar({
         className={`flex flex-1 flex-col overflow-y-auto py-4 space-y-1 ${sidebarOpen ? "px-4" : "px-2 xl:px-4"}`}
       >
         <div
-          className={`text-xs font-semibold text-slate-400 dark:text-slate-500 mb-4 px-2 uppercase tracking-wider ${!sidebarOpen && "xl:hidden"}`}
+          className={`text-xs font-semibold text-slate-400 dark:text-slate-500 mb-4 px-2 uppercase tracking-wider ${!sidebarOpen ? "hidden" : "block"}`}
         >
           Menu chính
         </div>
@@ -158,19 +153,19 @@ export function Sidebar({
                     if (!sidebarOpen) setSidebarOpen(true);
                     toggleMenu(item.name);
                   }}
-                  className={`group relative flex items-center justify-between rounded-sm py-2.5 font-medium transition-colors duration-200 w-full
+                  className={`group relative flex items-center justify-between rounded-lg py-2.5 font-medium transition-all duration-200 w-full
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
                     ${
                       isActive && !isExpanded
-                        ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-500"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
-                      className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
+                      className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
                         isActive
                           ? "text-blue-600 dark:text-blue-500"
                           : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
@@ -178,32 +173,32 @@ export function Sidebar({
                       aria-hidden="true"
                     />
                     <span
-                      className={`transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+                      className={`transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
                     >
                       {item.name}
                     </span>
                   </div>
                   {/* Chevron Icon for Dropdown */}
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${!sidebarOpen ? "xl:hidden" : "block"} ${isExpanded ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform duration-200 ${!sidebarOpen ? "hidden" : "block"} ${isExpanded ? "rotate-180" : ""}`}
                   />
                 </button>
               ) : (
                 // Regular Link Button
                 <Link
                   href={item.href}
-                  className={`group relative flex items-center gap-3 rounded-sm py-2.5 font-medium transition-colors duration-200 
+                  className={`group relative flex items-center gap-3 rounded-lg py-2.5 font-medium transition-all duration-200 
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
                     ${
                       isActive
-                        ? "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-500"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white hover:-translate-y-0.5"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <item.icon
-                    className={`h-5 w-5 flex-shrink-0 transition-colors duration-200 ${
+                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
                       isActive
                         ? "text-blue-600 dark:text-blue-500"
                         : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
@@ -211,7 +206,7 @@ export function Sidebar({
                     aria-hidden="true"
                   />
                   <span
-                    className={`transition-opacity duration-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+                    className={`transition-opacity duration-300 ${!sidebarOpen ? "hidden" : "block"}`}
                   >
                     {item.name}
                   </span>
@@ -227,11 +222,11 @@ export function Sidebar({
                       <Link
                         key={child.name}
                         href={child.href}
-                        className={`group relative flex items-center rounded-md py-2 px-3 text-sm font-medium transition-colors duration-200 
+                        className={`group relative flex items-center rounded-lg py-2 px-3 text-sm font-medium transition-all duration-200 
                           ${
                             isChildActive
-                              ? "bg-slate-50 dark:bg-slate-800/50 text-blue-600 dark:text-blue-500"
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                              ? "bg-blue-50/30 dark:bg-blue-500/5 text-blue-600 dark:text-blue-400"
+                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50/50 dark:hover:bg-slate-800/30 hover:translate-x-1"
                           }
                         `}
                       >
@@ -259,12 +254,12 @@ export function Sidebar({
             alt="User"
           />
           <span
-            className={`flex-1 truncate text-left font-medium text-slate-700 dark:text-slate-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`flex-1 truncate text-left font-medium text-slate-700 dark:text-slate-300 ${!sidebarOpen ? "hidden" : "block"}`}
           >
             Tài khoản
           </span>
           <LogOut
-            className={`h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 ${!sidebarOpen ? "xl:hidden" : "block"}`}
+            className={`h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 ${!sidebarOpen ? "hidden" : "block"}`}
           />
         </button>
       </div>
