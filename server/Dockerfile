@@ -16,7 +16,7 @@ ENV CI=true
 RUN pnpm install --prod --frozen-lockfile
 
 # Sinh Prisma Client một lần nữa trong container (tránh lỗi binary / wasm khác môi trường)
-RUN pnpm exec prisma generate
+RUN pnpm dlx prisma@5.22.0 generate
 
 # NestJS chạy ở port 3000, Map ra 3001 ở docker-compose
 EXPOSE 3000
