@@ -71,8 +71,8 @@ jobs:
           # 2. Tự động build file image mới nhất từ nhánh `main` 
           # Lưu ý: docker-compose.prod.yml cần định nghĩa `build: ./client/apps/web` thay vì chỉ có image
           # Dựa vào file prod, giả sử ta cần build lại
-          docker-compose -f docker-compose.prod.yml build backend_api frontend_web
+          docker compose -f docker-compose.prod.yml build backend_api frontend_web
           
           # 3. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
           # Tự động thay thế container cũ rác zero-downtime nhất có thể
-          docker-compose -f docker-compose.prod.yml up -d
+          docker compose -f docker-compose.prod.yml up -d
