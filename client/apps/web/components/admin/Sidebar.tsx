@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   ChevronLeft,
   ChevronDown,
+  Users,
 } from "lucide-react";
 import { getAuthToken } from "../../lib/auth";
 import { jwtDecode } from "jwt-decode";
@@ -56,6 +57,7 @@ export function Sidebar({
       ],
     },
     { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
+    { name: "Quản lý Tài khoản", href: "/admin/users", icon: Users, hidden: true },
     { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity, hidden: true }, // Default hidden
     { name: "Cấu hình", href: "/admin/settings", icon: Settings },
   ]);
@@ -74,7 +76,7 @@ export function Sidebar({
         if (decoded?.role === "SUPER_ADMIN") {
           setNavigation((prev) =>
             prev.map((item) =>
-              item.href === "/admin/logs" ? { ...item, hidden: false } : item
+              item.href === "/admin/logs" || item.href === "/admin/users" ? { ...item, hidden: false } : item
             )
           );
         }
