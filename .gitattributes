@@ -1,0 +1,37 @@
+# Xử lý tự động Line Ending cho hệ điều hành
+* text=auto eol=lf
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.js text diff=javascript
+*.jsx text diff=javascript
+*.ts text diff=typescript
+*.tsx text diff=typescript
+*.json text diff=json
+*.css text diff=css
+*.scss text diff=css
+*.md text diff=markdown
+*.html text diff=html
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+# Ngôn ngữ lập trình thống kê cho Github (Bỏ qua các thư mục dependencies)
+node_modules/* linguist-vendored
+dist/* linguist-vendored
+.next/* linguist-vendored
+coverage/* linguist-vendored
+client/pnpm-lock.yaml linguist-generated
+server/pnpm-lock.yaml linguist-generated
+server/package-lock.json linguist-generated
