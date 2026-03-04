@@ -86,7 +86,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: PROD_REDIS_s3cx_xxyy
     ports:
-      - "3001:3000" # Mở port 3001 ra ngoài VPS cho API Backend
+      - "3001:3001" # Mở port 3001 ra ngoài VPS cho API Backend
     networks:
       - fit_hcmute_prod_network
 
@@ -104,7 +104,7 @@ services:
       NODE_ENV: production
       NEXT_PUBLIC_API_URL: https://25nam-api.hcmutertic.com # Lệnh gọi từ Client Tới Backend Mới
     ports:
-      - "3000:3001" # Mở port 3000 ra ngoài VPS cho Web Frontend
+      - "3000:3000" # Mở port 3000 ra ngoài VPS cho Web Frontend
     networks:
       - fit_hcmute_prod_network
 
