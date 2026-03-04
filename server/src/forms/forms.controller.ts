@@ -7,6 +7,8 @@ import {
   Patch,
   Post,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -14,10 +16,17 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { CreateFormDefinitionDto } from 'src/forms/dto/create-form.dto';
 import { FormsService } from 'src/forms/forms.service';
+import { SubmitFormDto } from './dto/submit-form.dto';
 
 @Controller('forms')
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
+
+  @Post(':slug/submit')
+  @HttpCode(HttpStatus.CREATED)
+  submit(@Param('slug') slug: string, @Body() dto: SubmitFormDto) {
+    return this.formsService.submit(slug, dto);
+  }
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
