@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Globe } from "@workspace/ui/components/globe";
-import { AuthService } from "../../services/auth.service";
-import { setAuthToken } from "../../lib/auth";
+import { AuthService } from "@/services/auth.service";
+import { setAuthToken } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();

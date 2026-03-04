@@ -32,13 +32,8 @@ export class AuthService {
   login(user: any) {
     const payload = { email: user.email, sub: user.id, role: user.role };
     return {
-      success: true,
-      message: 'Login successful',
-      data: {
-        access_token: this.jwtService.sign(payload),
-        user,
-      },
-      errorCode: null,
+      access_token: this.jwtService.sign(payload),
+      user,
     };
   }
 }
