@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: "24"
 
       - name: Setup pnpm
         run: npm install -g pnpm@10
@@ -58,6 +58,9 @@ jobs:
     needs: ci
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, Linux, X64]
+    environment:
+      name: production
+      url: https://fit25.hcmute.edu.vn
     steps:
       - name: Deploy via Docker Compose
         run: |
@@ -67,12 +70,12 @@ jobs:
           cp /home/sysadmin/env/.env.production ./.env.production
           cp /home/sysadmin/env/server/.env.production ./server/.env.production
           cp /home/sysadmin/env/client/.env.production ./client/apps/web/.env.production
-          
+
           # 2. Tự động build file image mới nhất từ nhánh `main` 
           # Lưu ý: docker-compose.prod.yml cần định nghĩa `build: ./client/apps/web` thay vì chỉ có image
           # Dựa vào file prod, giả sử ta cần build lại
           docker compose -f docker-compose.prod.yml build backend_api frontend_web
-          
+
           # 3. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
           # Tự động thay thế container cũ rác zero-downtime nhất có thể
           docker compose -f docker-compose.prod.yml up -d
