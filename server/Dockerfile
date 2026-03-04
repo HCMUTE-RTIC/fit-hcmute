@@ -12,6 +12,7 @@ RUN npm install -g pnpm@10
 COPY . .
 
 # Cài đặt thư viện production (bỏ qua devDependencies)
+ENV CI=true
 RUN pnpm install --prod --frozen-lockfile
 
 # Sinh Prisma Client một lần nữa trong container (tránh lỗi binary / wasm khác môi trường)

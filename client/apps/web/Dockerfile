@@ -12,6 +12,7 @@ COPY client/ ./client/
 WORKDIR /app/client
 
 # Cài đặt toàn bộ dependencies trong Turborepo nhưng chỉ ở mức Production
+ENV CI=true
 RUN pnpm install --prod
 
 # NextJS app (web) chạy port 3000 ở default
