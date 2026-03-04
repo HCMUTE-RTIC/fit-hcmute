@@ -42,7 +42,7 @@ jobs:
         run: cd client/apps/web && pnpm install
 
       - name: Generate Prisma Client
-        run: cd server && pnpm dlx prisma generate
+        run: cd server && pnpm exec prisma generate
 
       - name: Build Server
         run: cd server && pnpm run build
