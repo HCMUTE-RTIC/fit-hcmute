@@ -3,6 +3,9 @@ FROM node:24-alpine
 
 WORKDIR /app
 
+# Cài đặt openssl (Yêu cầu bắt buộc của Prisma trên Alpine Linux)
+RUN apk add --no-cache openssl ca-certificates
+
 # Cài đặt pnpm
 RUN npm install -g pnpm@10
 
