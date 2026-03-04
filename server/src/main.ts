@@ -16,7 +16,11 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://fit.hcmute.edu.vn'],
+    origin: [
+      'http://localhost:3000',
+      'https://25nam.fit.hcmute.edu.vn',
+      'https://25nam.hcmutertic.com'
+    ],
     credentials: true,
   });
 

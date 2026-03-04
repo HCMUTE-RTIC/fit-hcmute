@@ -70,7 +70,9 @@ services:
 
   # 5. BACKEND NESTJS CORE (Application) 
   backend_api:
-    # Sau này sẽ map image từ Github Container Reg hoặc Dockerfile Build local
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     image: nestjs-backend:latest
     container_name: p_backend
     restart: unless-stopped
@@ -83,13 +85,16 @@ services:
       REDIS_HOST: redis_prod
       REDIS_PORT: 6379
       REDIS_PASSWORD: PROD_REDIS_s3cx_xxyy
-    expose:
-      - 3000 # Cổng API Backend nội bộ
+    ports:
+      - "3001:3000" # Mở port 3001 ra ngoài VPS cho API Backend
     networks:
       - fit_hcmute_prod_network
 
   # 6. FRONTEND NEXTJS (Web App SSR Server)
   frontend_web:
+    build:
+      context: .
+      dockerfile: client/apps/web/Dockerfile
     image: nextjs-frontend:latest
     container_name: p_frontend
     restart: unless-stopped
@@ -97,26 +102,9 @@ services:
       - backend_api
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: https://api.fit25.hcmute.edu.vn # Lệnh gọi từ Client
-    expose:
-      - 3001 # Cổng Web nội bộ
-    networks:
-      - fit_hcmute_prod_network
-
-  # 7. NGINX REVERSE PROXY (Kẻ Gác Cổng)
-  nginx_proxy:
-    image: nginx:alpine
-    container_name: p_nginx_proxy
-    restart: always
+      NEXT_PUBLIC_API_URL: https://25nam-api.hcmutertic.com # Lệnh gọi từ Client Tới Backend Mới
     ports:
-      - "80:80" # Mở toang Cổng Website HTTP public
-      - "443:443" # Mở toang Cổng Website HTTPS public
-    volumes:
-      - ./deploy/nginx:/etc/nginx/conf.d:ro # Load cấu hình vhost
-      # - ./certbot/conf:/etc/letsencrypt # Dành cho TSK-601 Cài SSL Let's Encrypt
-    depends_on:
-      - frontend_web
-      - backend_api
+      - "3000:3001" # Mở port 3000 ra ngoài VPS cho Web Frontend
     networks:
       - fit_hcmute_prod_network
 
