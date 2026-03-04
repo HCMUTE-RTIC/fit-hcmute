@@ -20,4 +20,19 @@ export const getAuthToken = (): string | null => {
       localStorage.removeItem("accessToken");
     }
   };
+
+
+  // tự động thêm jwt token vào request, chuẩn hoá header, bảo vệ endpoint
+  export const getAuthHeaders = (): HeadersInit => {
+    const token = getAuthToken();
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+    
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    
+    return headers;
+  };
   
