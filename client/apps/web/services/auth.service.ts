@@ -30,6 +30,7 @@ export const AuthService = {
       throw new Error(errorData.message || "Login failed");
     }
 
-    return res.json();
+    const json = await res.json();
+    return json.data || json;
   },
 };

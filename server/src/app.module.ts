@@ -12,6 +12,7 @@ import { ArticlesModule } from './articles/articles.module';
 import { AlbumsModule } from './albums/albums.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 import { FormsModule } from 'src/forms/forms.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FormsModule } from 'src/forms/forms.module';
     ArticlesModule,
     AlbumsModule,
     FormsModule,
+    AuditLogsModule,
   ],
   controllers: [AppController],
   providers: [
