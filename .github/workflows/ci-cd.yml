@@ -15,19 +15,19 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # (Tùy chọn) Install pnpm & Node.js nếu trên con self-hosted runner chưa cài sẵn.
       # Nếu ubuntu của bạn cài sẵn node và pnpm rồi thì có thể comment 2 step này đi.
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Restore Next.js and Turbo Cache
@@ -60,11 +60,18 @@ jobs:
     steps:
       - name: Deploy via Docker Compose
         run: |
-          # 1. Tự động build file image mới nhất từ nhánh `main` 
+          # 1. Copy file cấu hình .env.production từ bên ngoài Server (Host) vào Repository
+          # Giúp tách biệt dữ liệu nhạy cảm khỏi Github 
+          echo "Sao chép cấu hình .env từ VPS..."
+          cp /home/sysadmin/env/.env.production ./.env.production
+          cp /home/sysadmin/env/server/.env.production ./server/.env.production
+          cp /home/sysadmin/env/client/.env.production ./client/apps/web/.env.production
+          
+          # 2. Tự động build file image mới nhất từ nhánh `main` 
           # Lưu ý: docker-compose.prod.yml cần định nghĩa `build: ./client/apps/web` thay vì chỉ có image
           # Dựa vào file prod, giả sử ta cần build lại
           docker-compose -f docker-compose.prod.yml build backend_api frontend_web
           
-          # 2. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
+          # 3. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
           # Tự động thay thế container cũ rác zero-downtime nhất có thể
           docker-compose -f docker-compose.prod.yml up -d

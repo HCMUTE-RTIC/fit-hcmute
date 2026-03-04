@@ -48,8 +48,8 @@ services:
       MINIO_DOMAIN: "media.fit25.hcmute.edu.vn" # Thay = Domain phụ của Trường
     command: server /data --console-address ":9001"
     ports:
-      - "127.0.0.1:9000:9000" # Expose S3 qua Local Only để Nginx Proxy pass ra Domain
-      - "127.0.0.1:9001:9001" # Web Console chỉ mở ở Localhost VPS
+      - "9000:9000" # Expose S3 API trực tiếp ra mạng public
+      - "9001:9001" # Web Console quản trị của Minio
     volumes:
       - minio_data_prod:/data
     networks:
