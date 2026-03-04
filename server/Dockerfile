@@ -21,4 +21,4 @@ RUN pnpm dlx prisma@5.22.0 generate
 # NestJS chạy ở port 3000, Map ra 3001 ở docker-compose
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
