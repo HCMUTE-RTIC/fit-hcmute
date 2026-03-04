@@ -14,38 +14,16 @@ import {
   ChevronLeft,
   ChevronDown,
 } from "lucide-react";
+import { getAuthToken } from "../../lib/auth";
+import { jwtDecode } from "jwt-decode";
 
 type NavItem = {
   name: string;
   href: string;
   icon: React.ElementType;
+  hidden?: boolean;
   children?: { name: string; href: string }[];
 };
-
-const navigation: NavItem[] = [
-  { name: "Tổng quan", href: "/admin", icon: LayoutDashboard },
-  {
-    name: "Bài viết",
-    href: "/admin/articles",
-    icon: FileText,
-    children: [
-      { name: "Danh sách", href: "/admin/articles" },
-      { name: "Thêm bài viết", href: "/admin/articles/new" },
-    ],
-  },
-  {
-    name: "Thư viện Ảnh",
-    href: "/admin/albums",
-    icon: ImageIcon,
-    children: [
-      { name: "Danh sách", href: "/admin/albums" },
-      { name: "Thêm album mới", href: "/admin/albums/new" },
-    ],
-  },
-  { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
-  { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity },
-  { name: "Cấu hình", href: "/admin/settings", icon: Settings },
-];
 
 export function Sidebar({
   sidebarOpen,
@@ -56,17 +34,60 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
 
+  // Navigation Items (Base)
+  const [navigation, setNavigation] = useState<NavItem[]>([
+    { name: "Tổng quan", href: "/admin", icon: LayoutDashboard },
+    {
+      name: "Bài viết",
+      href: "/admin/articles",
+      icon: FileText,
+      children: [
+        { name: "Danh sách", href: "/admin/articles" },
+        { name: "Thêm bài viết", href: "/admin/articles/new" },
+      ],
+    },
+    {
+      name: "Thư viện Ảnh",
+      href: "/admin/albums",
+      icon: ImageIcon,
+      children: [
+        { name: "Danh sách", href: "/admin/albums" },
+        { name: "Thêm album mới", href: "/admin/albums/new" },
+      ],
+    },
+    { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
+    { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity, hidden: true }, // Default hidden
+    { name: "Cấu hình", href: "/admin/settings", icon: Settings },
+  ]);
+
   // Track which menus are expanded by name
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(
     {},
   );
 
-  // Automatically expand menus if a child is active on initial load
   useEffect(() => {
+    // 1. Role-based menu filtering
+    const token = getAuthToken();
+    if (token && token !== "undefined") {
+      try {
+        const decoded: any = jwtDecode(token);
+        if (decoded?.role === "SUPER_ADMIN") {
+          setNavigation((prev) =>
+            prev.map((item) =>
+              item.href === "/admin/logs" ? { ...item, hidden: false } : item
+            )
+          );
+        }
+      } catch (err) {
+        console.error("Invalid token", err);
+      }
+    }
+
+    // 2. Automatically expand menus
     const newExpanded = { ...expandedMenus };
     let changed = false;
     navigation.forEach((item) => {
-      if (item.children) {
+      if (item.children && !item.hidden) {
         if (pathname === item.href || pathname?.startsWith(`${item.href}/`)) {
           if (!newExpanded[item.name]) {
             newExpanded[item.name] = true;
@@ -136,7 +157,7 @@ export function Sidebar({
           Menu chính
         </div>
 
-        {navigation.map((item) => {
+        {navigation.filter(item => !item.hidden).map((item) => {
           const hasChildren = !!item.children;
           const isActive =
             pathname === item.href ||
@@ -155,21 +176,19 @@ export function Sidebar({
                   }}
                   className={`group relative flex items-center justify-between rounded-lg py-2.5 font-medium transition-all duration-200 w-full
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
-                    ${
-                      isActive && !isExpanded
-                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
+                    ${isActive && !isExpanded
+                      ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon
-                      className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
-                        isActive
-                          ? "text-blue-600 dark:text-blue-500"
-                          : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
-                      }`}
+                      className={`h-5 w-5 shrink-0 transition-colors duration-200 ${isActive
+                        ? "text-blue-600 dark:text-blue-500"
+                        : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
+                        }`}
                       aria-hidden="true"
                     />
                     <span
@@ -189,20 +208,18 @@ export function Sidebar({
                   href={item.href}
                   className={`group relative flex items-center gap-3 rounded-lg py-2.5 font-medium transition-all duration-200 
                     ${sidebarOpen ? "px-3" : "px-3 xl:justify-center"}
-                    ${
-                      isActive
-                        ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white hover:-translate-y-0.5"
+                    ${isActive
+                      ? "bg-blue-50/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white hover:-translate-y-0.5"
                     }
                   `}
                   title={!sidebarOpen ? item.name : undefined}
                 >
                   <item.icon
-                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${
-                      isActive
-                        ? "text-blue-600 dark:text-blue-500"
-                        : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
-                    }`}
+                    className={`h-5 w-5 shrink-0 transition-colors duration-200 ${isActive
+                      ? "text-blue-600 dark:text-blue-500"
+                      : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
+                      }`}
                     aria-hidden="true"
                   />
                   <span
@@ -223,10 +240,9 @@ export function Sidebar({
                         key={child.name}
                         href={child.href}
                         className={`group relative flex items-center rounded-lg py-2 px-3 text-sm font-medium transition-all duration-200 
-                          ${
-                            isChildActive
-                              ? "bg-blue-50/30 dark:bg-blue-500/5 text-blue-600 dark:text-blue-400"
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50/50 dark:hover:bg-slate-800/30 hover:translate-x-1"
+                          ${isChildActive
+                            ? "bg-blue-50/30 dark:bg-blue-500/5 text-blue-600 dark:text-blue-400"
+                            : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50/50 dark:hover:bg-slate-800/30 hover:translate-x-1"
                           }
                         `}
                       >
