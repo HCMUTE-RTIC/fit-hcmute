@@ -17,18 +17,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      # (Tùy chọn) Install pnpm & Node.js nếu trên con self-hosted runner chưa cài sẵn.
-      # Nếu ubuntu của bạn cài sẵn node và pnpm rồi thì có thể comment 2 step này đi.
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
 
       - name: Restore Next.js and Turbo Cache
         uses: actions/cache@v4
