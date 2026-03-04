@@ -35,8 +35,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Install Dependencies
-        run: pnpm install
+      - name: Install Server Dependencies
+        run: cd server && pnpm install
+
+      - name: Install Client Dependencies
+        run: cd client/apps/web && pnpm install
 
       - name: Build Server
         run: cd server && pnpm run build
