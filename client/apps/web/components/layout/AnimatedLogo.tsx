@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -13,11 +13,18 @@ export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogo
   const [isHovered, setIsHovered] = useState(false);
   const logo = "/Logo 50 nam@4x.png";
 
-  // Generate particles in a circular pattern
-  const particles = Array.from({ length: 32 }, (_, i) => {
-    const angle = (i * 360) / 20;
-    return { id: i, angle };
-  });
+  // Generate particles with pre-calculated positions to avoid hydration mismatch
+  // Round to 2 decimal places to ensure server/client consistency
+  const particles = useMemo(() => 
+    Array.from({ length: 32 }, (_, i) => {
+      const angle = (i * 360) / 20;
+      const radius = size * 0.80;
+      const x = parseFloat((Math.cos((angle * Math.PI) / 180) * radius).toFixed(2));
+      const y = parseFloat((Math.sin((angle * Math.PI) / 180) * radius).toFixed(2));
+      return { id: i, x, y };
+    }), 
+    [size]
+  );
 
   return (
     <div
@@ -35,10 +42,6 @@ export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogo
         }}
       >
         {particles.map((particle) => {
-          const radius = size * 0.80;
-          const x = Math.cos((particle.angle * Math.PI) / 180) * radius;
-          const y = Math.sin((particle.angle * Math.PI) / 180) * radius;
-          
           return (
             <div
               key={particle.id}
@@ -51,7 +54,7 @@ export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogo
                 boxShadow: "0 0 6px rgba(37, 99, 235, 0.7)",
                 top: "50%",
                 left: "50%",
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                transform: `translate(calc(-50% + ${particle.x}px), calc(-50% + ${particle.y}px))`,
               }}
             />
           );
@@ -76,6 +79,7 @@ export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogo
             src={logo}
             alt="HCMUTE Logo"
             fill
+            sizes={`${size}px`}
             className="object-contain"
             priority
           />

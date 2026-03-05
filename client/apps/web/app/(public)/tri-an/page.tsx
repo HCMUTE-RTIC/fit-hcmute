@@ -304,51 +304,7 @@ export default function Alumni() {
         </div>
       </section>
 
-      {/* Yearbook Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2
-              className="font-bold mb-6"
-              style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
-            >
-              KỶ YẾU 25 NĂM
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto" style={{ color: "var(--color-text-gray)" }}>
-              Xem và lưu giữ những khoảnh khắc đáng nhớ qua 25 năm hình thành và phát triển
-            </p>
-            <a
-              href="/ky-yeu"
-              className="inline-flex items-center px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-all text-white"
-              style={{
-                backgroundColor: "var(--color-primary-600)",
-              }}
-            >
-              <svg
-                className="mr-2"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-              </svg>
-              Xem kỷ yếu
-            </a>
-          </motion.div>
-        </div>
-      </section>
+    
     </div>
   );
 }
