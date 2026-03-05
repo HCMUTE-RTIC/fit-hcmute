@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const logo = "/temp.jpg";
+import AnimatedLogo from "./AnimatedLogo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +18,13 @@ export default function Navbar() {
     { name: "TIN TỨC & SỰ KIỆN", path: "/tin-tuc" },
     { name: "THÀNH TỰU", path: "/thanh-tuu" },
     { name: "TRI ÂN & KẾT NỐI", path: "/tri-an" },
+    { name: "KỶ YẾU", path: "/ky-yeu" },
     { name: "THƯ VIỆN KỶ NIỆM", path: "/thu-vien" },
   ];
+
+  // Split navigation into left and right for centered logo layout
+  const leftLinks = navLinks.slice(0, 4);
+  const rightLinks = navLinks.slice(4, 8);
 
   const isActive = (path: string) => pathname === path;
 
@@ -45,25 +48,10 @@ export default function Navbar() {
   }, [isOpen]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
-      {/* Top Bar */}
-      <div style={{ backgroundColor: "var(--color-primary-900)" }}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-0.5 flex items-center justify-between">
-          <div className="flex items-center space-x-4 sm:space-x-6 text-white text-xs">
-            <a href="tel:+84-028-37221223-8370" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
-              <Phone size={12} />
-              <span className="hidden sm:inline">(+84 - 028) 37221223 - 8370</span>
-            </a>
-            <a href="mailto:kcntt@hcmute.edu.vn" className="flex items-center space-x-1 sm:space-x-2 hover:opacity-80 transition-opacity">
-              <Mail size={12} />
-              <span className="hidden sm:inline">kcntt@hcmute.edu.vn</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
+    <div className="sticky top-0 mt-5 left-0 right-0 z-50">
       {/* Main Navbar */}
       <nav
+        className="relative overflow-visible"
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.9)",
           backdropFilter: "blur(20px)",
@@ -72,19 +60,16 @@ export default function Navbar() {
           boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-          {/* Logo Row */}
-          <div className="flex items-center justify-between lg:justify-center py-1.5 border-b border-gray-100">
-            <Link href="/" className="flex flex-col items-center">
-              <div className="relative h-12 w-12 sm:h-14 sm:w-14">
-                <Image src={logo} alt="HCMUTE Logo" fill className="object-contain" />
-              </div>
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+          {/* Mobile View - Logo Left, Menu Button Right */}
+          <div className="flex lg:hidden items-center justify-between py-3">
+            <Link href="/" className="flex-shrink-0">
+              <AnimatedLogo size={48} />
             </Link>
 
-            {/* Mobile Menu Button - Move to logo row for better UX */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               style={{ color: "var(--color-primary-900)" }}
               aria-label="Toggle menu"
             >
@@ -92,14 +77,41 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Navigation Row - Desktop only */}
-          <div className="hidden lg:flex items-center justify-center h-11">
-            <div className="flex items-center space-x-6">
-              {navLinks.map((link) => (
+          {/* Desktop View - Left Nav | Logo Center | Right Nav */}
+          <div className="hidden lg:grid lg:grid-cols-[1fr_auto_1fr] items-center gap-6 py-3">
+            {/* Left Navigation */}
+            <div className="flex items-center justify-end space-x-4 xl:space-x-6 pr-3">
+              {leftLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="text-xs font-semibold transition-colors hover:text-[#2563EB] relative py-1"
+                  className="text-xs font-semibold transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
+                  style={{
+                    color: isActive(link.path) ? "var(--color-primary-600)" : "var(--color-primary-900)",
+                  }}
+                >
+                  {link.name}
+                  {isActive(link.path) && (
+                    <motion.div
+                      layoutId="navbar-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5"
+                      style={{ backgroundColor: "var(--color-primary-600)" }}
+                    />
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            {/* Logo Circle Bump - Placeholder for spacing */}
+            <div className="w-[80px] h-[35px]"></div>
+
+            {/* Right Navigation */}
+            <div className="flex items-center justify-start space-x-4 xl:space-x-6 pl-3">
+              {rightLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className="text-xs font-semibold transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
                   style={{
                     color: isActive(link.path) ? "var(--color-primary-600)" : "var(--color-primary-900)",
                   }}
@@ -117,6 +129,33 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+
+        {/* Logo Circle Bump - Desktop Only */}
+        <div className="hidden lg:block">
+          <div
+            className="absolute left-1/2 bottom-3"
+            style={{
+              width: "90px",
+              height: "90px",
+              transform: "translate(-50%, 50%)",
+            }}
+          >
+            <Link href="/" className="block w-full h-full">
+              <div
+                className="w-full h-full rounded-full flex items-center justify-center"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.85)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(0,0,0,0.05)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                }}
+              >
+                <AnimatedLogo size={48} />
+              </div>
+            </Link>
+          </div>
+        </div>
       </nav>
 
       {/* Mobile Menu Backdrop */}
@@ -128,7 +167,7 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
-            style={{ top: "105px" }}
+            style={{ top: "70px" }}
             onClick={() => setIsOpen(false)}
           />
         )}
@@ -144,7 +183,7 @@ export default function Navbar() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="lg:hidden fixed right-0 z-50 h-screen overflow-y-auto"
             style={{
-              top: "105px",
+              top: "70px",
               width: "min(300px, 75vw)",
               backgroundColor: "rgba(255, 255, 255, 0.98)",
               backdropFilter: "blur(20px)",
