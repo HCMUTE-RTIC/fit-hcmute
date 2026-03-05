@@ -150,9 +150,7 @@ export default function Navbar() {
               <div
                 className="w-full h-full rounded-full flex items-center justify-center"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.85)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
+                  backgroundColor: "white",
                   border: "1px solid rgba(0,0,0,0.05)",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
                 }}
