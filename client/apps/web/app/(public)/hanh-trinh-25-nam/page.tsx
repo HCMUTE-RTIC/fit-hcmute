@@ -75,7 +75,7 @@ const timelineData: TimelineEvent[] = [
 
 export default function Timeline() {
   return (
-    <div className="min-h-screen" style={{ paddingTop: '120px' }}>
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section
         className="relative"

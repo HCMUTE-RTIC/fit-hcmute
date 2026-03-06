@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion";
-import { Heart, Send, Calendar, MapPin, Mail, User, Users } from "lucide-react";
+import { Heart, Send, Calendar, Mail, User } from "lucide-react";
 import { useState } from "react";
 
 export default function Alumni() {
@@ -42,7 +42,7 @@ export default function Alumni() {
   };
 
   return (
-    <div className="min-h-screen" style={{ paddingTop: '80px' }}>
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section
         className="relative"
@@ -77,82 +77,6 @@ export default function Alumni() {
               Hãy cùng chúng tôi tạo nên những khoảnh khắc đáng nhớ!
             </p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Event Info Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-12"
-          >
-            <h2
-              className="font-bold text-center mb-12"
-              style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
-            >
-              SỰ KIỆN KỶ NIỆM CHÍNH
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                icon: Calendar,
-                title: "Lễ Kỷ niệm 25 năm",
-                date: "15/03/2025 - 9:00 AM",
-                location: "Hội trường A, HCMUTE",
-              },
-              {
-                icon: Users,
-                title: "Hội thảo Công nghệ AI",
-                date: "20/03/2025 - 2:00 PM",
-                location: "Phòng hội nghị B3",
-              },
-              {
-                icon: Heart,
-                title: "Gala Tri ân",
-                date: "25/03/2025 - 6:00 PM",
-                location: "Khách sạn Pullman",
-              },
-            ].map((event, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white border-2 rounded-2xl p-6 hover:shadow-lg transition-all"
-                style={{ borderColor: "var(--color-primary-600)" }}
-              >
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: "var(--gradient-hero)" }}
-                >
-                  <event.icon size={28} className="text-white" />
-                </div>
-                <h3
-                  className="font-bold mb-2"
-                  style={{ fontSize: "20px", color: "var(--color-primary-900)" }}
-                >
-                  {event.title}
-                </h3>
-                <div className="space-y-2 text-sm" style={{ color: "var(--color-text-gray)" }}>
-                  <div className="flex items-center space-x-2">
-                    <Calendar size={16} />
-                    <span>{event.date}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <MapPin size={16} />
-                    <span>{event.location}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -380,53 +304,7 @@ export default function Alumni() {
         </div>
       </section>
 
-      {/* Download Yearbook Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2
-              className="font-bold mb-6"
-              style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
-            >
-              KỶ YẾU 25 NĂM
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto" style={{ color: "var(--color-text-gray)" }}>
-              Tải xuống kỷ yếu điện tử để lưu giữ những khoảnh khắc đáng nhớ
-            </p>
-            <button
-              className="inline-flex items-center px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-all border-2"
-              style={{
-                borderColor: "var(--color-primary-900)",
-                color: "var(--color-primary-900)",
-                backgroundColor: "white",
-              }}
-            >
-              <svg
-                className="mr-2"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              Tải kỷ yếu PDF
-            </button>
-          </motion.div>
-        </div>
-      </section>
+    
     </div>
   );
 }

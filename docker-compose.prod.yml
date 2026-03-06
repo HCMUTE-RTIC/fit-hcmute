@@ -102,7 +102,7 @@ services:
       - backend_api
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: https://25nam-api.hcmutertic.com # Lệnh gọi từ Client Tới Backend Mới
+      NEXT_PUBLIC_API_URL: https://api25nam.fit.hcmute.edu.vn # Lệnh gọi từ Client Tới Backend Mới
     ports:
       - "3000:3000" # Mở port 3000 ra ngoài VPS cho Web Frontend
     networks:

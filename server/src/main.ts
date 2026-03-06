@@ -13,13 +13,14 @@ async function bootstrap() {
     }),
   );
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: ['/'],
+  });
 
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'https://25nam.fit.hcmute.edu.vn',
-      'https://25nam.hcmutertic.com'
+      'https://25nam.fit.hcmute.edu.vn'
     ],
     credentials: true,
   });
