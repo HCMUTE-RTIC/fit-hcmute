@@ -13,6 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableColorScheme
     >
       {children}
+      <Toaster />
     </NextThemesProvider>
   );
 }
