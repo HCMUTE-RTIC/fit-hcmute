@@ -4,43 +4,50 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getAuthHeaders } from '@/lib/auth';
+import { toast } from 'sonner';
+import { Trash2, ChevronDown, ChevronUp, GripVertical, Plus, Type, AlignLeft, Mail, Phone, CheckSquare, ListOrdered, Upload, Circle, CheckCircle2 } from 'lucide-react';
 
-// Các loại field mà form có thể có
+import { Card, CardContent, CardFooter, CardHeader } from "@workspace/ui/components/card";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import { Switch } from "@workspace/ui/components/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@workspace/ui/components/dropdown-menu";
+import { Separator } from "@workspace/ui/components/separator";
+import { Label } from "@workspace/ui/components/label";
+
 type FieldType = 'TEXT' | 'TEXTAREA' | 'EMAIL' | 'PHONE' | 'SELECT' | 'RADIO' | 'CHECKBOX' | 'FILE';
 
-// Cấu trúc của 1 field trong form
 interface FormField {
-  id: string;         // ID tạm để quản lý trên client
-  name: string;       // Tên key để lưu data (vd: "full_name")
-  label: string;      // Nhãn hiển thị cho người dùng
-  type: FieldType;    // Loại input
-  required: boolean;  // Bắt buộc hay không
-  options?: string[]; // Danh sách options (cho SELECT, RADIO)
-  order: number;      // Thứ tự hiển thị
+  id: string;
+  name: string;
+  label: string;
+  type: FieldType;
+  required: boolean;
+  options?: string[];
+  order: number;
 }
+
+const FIELD_TYPES: { value: FieldType; label: string; icon: React.ElementType }[] = [
+  { value: 'TEXT', label: 'Small text field', icon: Type },
+  { value: 'TEXTAREA', label: 'Big text field', icon: AlignLeft },
+  { value: 'EMAIL', label: 'Email', icon: Mail },
+  { value: 'PHONE', label: 'Phone', icon: Phone },
+  { value: 'SELECT', label: 'Single select', icon: CheckCircle2 },
+  { value: 'RADIO', label: 'Radio', icon: Circle },
+  { value: 'CHECKBOX', label: 'Multi select', icon: CheckSquare },
+  { value: 'FILE', label: 'Upload file', icon: Upload },
+];
 
 export default function FormBuilderPage() {
   const router = useRouter();
-  
-  // State quản lý form
+
   const [formTitle, setFormTitle] = useState('');
   const [formDescription, setFormDescription] = useState('');
   const [fields, setFields] = useState<FormField[]>([]);
+  const [expandedFieldId, setExpandedFieldId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Danh sách các loại field có thể thêm
-  const fieldTypes: { value: FieldType; label: string; icon: string }[] = [
-    { value: 'TEXT', label: 'Text', icon: '📝' },
-    { value: 'TEXTAREA', label: 'Textarea', icon: '📄' },
-    { value: 'EMAIL', label: 'Email', icon: '📧' },
-    { value: 'PHONE', label: 'Phone', icon: '📱' },
-    { value: 'SELECT', label: 'Dropdown', icon: '📋' },
-    { value: 'RADIO', label: 'Radio', icon: '🔘' },
-    { value: 'CHECKBOX', label: 'Checkbox', icon: '☑️' },
-    { value: 'FILE', label: 'File Upload', icon: '📎' },
-  ];
-
-  // Thêm field mới vào form
   const addField = (type: FieldType) => {
     const newField: FormField = {
       id: `field-${Date.now()}`,
@@ -48,64 +55,48 @@ export default function FormBuilderPage() {
       label: `Field ${fields.length + 1}`,
       type,
       required: false,
-      options: type === 'SELECT' || type === 'RADIO' ? ['Option 1', 'Option 2'] : undefined,
+      options: type === 'SELECT' || type === 'RADIO' || type === 'CHECKBOX' ? ['Option 1', 'Option 2'] : undefined,
       order: fields.length,
     };
     setFields([...fields, newField]);
+    setExpandedFieldId(newField.id);
   };
 
-  // Cập nhật properties của 1 field
   const updateField = (id: string, updates: Partial<FormField>) => {
-    setFields(fields.map(field => 
-      field.id === id ? { ...field, ...updates } : field
-    ));
+    setFields(fields.map(field => field.id === id ? { ...field, ...updates } : field));
   };
 
-  // Xóa field khỏi form
   const removeField = (id: string) => {
     setFields(fields.filter(field => field.id !== id));
+    if (expandedFieldId === id) setExpandedFieldId(null);
   };
 
-  // Di chuyển field lên/xuống (thay đổi thứ tự)
   const moveField = (index: number, direction: 'up' | 'down') => {
     const newFields = [...fields];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    
     if (targetIndex < 0 || targetIndex >= newFields.length) return;
-    
-    // Hoán đổi vị trí 2 field (type-safe)
-    const currentField = newFields[index];
-    const targetField = newFields[targetIndex];
-    
-    if (currentField && targetField) {
-      newFields[index] = targetField;
-      newFields[targetIndex] = currentField;
-    }
-    
-    // Cập nhật lại order cho tất cả fields
+
+    const temp = newFields[index];
+    newFields[index] = newFields[targetIndex] as FormField;
+    newFields[targetIndex] = temp as FormField;
+
     setFields(newFields.map((field, i) => ({ ...field, order: i })));
   };
 
-  // Gửi form lên API backend
   const handlePublish = async () => {
-    // Validate form title
     if (!formTitle.trim()) {
-      alert('Vui lòng nhập tên form');
+      toast.error('Vui lòng nhập tên form');
       return;
     }
-
-    // Validate ít nhất 1 field
     if (fields.length === 0) {
-      alert('Vui lòng thêm ít nhất 1 field');
+      toast.error('Vui lòng thêm ít nhất 1 field');
       return;
     }
 
-    // Chuẩn bị data (loại bỏ id client-side)
     const formData = {
       title: formTitle,
       description: formDescription,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      fields: fields.map(({ id, ...field }) => field),
+      fields: fields.map(({ id, ...field }) => field), // eslint-disable-line @typescript-eslint/no-unused-vars
     };
 
     try {
@@ -118,220 +109,252 @@ export default function FormBuilderPage() {
 
       if (response.ok) {
         const result = await response.json();
-        alert('Tạo form thành công!');
+        toast.success('Tạo form thành công!');
         router.push(`/admin/forms/${result.slug}`);
       } else {
         if (response.status === 401 || response.status === 403) {
-          alert('Không có quyền tạo form. Cần đăng nhập với quyền SUPER_ADMIN');
+          toast.error('Không có quyền tạo form (cần quyền SUPER_ADMIN)');
           return;
         }
         const error = await response.json().catch(() => null);
-        alert(`Lỗi: ${error?.message || 'Không thể tạo form'}`);
+        toast.error(`Lỗi: ${error?.message || 'Không thể tạo form'}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Không thể kết nối tới server. Vui lòng kiểm tra backend đang chạy.');
+      toast.error('Không thể kết nối tới server.');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="max-w-3xl mx-auto space-y-6 pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Form Builder</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">Tạo form động với các field tùy chỉnh</p>
+          <h1 className="text-3xl font-bold tracking-tight">Form Builder</h1>
+          <p className="text-muted-foreground mt-1">Tạo form động thu thập thông tin.</p>
         </div>
-        <Link
-          href="/admin/forms"
-          className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors"
-        >
-          ← Quay lại
+        <Link href="/admin/forms">
+          <Button variant="outline">Quay lại</Button>
         </Link>
       </div>
 
-      {/* Form Info */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Thông tin Form</h2>
-        
-        <div>
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Tên Form <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={formTitle}
-            onChange={(e) => setFormTitle(e.target.value)}
-            className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
-            placeholder="VD: Đăng ký tham dự Lễ kỷ niệm 25 năm"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Mô tả</label>
-          <textarea
-            value={formDescription}
-            onChange={(e) => setFormDescription(e.target.value)}
-            className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
-            rows={3}
-            placeholder="Mô tả ngắn về form này..."
-          />
-        </div>
-      </div>
-
-      {/* Field Palette */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Thêm Field</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {fieldTypes.map((type) => (
-            <button
-              key={type.value}
-              onClick={() => addField(type.value)}
-              className="flex items-center gap-2 px-4 py-3 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors font-medium text-sm text-slate-900 dark:text-slate-100"
-            >
-              <span className="text-lg">{type.icon}</span>
-              <span>{type.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Form Canvas */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-            Form Fields ({fields.length})
-          </h2>
-        </div>
-
-        {fields.length === 0 ? (
-          <div className="text-center py-12 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg">
-            <p className="text-slate-500 dark:text-slate-400">Chưa có field nào. Click vào các nút ở trên để thêm field.</p>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between py-4">
+          <div className="flex items-center gap-2">
+            <ListOrdered className="w-5 h-5 text-indigo-500" />
+            <span className="font-semibold">Chi tiết Form</span>
           </div>
-          ) : (
-            <div className="space-y-4">
-            {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className="border border-slate-200 dark:border-slate-600 rounded-lg p-4 bg-slate-50 dark:bg-slate-900 hover:shadow-md transition-shadow"
-              >
-                {/* Field Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded">
-                      {field.type}
-                    </span>
-                    <span className="text-sm text-slate-500 dark:text-slate-400">Field #{index + 1}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => moveField(index, 'up')}
-                      disabled={index === 0}
-                      className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded disabled:opacity-30 text-slate-700 dark:text-slate-300"
-                      title="Move up"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() => moveField(index, 'down')}
-                      disabled={index === fields.length - 1}
-                      className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded disabled:opacity-30 text-slate-700 dark:text-slate-300"
-                      title="Move down"
-                    >
-                      ↓
-                    </button>
-                    <button
-                      onClick={() => removeField(field.id)}
-                      className="px-3 py-1 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded text-sm font-medium"
-                    >
-                      Xóa
-                    </button>
-                  </div>
-                </div>
+        </CardHeader>
+        <Separator />
+        <CardContent className="space-y-4 pt-6">
+          <div className="space-y-2">
+            <Label>Tên Form</Label>
+            <Input
+              value={formTitle}
+              onChange={(e) => setFormTitle(e.target.value)}
+              placeholder="VD: Khảo sát tham dự Lễ kỷ niệm"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Mô tả ngắn</Label>
+            <Input
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              placeholder="Giải thích mục đích form này..."
+            />
+          </div>
 
-                {/* Field Properties */}
-                <div className="grid grid-cols-2 gap-4 mb-3">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Field Name (key)
-                    </label>
-                    <input
-                      type="text"
-                      value={field.name}
-                      onChange={(e) => updateField(field.id, { name: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-                      placeholder="field_name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Label hiển thị
-                    </label>
-                    <input
-                      type="text"
-                      value={field.label}
-                      onChange={(e) => updateField(field.id, { label: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-                      placeholder="Nhãn hiển thị"
-                    />
-                  </div>
-                </div>
+          <div className="flex items-center justify-between pt-2">
+            <Label className="text-muted-foreground font-normal">Cho phép gửi phản hồi ngay lập tức</Label>
+            <Switch defaultChecked />
+          </div>
+        </CardContent>
+      </Card>
 
-                <div className="flex items-center gap-2 mb-3">
-                  <input
-                    type="checkbox"
-                    checked={field.required}
-                    onChange={(e) => updateField(field.id, { required: e.target.checked })}
-                    className="rounded"
-                    id={`required-${field.id}`}
-                  />
-                  <label htmlFor={`required-${field.id}`} className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Bắt buộc nhập
-                  </label>
-                </div>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between py-4">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-emerald-500" />
+            <span className="font-semibold">Danh sách Fields</span>
+          </div>
+        </CardHeader>
+        <Separator />
+        <CardContent className="pt-6">
+          <div className="text-sm text-muted-foreground mb-4">
+            Thêm các field (câu hỏi) mà bạn muốn người tham gia trả lời.
+          </div>
 
-                {/* Options for SELECT/RADIO */}
-                {(field.type === 'SELECT' || field.type === 'RADIO') && (
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Options (phân cách bằng dấu phẩy)
-                    </label>
-                    <input
-                      type="text"
-                      value={field.options?.join(', ') || ''}
-                      onChange={(e) => updateField(field.id, {
-                        options: e.target.value.split(',').map(o => o.trim()).filter(Boolean)
-                      })}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-                      placeholder="Option 1, Option 2, Option 3"
-                    />
-                  </div>
-                )}
+          <div className="space-y-3 mb-6">
+            {fields.length === 0 ? (
+              <div className="text-center py-8 border-2 border-dashed rounded-lg bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">
+                <p className="text-muted-foreground">Chưa có field nào.</p>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            ) : fields.map((field, index) => {
+              const isExpanded = expandedFieldId === field.id;
+              const FieldIcon = FIELD_TYPES.find(t => t.value === field.type)?.icon || Type;
 
-      {/* Actions */}
-      <div className="flex gap-3 justify-end bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <button
-          onClick={() => router.back()}
-          className="px-6 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 font-medium text-slate-900 dark:text-slate-100 transition-colors"
-          disabled={saving}
-        >
-          Hủy
-        </button>
-        <button
-          onClick={handlePublish}
-          disabled={!formTitle || fields.length === 0 || saving}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed font-medium transition-colors"
-        >
-          {saving ? 'Đang lưu...' : 'Publish Form'}
-        </button>
-      </div>
+              return (
+                <div key={field.id} className="border rounded-md overflow-hidden bg-background">
+                  {/* Field Header */}
+                  <div
+                    className="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
+                    onClick={() => setExpandedFieldId(isExpanded ? null : field.id)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="text-muted-foreground" title="Drag to reorder (Coming soon)"><GripVertical className="w-4 h-4" /></div>
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400">
+                        <FieldIcon className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="font-medium text-sm">{field.label || 'Tên câu hỏi...'}</span>
+                      {field.required && <span className="text-red-500 text-lg leading-none">*</span>}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={(e) => { e.stopPropagation(); moveField(index, 'up'); }} disabled={index === 0}><ChevronUp className="w-4 h-4" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={(e) => { e.stopPropagation(); moveField(index, 'down'); }} disabled={index === fields.length - 1}><ChevronDown className="w-4 h-4" /></Button>
+                      <div className="w-px h-5 bg-border mx-1" />
+                      {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
+                    </div>
+                  </div>
+
+                  {/* Expanded Edit Area */}
+                  {isExpanded && (
+                    <div className="p-4 border-t bg-slate-50 dark:bg-slate-900/20 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Tên Field (Lưu DB)</Label>
+                          <Input value={field.name} onChange={(e) => updateField(field.id, { name: e.target.value })} placeholder="VD: full_name" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Loại hiển thị</Label>
+                          <Select
+                            value={field.type}
+                            onValueChange={(val: FieldType) => updateField(field.id, { type: val })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {FIELD_TYPES.map(t => (
+                                <SelectItem key={t.value} value={t.value}>
+                                  <div className="flex items-center gap-2">
+                                    <t.icon className="w-4 h-4 text-muted-foreground" />
+                                    <span>{t.label}</span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Câu hỏi (Label hiển thị)</Label>
+                        <Input value={field.label} onChange={(e) => updateField(field.id, { label: e.target.value })} placeholder="Nhập câu hỏi tại đây..." />
+                      </div>
+
+                      {(field.type === 'SELECT' || field.type === 'RADIO' || field.type === 'CHECKBOX') && (
+                        <div className="space-y-3 pt-2">
+                          <Label>Các lựa chọn (Options)</Label>
+                          <div className="space-y-2">
+                            {(field.options || []).map((opt, optIndex) => (
+                              <div key={optIndex} className="flex items-center gap-2">
+                                <div className="p-1 px-2 border bg-white dark:bg-slate-950 rounded shadow-sm">
+                                  {field.type === 'RADIO' ? <Circle className="w-3.5 h-3.5 text-muted-foreground" /> : field.type === 'CHECKBOX' ? <CheckSquare className="w-3.5 h-3.5 text-muted-foreground" /> : <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />}
+                                </div>
+                                <Input
+                                  value={opt}
+                                  className="h-9"
+                                  onChange={(e) => {
+                                    const newOpts = [...(field.options || [])];
+                                    newOpts[optIndex] = e.target.value;
+                                    updateField(field.id, { options: newOpts });
+                                  }}
+                                />
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-9 w-9 text-muted-foreground hover:text-red-500"
+                                  onClick={() => {
+                                    const newOpts = (field.options || []).filter((_, i) => i !== optIndex);
+                                    updateField(field.id, { options: newOpts });
+                                  }}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ))}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-indigo-600 dark:text-indigo-400 mt-2 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                              onClick={() => {
+                                const newOpts = [...(field.options || []), `Option ${(field.options?.length || 0) + 1}`];
+                                updateField(field.id, { options: newOpts });
+                              }}
+                            >
+                              <Plus className="w-4 h-4 mr-1.5" /> Thêm option
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      <Separator className="my-4" />
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <Button variant="outline" size="icon" className="text-red-500 hover:text-red-600 hover:bg-red-50" onClick={() => removeField(field.id)}>
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                          <div className="flex items-center gap-2 border bg-white dark:bg-slate-950 px-2 py-1 rounded-md">
+                            <Switch
+                              checked={field.required}
+                              onCheckedChange={(val) => updateField(field.id, { required: val })}
+                              id={`req-${field.id}`}
+                            />
+                            <Label htmlFor={`req-${field.id}`} className="cursor-pointer text-sm">Required</Label>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm" onClick={() => setExpandedFieldId(null)}>Đóng</Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full border-dashed text-indigo-600 dark:text-indigo-400 font-medium">
+                <Plus className="w-4 h-4 mr-2" /> Add fields
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="w-[300px]">
+              {FIELD_TYPES.map((t) => (
+                <DropdownMenuItem key={t.value} onClick={() => addField(t.value)} className="cursor-pointer py-2.5">
+                  <t.icon className="w-4 h-4 mr-3 text-muted-foreground" />
+                  <span>{t.label}</span>
+                  <span className="ml-auto text-xs font-semibold text-indigo-600 dark:text-indigo-400">Add</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardContent>
+        <CardFooter className="flex justify-between border-t bg-slate-50 dark:bg-slate-900/50 py-4">
+          <Button variant="ghost" onClick={() => router.back()} className="text-red-500 hover:text-red-600 hover:bg-red-50">
+            <Trash2 className="w-4 h-4" />
+          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={() => router.back()}>Cancel</Button>
+            <Button onClick={handlePublish} disabled={saving || !formTitle || fields.length === 0} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+              {saving ? 'Saving...' : 'Save'}
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
