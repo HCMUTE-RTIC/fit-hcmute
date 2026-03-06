@@ -11,18 +11,18 @@ interface AnimatedLogoProps {
 
 export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogoProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const logo = "/Logo 50 nam@4x.png";
+  const logo = "/logo-50-nam-4x.png";
 
   // Generate particles with pre-calculated positions to avoid hydration mismatch
   // Round to 2 decimal places to ensure server/client consistency
-  const particles = useMemo(() => 
+  const particles = useMemo(() =>
     Array.from({ length: 32 }, (_, i) => {
       const angle = (i * 360) / 20;
       const radius = size * 0.80;
       const x = parseFloat((Math.cos((angle * Math.PI) / 180) * radius).toFixed(2));
       const y = parseFloat((Math.sin((angle * Math.PI) / 180) * radius).toFixed(2));
       return { id: i, x, y };
-    }), 
+    }),
     [size]
   );
 
@@ -34,7 +34,7 @@ export default function AnimatedLogo({ size = 56, className = "" }: AnimatedLogo
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Particles rotating around the logo */}
-      <div 
+      <div
         className="absolute inset-0 logo-particles-container"
         style={{
           animation: "logo-particle-spin 35s linear infinite",
