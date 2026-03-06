@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Play, Camera, Menu, ImageIcon } from "lucide-react";
+import { Play, Camera } from "lucide-react";
 
 const imgItFestival = "/temp.jpg";
 const imgAiML = "/temp.jpg";
 const imgTotNghiep = "/temp.jpg";
 const imgGoogleSingapore = "/temp.jpg";
 const imgKhoiNghiep = "/temp.jpg";
+const imgExtra1 = "/temp.jpg";
+const imgExtra2 = "/temp.jpg";
 
 // ─── Video data ───────────────────────────────────────────────────────────────
 const videos = [
@@ -43,9 +44,6 @@ const videos = [
   },
 ];
 
-// ─── Filter categories ────────────────────────────────────────────────────────
-const categories = ["Tất cả", "Sự kiện", "Hội thảo", "Hợp tác", "Tốt nghiệp", "Khởi nghiệp"];
-
 // ─── Photo Card ───────────────────────────────────────────────────────────────
 function PhotoCard({
   src,
@@ -64,25 +62,25 @@ function PhotoCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-      className="relative overflow-hidden group cursor-pointer"
+      transition={{ duration: 0.6, delay }}
+      className="relative overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl transition-shadow duration-300"
       style={{ borderRadius: 16, height }}
     >
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
       />
       {/* Hover overlay */}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-[16px]" />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-[16px]" />
       {/* Label */}
       {label && labelColor && (
         <div
-          className="absolute bottom-0 left-0 right-0 flex items-center justify-start pl-6"
+          className="absolute bottom-0 left-0 right-0 flex items-center justify-start pl-6 transform translate-y-0 group-hover:-translate-y-1 transition-transform duration-300"
           style={{
             height: 53,
             backgroundColor: labelColor,
@@ -113,25 +111,25 @@ function VideoCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-      className="relative overflow-hidden group cursor-pointer"
+      transition={{ duration: 0.6, delay }}
+      className="relative overflow-hidden group cursor-pointer shadow-md hover:shadow-2xl transition-shadow duration-300"
       style={{ borderRadius: 16, height: 256 }}
     >
       <Image
         src={thumbnail}
         alt={title}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all duration-300" />
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300" />
       {/* Play button */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div
-          className="flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/40 transition-all duration-300"
+          className="flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300"
           style={{ width: 56, height: 56 }}
         >
           <Play size={24} className="text-white ml-1" />
@@ -150,8 +148,8 @@ function VideoCard({
           {duration}
         </span>
       </div>
-      {/* Title on hover */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+      {/* Title - always visible */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
         <p className="text-white font-semibold" style={{ fontSize: 14, lineHeight: "20px" }}>
           {title}
         </p>
@@ -163,8 +161,6 @@ function VideoCard({
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Gallery() {
-  const [activeCategory, setActiveCategory] = useState("Tất cả");
-
   return (
     <div className="min-h-screen">
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
@@ -219,86 +215,81 @@ export default function Gallery() {
         }}
       >
         <div className="max-w-[1280px] mx-auto px-6">
-          {/* Filter bar */}
-          <div className="flex items-center gap-3 mb-8 flex-wrap">
-            <button className="flex items-center gap-2 p-1 hover:opacity-70 transition-opacity">
-              <Menu size={24} color="#0C0C0C" />
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-4 py-1.5 rounded-full font-semibold transition-all"
-                style={{
-                  fontSize: 14,
-                  backgroundColor: activeCategory === cat ? "#1e3a8a" : "#f3f4f6",
-                  color: activeCategory === cat ? "white" : "#64748b",
-                  lineHeight: "20px",
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Masonry 3-column photo grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+          {/* Masonry 3-column photo grid - Artistic layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
             {/* Column 1 */}
-            <div className="flex flex-col gap-4">
-              {/* Placeholder slot matching Figma */}
-              <div
-                className="bg-[#f3f4f6] flex items-center justify-center"
-                style={{ borderRadius: 16, height: 256 }}
-              >
-                <ImageIcon size={88} color="#9ca3af" strokeWidth={1.5} />
-              </div>
-              <PhotoCard
-                src={imgTotNghiep}
-                alt="Lễ Tốt nghiệp K15"
-                label={null}
-                labelColor={null}
-                height={364}
-                delay={0.3}
-              />
-            </div>
-
-            {/* Column 2 */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <PhotoCard
                 src={imgItFestival}
                 alt="IT Festival 2015"
                 label="Hội thảo"
                 labelColor="#7797d7"
-                height={366}
-                delay={0.1}
+                height={420}
+                delay={0}
               />
               <PhotoCard
                 src={imgGoogleSingapore}
                 alt="Chuyến tham quan Google Singapore"
                 label={null}
                 labelColor={null}
-                height={256}
-                delay={0.4}
+                height={280}
+                delay={0.3}
+              />
+              <PhotoCard
+                src={imgExtra1}
+                alt="Sự kiện công nghệ"
+                label={null}
+                labelColor={null}
+                height={350}
+                delay={0.6}
               />
             </div>
 
-            {/* Column 3 */}
-            <div className="flex flex-col gap-4">
+            {/* Column 2 */}
+            <div className="flex flex-col gap-5">
               <PhotoCard
                 src={imgAiML}
                 alt="Hội thảo AI & Machine Learning 2020"
                 label={null}
                 labelColor={null}
-                height={256}
-                delay={0.2}
+                height={300}
+                delay={0.1}
               />
+              <PhotoCard
+                src={imgTotNghiep}
+                alt="Lễ Tốt nghiệp K15"
+                label="Tốt nghiệp"
+                labelColor="#22c55e"
+                height={450}
+                delay={0.4}
+              />
+            </div>
+
+            {/* Column 3 */}
+            <div className="flex flex-col gap-5">
               <PhotoCard
                 src={imgKhoiNghiep}
                 alt="Ngày Hội Khởi Nghiệp 2022"
+                label="Khởi nghiệp"
+                labelColor="#f59e0b"
+                height={340}
+                delay={0.2}
+              />
+              <PhotoCard
+                src={imgExtra2}
+                alt="Hợp tác doanh nghiệp"
                 label={null}
                 labelColor={null}
-                height={375}
+                height={320}
                 delay={0.5}
+              />
+              <PhotoCard
+                src={imgItFestival}
+                alt="Sự kiện sinh viên"
+                label={null}
+                labelColor={null}
+                height={280}
+                delay={0.7}
               />
             </div>
           </div>
@@ -307,8 +298,8 @@ export default function Gallery() {
 
       {/* ─── Section 3: Video Gallery ─────────────────────────────────────── */}
       <section
-        className="bg-white"
         style={{
+          backgroundColor: "#f8fafc",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
@@ -320,7 +311,7 @@ export default function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-center flex flex-col gap-4 mb-10"
+            className="text-center flex flex-col gap-4 mb-12"
           >
             <h2
               className="font-bold"
@@ -337,24 +328,55 @@ export default function Gallery() {
             </p>
           </motion.div>
 
-          {/* Filter bar */}
-          <div className="flex items-center gap-2 mb-8">
-            <button className="flex items-center gap-2 p-1 hover:opacity-70 transition-opacity">
-              <Menu size={24} color="#0C0C0C" />
-            </button>
-          </div>
-
-          {/* Video grid — Row 1: large (2/3) + small (1/3) */}
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
+          {/* Video grid — Artistic masonry layout */}
+          <div className="flex flex-col gap-5">
+            {/* Row 1: Featured large video */}
+            <div className="w-full">
               {videos[0] && (
-                <VideoCard
-                  thumbnail={videos[0].thumbnail}
-                  title={videos[0].title}
-                  duration={videos[0].duration}
-                  delay={0}
-                />
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0 }}
+                  className="relative overflow-hidden group cursor-pointer"
+                  style={{ borderRadius: 16, height: 480 }}
+                >
+                  <Image
+                    src={videos[0].thumbnail}
+                    alt={videos[0].title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all duration-300" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div
+                      className="flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300"
+                      style={{ width: 72, height: 72 }}
+                    >
+                      <Play size={32} className="text-white ml-1" />
+                    </div>
+                  </div>
+                  <div
+                    className="absolute bottom-4 right-4 px-3 flex items-center"
+                    style={{
+                      height: 28,
+                      backgroundColor: "rgba(0,0,0,0.7)",
+                      borderRadius: 9999,
+                    }}
+                  >
+                    <span className="font-semibold text-white" style={{ fontSize: 14, lineHeight: "20px" }}>
+                      {videos[0].duration}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                    <p className="text-white font-bold text-xl">{videos[0].title}</p>
+                  </div>
+                </motion.div>
               )}
+            </div>
+
+            {/* Row 2: Two medium videos */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {videos[1] && (
                 <VideoCard
                   thumbnail={videos[1].thumbnail}
@@ -363,10 +385,6 @@ export default function Gallery() {
                   delay={0.1}
                 />
               )}
-            </div>
-
-            {/* Row 2: equal halves */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {videos[2] && (
                 <VideoCard
                   thumbnail={videos[2].thumbnail}
@@ -375,12 +393,32 @@ export default function Gallery() {
                   delay={0.2}
                 />
               )}
+            </div>
+
+            {/* Row 3: Three small videos */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {videos[3] && (
                 <VideoCard
                   thumbnail={videos[3].thumbnail}
                   title={videos[3].title}
                   duration={videos[3].duration}
                   delay={0.3}
+                />
+              )}
+              {videos[0] && (
+                <VideoCard
+                  thumbnail={videos[0].thumbnail}
+                  title="Lễ Kỷ Niệm 20 Năm"
+                  duration="6:30"
+                  delay={0.4}
+                />
+              )}
+              {videos[1] && (
+                <VideoCard
+                  thumbnail={videos[1].thumbnail}
+                  title="Ngày Hội Việc Làm 2023"
+                  duration="5:15"
+                  delay={0.5}
                 />
               )}
             </div>
