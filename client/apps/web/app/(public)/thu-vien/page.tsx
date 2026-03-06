@@ -166,7 +166,7 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("Tất cả");
 
   return (
-    <div className="min-h-screen" style={{ paddingTop: "120px" }}>
+    <div className="min-h-screen">
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
         style={{
