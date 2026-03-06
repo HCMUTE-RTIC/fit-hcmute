@@ -30,7 +30,7 @@ export default function Achievements() {
   ];
 
   return (
-    <div className="min-h-screen" style={{ paddingTop: '80px' }}>
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section
         className="relative"

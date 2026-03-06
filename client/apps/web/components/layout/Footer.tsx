@@ -41,6 +41,11 @@ export default function Footer() {
                   Tri ân & Kết nối
                 </a>
               </li>
+              <li>
+                <a href="/ky-yeu" className="hover:opacity-80 transition-opacity" style={{ color: 'var(--color-text-gray)' }}>
+                  Kỷ yếu
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -104,7 +109,10 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-100 text-center" style={{ color: 'var(--color-text-gray)' }}>
           <p>© 2026 Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ thuật TP.HCM.</p>
           <p className="mt-2">
-            <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2000 - 2025)
+            <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2001 - 2026)
+          </p>
+          <p className="mt-2 text-sm">
+            Được phát triển bởi <a href="https://hcmutertic.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline" style={{ color: 'var(--color-primary-600)' }}>HCM UTE Research on Technology and Innovation Club</a>
           </p>
         </div>
       </div>
