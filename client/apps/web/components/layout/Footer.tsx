@@ -111,6 +111,9 @@ export default function Footer() {
           <p className="mt-2">
             <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2001 - 2026)
           </p>
+          <p className="mt-2 text-sm">
+            Được phát triển bởi <span href="https://hcmutertic.com" target="_blank" rel="noopener noreferrer" className="font-semibold" style={{ color: 'var(--color-primary-600)' }}>HCM UTE Research on Technology and Innovation Club</span> 
+          </p>
         </div>
       </div>
     </footer>
