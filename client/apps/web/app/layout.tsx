@@ -1,4 +1,5 @@
 import { Inter, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 
 import "@workspace/ui/globals.css";
 import "../styles/theme.css";
@@ -14,6 +15,52 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 });
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://fit.hcmute.edu.vn'),
+  title: {
+    default: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+    template: '%s | FIT-HCMUTE'
+  },
+  description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
+  keywords: ['FIT HCMUTE', 'Khoa Công nghệ Thông tin', 'HCMUTE', 'Đại học Công Nghệ Kỹ thuật', 'Công nghệ Thông tin', 'IT', 'Kỹ thuật Dữ liệu'],
+  authors: [{ name: 'FIT HCMUTE' }],
+  creator: 'FIT HCMUTE',
+  publisher: 'FIT HCMUTE',
+  openGraph: {
+    type: 'website',
+    locale: 'vi_VN',
+    url: 'https://fit.hcmute.edu.vn',
+    siteName: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+    title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+    description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Khoa Công nghệ Thông tin - FIT HCMUTE',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+    description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh',
+    images: ['/twitter-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
 
 export default function RootLayout({
   children,
