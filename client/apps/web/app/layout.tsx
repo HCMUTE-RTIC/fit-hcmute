@@ -17,7 +17,7 @@ const fontMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://fit.hcmute.edu.vn'),
+  metadataBase: new URL('https://25nam.fit.hcmute.edu.vn'),
   title: {
     default: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     template: '%s | FIT-HCMUTE'
@@ -30,16 +30,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
-    url: 'https://fit.hcmute.edu.vn',
+    url: 'https://25nam.fit.hcmute.edu.vn',
     siteName: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://25nam.fit.hcmute.edu.vn/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'Khoa Công nghệ Thông tin - FIT HCMUTE',
+        type: 'image/png',
       }
     ],
   },
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh',
-    images: ['/twitter-image.jpg'],
+    images: ['https://25nam.fit.hcmute.edu.vn/twitter-image'],
   },
   robots: {
     index: true,

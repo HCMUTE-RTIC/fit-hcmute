@@ -2,7 +2,7 @@ import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
   title: 'Thành tựu',
-  description: 'Thành tựu nổi bật của Khoa Công nghệ Thông tin - ĐH SPKT TP.HCM. Giải thưởng, nghiên cứu khoa học và đóng góp cho cộng đồng.',
+  description: 'Thành tựu nổi bật của Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Giải thưởng, nghiên cứu khoa học và đóng góp cho cộng đồng.',
   url: '/thanh-tuu',
 });
 
