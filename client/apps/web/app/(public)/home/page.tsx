@@ -60,12 +60,12 @@ export default function Home() {
               <div
                 className="px-8 py-3 rounded-full font-bold text-sm tracking-wider"
                 style={{
-                  backgroundColor: "#d4af37",
-                  color: "#1e3a8a",
-                  boxShadow: "0px 4px 20px 0px rgba(212, 175, 55, 0.4)",
+                  background: "linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%)",
+                  color: "#ffffff",
+                  boxShadow: "0px 4px 20px 0px rgba(37, 99, 235, 0.5), 0 0 40px rgba(37, 99, 235, 0.3)",
                 }}
               >
-                2000 - 2025
+                2001 - 2026
               </div>
             </motion.div>
 

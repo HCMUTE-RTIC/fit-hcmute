@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Facebook, Youtube, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -41,6 +41,11 @@ export default function Footer() {
                   Tri ân & Kết nối
                 </a>
               </li>
+              <li>
+                <a href="/ky-yeu" className="hover:opacity-80 transition-opacity" style={{ color: 'var(--color-text-gray)' }}>
+                  Kỷ yếu
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -76,25 +81,24 @@ export default function Footer() {
             </h4>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/fit.hcmute.edu.vn"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
                 style={{ backgroundColor: 'var(--color-primary-600)' }}
+                aria-label="Facebook"
               >
                 <Facebook size={20} className="text-white" />
               </a>
               <a
-                href="#"
+                href="https://youtube.com/@khoacongnghethongtin4401?si=tTrxmDEVmSN4Qoo1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
                 style={{ backgroundColor: 'var(--color-accent-500)' }}
+                aria-label="YouTube"
               >
                 <Youtube size={20} className="text-white" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-                style={{ backgroundColor: 'var(--color-primary-600)' }}
-              >
-                <Linkedin size={20} className="text-white" />
               </a>
             </div>
           </div>
@@ -104,7 +108,10 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-100 text-center" style={{ color: 'var(--color-text-gray)' }}>
           <p>© 2026 Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ thuật TP.HCM.</p>
           <p className="mt-2">
-            <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2000 - 2025)
+            <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2001 - 2026)
+          </p>
+          <p className="mt-2 text-sm">
+            Được phát triển bởi <a href="https://hcmutertic.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline" style={{ color: 'var(--color-primary-600)' }}>HCM UTE Research on Technology and Innovation Club</a>
           </p>
         </div>
       </div>
