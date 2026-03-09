@@ -4,7 +4,7 @@ const siteConfig = {
   name: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
   shortName: 'FIT-HCMUTE',
   description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
-  url: 'https://fit.hcmute.edu.vn',
+  url: 'https://25nam.fit.hcmute.edu.vn',
 };
 
 interface PageMetadataProps {
@@ -24,7 +24,7 @@ interface PageMetadataProps {
 export function generatePageMetadata({
   title,
   description = siteConfig.description,
-  image = '/og-image.jpg',
+  image,
   url,
   type = 'website',
   publishedTime,
@@ -41,14 +41,16 @@ export function generatePageMetadata({
       description,
       url: pageUrl,
       siteName: siteConfig.name,
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      ...(image && {
+        images: [
+          {
+            url: image,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      }),
       locale: 'vi_VN',
       type,
     },
