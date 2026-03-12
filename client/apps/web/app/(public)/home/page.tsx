@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ChevronUp, Lightbulb, Globe, Award } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const imgImageHcmuteCampus = "/temp.jpg";
+const imgImageHcmuteCampus = "/trang-chu-home/banner_trangchu.jpg";
 
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);

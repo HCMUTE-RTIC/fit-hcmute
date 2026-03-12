@@ -45,33 +45,40 @@ export default function Alumni() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative"
+        className="relative min-h-[400px] flex items-center"
         style={{ 
-          backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/tri-an/banner_trian.jpg"
+            alt="Banner Tri ân"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <Heart size={64} className="mx-auto mb-6" style={{ color: "var(--color-accent-500)" }} />
+            <Heart size={64} className="mx-auto mb-6 text-white" />
             <h1
-              className="font-extrabold mb-6"
+              className="font-extrabold mb-6 text-white"
               style={{
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
-                color: "var(--color-primary-900)",
               }}
             >
               TRI ÂN & KẾT NỐI
             </h1>
             <p
-              className="text-xl leading-relaxed"
-              style={{ color: "var(--color-text-gray)" }}
+              className="text-xl leading-relaxed text-gray-200"
             >
               Gửi lời chúc mừng, chia sẻ kỷ niệm hoặc đăng ký tham dự các sự kiện kỷ niệm 25 năm.
               Hãy cùng chúng tôi tạo nên những khoảnh khắc đáng nhớ!

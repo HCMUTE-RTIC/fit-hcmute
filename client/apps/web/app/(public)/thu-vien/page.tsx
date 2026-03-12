@@ -5,31 +5,31 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Play, Camera, Menu, ImageIcon } from "lucide-react";
 
-const imgItFestival = "/temp.jpg";
-const imgAiML = "/temp.jpg";
-const imgTotNghiep = "/temp.jpg";
-const imgGoogleSingapore = "/temp.jpg";
-const imgKhoiNghiep = "/temp.jpg";
+const imgItFestival = "/thu-vien/thuvienkiniem1.jpg";
+const imgAiML = "/thu-vien/thuvienkiniem2.jpg";
+const imgTotNghiep = "/thu-vien/CuuSV24-1.jpg";
+const imgGoogleSingapore = "/thu-vien/2.jpg";
+const imgKhoiNghiep = "/thu-vien/csv23-1.jpg";
 
 // ─── Video data ───────────────────────────────────────────────────────────────
 const videos = [
   {
     id: 1,
-    thumbnail: "/temp.jpg",
+    thumbnail: "/thu-vien/thuvienkiniem1.jpg",
     title: "Lễ Kỷ Niệm 25 Năm Thành Lập Khoa CNTT",
     duration: "8:45",
     size: "large",
   },
   {
     id: 2,
-    thumbnail: "/temp.jpg",
+    thumbnail: "/thu-vien/thuvienkiniem2.jpg",
     title: "Hội Thảo Quốc Tế AI & Machine Learning",
     duration: "8:45",
     size: "small",
   },
   {
     id: 3,
-    thumbnail: "/temp.jpg",
+    thumbnail: "/thu-vien/csv23-1.jpg",
     title: "Ngày Hội Khởi Nghiệp 2022 – Sáng Tạo Không Giới Hạn",
     duration: "8:45",
     size: "medium-left",
