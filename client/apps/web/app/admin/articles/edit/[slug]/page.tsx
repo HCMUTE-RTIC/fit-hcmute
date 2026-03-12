@@ -27,9 +27,10 @@ const EditorJSWrapper = dynamic(
 export default function EditArticlePage() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const slug = params.slug as string;
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
+  const [articleId, setArticleId] = useState<string>("");
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -48,13 +49,20 @@ export default function EditArticlePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const article = await ArticlesService.findById(id);
+        const article = await ArticlesService.findBySlug(slug);
+        setArticleId(article.id);
+        let parsedContent = null;
+        try {
+          parsedContent = article.content ? JSON.parse(article.content) : null;
+        } catch {
+          parsedContent = null;
+        }
         setFormData({
           title: article.title,
           slug: article.slug,
           category: article.category,
           status: article.status,
-          content: article.content ? JSON.parse(article.content) : null,
+          content: parsedContent,
           metaTitle: article.metaTitle ?? "",
           metaDescription: article.metaDescription ?? "",
           focusKeyword: article.focusKeywords ?? "",
@@ -67,7 +75,7 @@ export default function EditArticlePage() {
       }
     };
     load();
-  }, [id]);
+  }, [slug]);
 
   const generateSlug = (text: string) => {
     return text
@@ -103,7 +111,7 @@ export default function EditArticlePage() {
     }
     setIsSaving(true);
     try {
-      await ArticlesService.update(id, {
+      await ArticlesService.update(articleId, {
         title: formData.title,
         slug: formData.slug,
         summary: "",

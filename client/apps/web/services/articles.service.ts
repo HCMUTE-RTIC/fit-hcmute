@@ -98,14 +98,6 @@ export const ArticlesService = {
     return res.json();
   },
 
-  findById: async (id: string): Promise<Article> => {
-    const res = await fetch(`${API_URL}/api/articles/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) throw new Error("Failed to fetch article");
-    return res.json();
-  },
-
   remove: async (id: string): Promise<void> => {
     const token = getAuthToken();
     const res = await fetch(`${API_URL}/api/articles/${id}`, {

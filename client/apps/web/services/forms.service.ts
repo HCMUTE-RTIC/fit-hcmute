@@ -57,6 +57,14 @@ export interface UpdateFormDefinitionDto {
   title?: string;
   description?: string;
   active?: boolean;
+  fields?: CreateFormFieldDto[];
+}
+
+export interface FormSubmission {
+  id: string;
+  formId: string;
+  data: Record<string, string>;
+  createdAt: string;
 }
 
 export const FormsService = {
@@ -136,6 +144,21 @@ export const FormsService = {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || "Không thể xóa form");
     }
+  },
+
+  getSubmissions: async (formId: string): Promise<FormSubmission[]> => {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/forms/${formId}/submissions`, {
+      cache: "no-store",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể tải danh sách submissions");
+    }
+    return res.json();
   },
 
   submit: async (

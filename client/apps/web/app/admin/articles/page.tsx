@@ -197,7 +197,7 @@ export default function ArticleList() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Link href={`/admin/articles/edit/${article.id}`}>
+                        <Link href={`/admin/articles/edit/${article.slug}`}>
                           <button className="p-1.5 text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors" title="Chỉnh sửa">
                             <Edit className="h-4 w-4" />
                           </button>
