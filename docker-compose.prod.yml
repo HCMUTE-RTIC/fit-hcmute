@@ -42,7 +42,6 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      MINIO_DOMAIN: "25namminio.hcmutertic.com"
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000" # Cloudflare Tunnel: 25namminio.hcmutertic.com -> localhost:9000
