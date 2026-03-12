@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { usePathname, useRouter } from "next/navigation";
-import { getAuthToken } from "../../../lib/auth";
+import { getAuthToken } from "../../lib/auth";
 
 export function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);

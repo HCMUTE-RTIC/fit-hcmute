@@ -14,7 +14,7 @@ import {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { removeAuthToken } from "../../../lib/auth";
+import { removeAuthToken } from "../../lib/auth";
 
 export function Header({
   sidebarOpen,
