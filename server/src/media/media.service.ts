@@ -34,8 +34,11 @@ export class MediaService {
                 { 'Content-Type': file.mimetype }
             );
 
-            // Tạo public URL thông qua Nginx Reverse Proxy đã cấu hình (/media_storage/ + Bucket + Key)
-            const publicUrl = `/media_storage/${this.bucketName}/${key}`;
+            // Tạo public URL: nếu có MINIO_PUBLIC_URL thì dùng trực tiếp, fallback về relative path
+            const minioPublicUrl = process.env.MINIO_PUBLIC_URL;
+            const publicUrl = minioPublicUrl
+                ? `${minioPublicUrl}/${this.bucketName}/${key}`
+                : `/media_storage/${this.bucketName}/${key}`;
 
             // Loại suy Category của file
             let category: 'IMAGE' | 'VIDEO' | 'PDF_YEARBOOK' | 'ATTACHMENT' = 'ATTACHMENT';
