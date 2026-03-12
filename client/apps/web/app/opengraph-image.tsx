@@ -29,6 +29,7 @@ export default async function Image() {
       >
         <img
           src={logoBase64}
+          alt="FIT HCMUTE"
           style={{ width: 480, objectFit: 'contain' }}
         />
 

@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import "@workspace/ui/globals.css";
 import "../styles/theme.css";
 import { Providers } from "@/components/providers";
+import { JsonLd } from "@/components/seo/json-ld";
 
 const fontSans = Inter({
   subsets: ["latin", "vietnamese"],
@@ -73,6 +74,44 @@ export const metadata: Metadata = {
   },
 };
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Khoa Công nghệ Thông tin - FIT HCMUTE',
+  url: 'https://25nam.fit.hcmute.edu.vn',
+  description: 'Website kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh',
+  inLanguage: 'vi',
+  publisher: {
+    '@type': 'EducationalOrganization',
+    name: 'Khoa Công nghệ Thông tin - HCMUTE',
+    url: 'https://fit.hcmute.edu.vn',
+  },
+};
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Khoa Công nghệ Thông tin - Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh',
+  alternateName: 'FIT HCMUTE',
+  url: 'https://fit.hcmute.edu.vn',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://25nam.fit.hcmute.edu.vn/opengraph-image',
+    width: 1200,
+    height: 630,
+  },
+  foundingDate: '2000',
+  parentOrganization: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh',
+    alternateName: 'HCMUTE',
+    url: 'https://hcmute.edu.vn',
+  },
+  sameAs: [
+    'https://fit.hcmute.edu.vn',
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -83,6 +122,8 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased m-0 p-0`}
       >
+        <JsonLd data={websiteSchema} />
+        <JsonLd data={organizationSchema} />
         <Providers>
           {children}
         </Providers>
