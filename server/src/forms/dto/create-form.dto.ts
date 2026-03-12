@@ -69,4 +69,10 @@ export class UpdateFormDefinitionDto {
   @IsOptional()
   @IsBoolean()
   active?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateFormFieldDto)
+  fields?: CreateFormFieldDto[];
 }

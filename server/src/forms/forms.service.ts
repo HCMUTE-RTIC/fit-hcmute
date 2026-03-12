@@ -96,14 +96,46 @@ export class FormsService {
   }
 
   async update(id: string, dto: UpdateFormDefinitionDto) {
+    const { fields, ...formData } = dto;
+
+    if (fields) {
+      return this.prisma.$transaction(async (tx) => {
+        await tx.formField.deleteMany({ where: { formId: id } });
+        return tx.formDefinition.update({
+          where: { id },
+          data: {
+            ...formData,
+            fields: {
+              create: fields.map((field, index) => ({
+                name: field.name,
+                label: field.label,
+                type: field.type,
+                required: field.required || false,
+                options: field.options || [],
+                order: field.order ?? index,
+              })),
+            },
+          },
+          include: { fields: { orderBy: { order: 'asc' } } },
+        });
+      });
+    }
+
     return this.prisma.formDefinition.update({
       where: { id },
-      data: dto,
+      data: formData,
     });
   }
 
   async remove(id: string) {
     return this.prisma.formDefinition.delete({ where: { id } });
+  }
+
+  async getSubmissions(formId: string) {
+    return this.prisma.formSubmission.findMany({
+      where: { formId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   async submit(slug: string, dto: SubmitFormDto) {

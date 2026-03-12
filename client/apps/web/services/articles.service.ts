@@ -24,10 +24,10 @@ export interface Article {
 
 export interface CreateArticleDto {
   title: string;
-  summary: string;
-  content: string;
-  thumbnail: string;
-  category: "NEWS" | "EVENT";
+  summary?: string;
+  content?: string;
+  thumbnail?: string;
+  category?: "NEWS" | "EVENT";
   metaTitle?: string;
   metaDescription?: string;
   focusKeywords?: string;
@@ -40,11 +40,12 @@ export interface UpdateArticleDto extends Partial<CreateArticleDto> {}
 export const ArticlesService = {
   findAll: async (): Promise<Article[]> => {
     const res = await fetch(`${API_URL}/api/articles`, {
-      next: { revalidate: 3600 }, // Matches cache TTL from backend
+      cache: "no-store",
     });
 
     if (!res.ok) {
-        throw new Error("Failed to fetch articles");
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể tải danh sách bài viết");
     }
 
     return res.json();
@@ -52,11 +53,30 @@ export const ArticlesService = {
 
   findBySlug: async (slug: string): Promise<Article> => {
     const res = await fetch(`${API_URL}/api/articles/${slug}`, {
-        cache: "no-store", // Always fetch fresh to increment view count as noted in backend
+      cache: "no-store",
     });
 
     if (!res.ok) {
-        throw new Error("Failed to fetch article details");
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không tìm thấy bài viết");
+    }
+
+    return res.json();
+  },
+
+  // Dùng cho trang admin edit — KHÔNG tăng lượt xem
+  findBySlugAdmin: async (slug: string): Promise<Article> => {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/articles/${slug}/admin-preview`, {
+      cache: "no-store",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không tìm thấy bài viết");
     }
 
     return res.json();
@@ -74,7 +94,8 @@ export const ArticlesService = {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to create article");
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể tạo bài viết");
     }
 
     return res.json();
@@ -92,7 +113,8 @@ export const ArticlesService = {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to update article");
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể cập nhật bài viết");
     }
 
     return res.json();
@@ -108,7 +130,8 @@ export const ArticlesService = {
     });
 
     if (!res.ok) {
-        throw new Error("Failed to delete article");
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể xóa bài viết");
     }
   },
 };

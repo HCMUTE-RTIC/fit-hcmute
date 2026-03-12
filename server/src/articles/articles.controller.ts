@@ -24,7 +24,14 @@ export class ArticlesController {
         return this.articlesService.findAll();
     }
 
-    // GET DETAIL: Public, fetch trực tiếp DB để kích hoạt bộ đếm View 
+    // GET DETAIL (Admin): Cần Auth, KHÔNG tăng lượt xem — dùng cho trang edit
+    @UseGuards(JwtAuthGuard)
+    @Get(':slug/admin-preview')
+    findOneAdmin(@Param('slug') slug: string) {
+        return this.articlesService.findBySlugAdmin(slug);
+    }
+
+    // GET DETAIL: Public, fetch trực tiếp DB để kích hoạt bộ đếm View
     @Get(':slug')
     findOne(@Param('slug') slug: string) {
         return this.articlesService.findBySlug(slug);

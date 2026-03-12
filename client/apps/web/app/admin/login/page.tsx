@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { setAuthToken } from "../../../lib/auth";
+import { setAuthToken, setUserInfo } from "../../../lib/auth";
+import { AuthService } from "../../../services/auth.service";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
@@ -19,34 +20,17 @@ export default function AdminLoginPage() {
         setIsLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
+            const data = await AuthService.login({ email, password });
+
+            setAuthToken(data.access_token);
+            setUserInfo(data.user);
+            toast.success("Đăng nhập thành công!", {
+                description: "Đang chuyển hướng vào hệ thống quản trị..."
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Đăng nhập thất bại");
-            }
-
-            // Lưu trữ token JWT
-            if (data.access_token) {
-                setAuthToken(data.access_token);
-                toast.success("Đăng nhập thành công!", {
-                    description: "Đang chuyển hướng vào hệ thống quản trị..."
-                });
-
-                // Push về /admin sau một khoảng trễ nhỏ
-                setTimeout(() => {
-                    router.push("/admin");
-                }, 500);
-            } else {
-                throw new Error("Không tìm thấy Access Token từ Server");
-            }
+            setTimeout(() => {
+                router.push("/admin");
+            }, 500);
         } catch (error: any) {
             toast.error("Lỗi đăng nhập", {
                 description: error.message,
