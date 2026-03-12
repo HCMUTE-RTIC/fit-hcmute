@@ -78,17 +78,27 @@ export default function Alumni() {
               TRI ÂN & KẾT NỐI
             </h1>
             <p
-              className="text-xl leading-relaxed text-gray-200"
+              className="text-xl leading-relaxed text-gray-200 mb-10"
             >
               Gửi lời chúc mừng, chia sẻ kỷ niệm hoặc đăng ký tham dự các sự kiện kỷ niệm 25 năm.
               Hãy cùng chúng tôi tạo nên những khoảnh khắc đáng nhớ!
             </p>
+            <button
+              onClick={() => {
+                document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all space-x-2 text-lg shadow-lg"
+              style={{ backgroundColor: "var(--color-primary-600)" }}
+            >
+              <Send size={20} />
+              <span>Gửi lời chúc</span>
+            </button>
           </motion.div>
         </div>
       </section>
 
-      {/* Registration Form */}
       <section
+        id="registration-form"
         className="py-24"
         style={{ backgroundColor: "var(--color-bg-light)" }}
       >
@@ -302,9 +312,7 @@ export default function Alumni() {
                   <span>Gửi lời chúc</span>
                 </button>
 
-                <p className="text-sm text-center" style={{ color: "var(--color-text-gray)" }}>
-                  * Thông tin bắt buộc
-                </p>
+
               </form>
             )}
           </motion.div>

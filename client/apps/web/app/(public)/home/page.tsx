@@ -177,18 +177,18 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
               {
-                icon: Lightbulb,
-                title: "Sáng tạo",
-                description:
-                  "Khuyến khích tư duy đổi mới, sáng tạo và nghiên cứu khoa học ứng dụng thực tiễn.",
-                iconColor: "#2563EB",
-              },
-              {
                 icon: Award,
                 title: "Nhân bản",
                 description:
                   "Đào tạo không chỉ kiến thức mà còn đạo đức, trách nhiệm xã hội và tinh thần cống hiến.",
                 iconColor: "#DC2626",
+              },
+              {
+                icon: Lightbulb,
+                title: "Sáng tạo",
+                description:
+                  "Khuyến khích tư duy đổi mới, sáng tạo và nghiên cứu khoa học ứng dụng thực tiễn.",
+                iconColor: "#2563EB",
               },
               {
                 icon: Globe,

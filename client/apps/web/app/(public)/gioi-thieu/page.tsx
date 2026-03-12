@@ -111,7 +111,7 @@ export default function GioiThieu() {
                 color: "#64748b",
               }}
             >
-              Được thành lập năm 2000, Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ
+              Được thành lập năm 2001, Khoa Công Nghệ Thông Tin - Trường Đại học Công nghệ Kỹ
               thuật TP.HCM là một trong những đơn vị đào tạo công nghệ thông tin hàng đầu tại Việt
               Nam, với sứ mệnh đào tạo nguồn nhân lực chất lượng cao và phát triển nghiên cứu khoa
               học ứng dụng.
@@ -161,13 +161,13 @@ export default function GioiThieu() {
               <div className="mb-10">
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-20 h-1 rounded"
+                    className="w-24 h-2 rounded-full"
                     style={{ backgroundColor: "#dc2626" }}
                   />
                 </div>
                 <p
-                  className="font-bold mb-4"
-                  style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                  className="font-extrabold mb-4"
+                  style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
                 >
                   SỨ MỆNH
                 </p>
@@ -185,13 +185,13 @@ export default function GioiThieu() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-20 h-1 rounded"
+                    className="w-24 h-2 rounded-full"
                     style={{ backgroundColor: "#dc2626" }}
                   />
                 </div>
                 <p
-                  className="font-bold mb-4"
-                  style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                  className="font-extrabold mb-4"
+                  style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
                 >
                   GIÁ TRỊ CỐT LÕI
                 </p>
@@ -209,13 +209,13 @@ export default function GioiThieu() {
             <div className="p-12 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
                 <div
-                  className="w-20 h-1 rounded"
+                  className="w-24 h-2 rounded-full"
                   style={{ backgroundColor: "#dc2626" }}
                 />
               </div>
               <p
-                className="font-bold mb-6"
-                style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                className="font-extrabold mb-6"
+                style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
               >
                 TẦM NHÌN
               </p>
@@ -338,7 +338,7 @@ export default function GioiThieu() {
         </div>
 
         {/* Gradient Overlay */}
-        <div 
+        <div
           className="absolute inset-0 z-0"
           style={{
             background: "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.75) 100%)",
@@ -375,7 +375,7 @@ export default function GioiThieu() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: idx * 0.15 }}
               >
-                <div 
+                <div
                   className="rounded-3xl p-8 h-full"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -419,14 +419,14 @@ export default function GioiThieu() {
                   <ul className="space-y-3">
                     {prog.items.map((item, i) => (
                       <li key={i}>
-                        <Link 
+                        <Link
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-3 text-white/90 hover:text-white group transition-all duration-300 hover:translate-x-2"
                         >
                           <ArrowRight size={16} className="flex-shrink-0 text-blue-400 group-hover:text-blue-300" />
-                          <span 
+                          <span
                             className="transition-all"
                             style={{ fontSize: 15, fontWeight: 500 }}
                           >

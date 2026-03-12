@@ -12,7 +12,7 @@ interface TimelineEvent {
 
 const timelineData: TimelineEvent[] = [
   {
-    year: "2000",
+    year: "2001",
     title: "Thành lập Khoa CNTT",
     description: "Khoa Công nghệ Thông tin chính thức được thành lập tại Trường Đại học Công nghệ Kỹ thuật TP.HCM",
     highlights: [
@@ -62,7 +62,7 @@ const timelineData: TimelineEvent[] = [
     ],
   },
   {
-    year: "2025",
+    year: "2026",
     title: "Kỷ niệm 25 năm",
     description: "Khẳng định vị thế Top 3 trường đào tạo IT hàng đầu Việt Nam",
     highlights: [
@@ -79,7 +79,7 @@ export default function Timeline() {
       {/* Hero Section */}
       <section
         className="relative"
-        style={{ 
+        style={{
           backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
@@ -105,7 +105,7 @@ export default function Timeline() {
               className="text-xl leading-relaxed"
               style={{ color: "var(--color-text-gray)" }}
             >
-              Từ những ngày đầu tiên năm 2000 đến nay, mỗi bước tiến của Khoa CNTT đều ghi dấu
+              Từ những ngày đầu tiên năm 2001 đến nay, mỗi bước tiến của Khoa CNTT đều ghi dấu
               sự nỗ lực không ngừng nghỉ để trở thành đơn vị đào tạo công nghệ thông tin hàng đầu.
             </p>
           </motion.div>
@@ -299,10 +299,10 @@ export default function Timeline() {
 
       {/* CTA Section */}
       <section
-        style={{ 
-          paddingTop: 'var(--spacing-section)', 
-          paddingBottom: 'var(--spacing-section)', 
-          backgroundColor: "var(--color-bg-light)" 
+        style={{
+          paddingTop: 'var(--spacing-section)',
+          paddingBottom: 'var(--spacing-section)',
+          backgroundColor: "var(--color-bg-light)"
         }}
       >
         <div className="max-w-[1280px] mx-auto px-6 text-center">
