@@ -84,4 +84,4 @@ jobs:
 
           # 3. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
           # Tự động thay thế container cũ rác zero-downtime nhất có thể
-          docker compose -f docker-compose.prod.yml --env-file .env.production up -d
+          docker compose -f docker-compose.prod.yml --env-file .env.production up -d --force-recreate --remove-orphans
