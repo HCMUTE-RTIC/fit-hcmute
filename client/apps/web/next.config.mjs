@@ -1,11 +1,13 @@
 /** @type {import('next').NextConfig} */
+const MINIO_INTERNAL_URL = process.env.MINIO_INTERNAL_URL || "http://localhost:9000";
+
 const nextConfig = {
   transpilePackages: ["@workspace/ui"],
   async rewrites() {
     return [
       {
         source: "/media_storage/:path*",
-        destination: "http://localhost:9000/:path*",
+        destination: `${MINIO_INTERNAL_URL}/:path*`,
       },
     ];
   },
@@ -16,6 +18,11 @@ const nextConfig = {
         hostname: "localhost",
         port: "9000",
         pathname: "/**",
+      },
+      {
+        // MinIO production domain
+        protocol: "https",
+        hostname: "25namminio.hcmutertic.com",
       },
       {
         protocol: "https",
