@@ -1,9 +1,8 @@
 # ==============================================================================
 # MÔI TRƯỜNG MÁY CHỦ SẢN PHẨM (PRODUCTION DEPLOYMENT) - SETUP SERVER TRƯỜNG
 # ==============================================================================
-# BẢO MẬT: File này Kín Cổng Cao Tường. Không ai bên ngoài quét được Port
-# của DB hoặc Redis. Tất cả lưu lượng đi trỏ từ Cổng HTTPS 443 -> NGINX -> Nội bộ.
-# Lệnh chạy: docker-compose -f docker-compose.prod.yml up -d
+# Lệnh chạy: ./deploy.sh
+# Hoặc thủ công: docker-compose -f docker-compose.prod.yml --env-file ../env/.env.production up -d --build
 
 services:
   # 1. POSTGRES SQL (DB Kín)
@@ -12,10 +11,9 @@ services:
     container_name: p_postgres_prod
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-SYS_ADMIN_HCMUTE}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-VERY_Sc3cr3t_P@ssw0rd}
-      POSTGRES_DB: ${POSTGRES_DB:-fit_25years_prod}
-    # [QUAN TRỌNG] : Bỏ trắng 'ports'. DB chỉ giao tiếp nội mạng.
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     expose:
       - 5432
     volumes:
@@ -28,8 +26,7 @@ services:
     image: redis:7-alpine
     container_name: p_redis_prod
     restart: unless-stopped
-    command: redis-server --requirepass PROD_REDIS_s3cx_xxyy
-    # [QUAN TRỌNG] : Bỏ trắng 'ports'. Redis chỉ giao tiếp nội mạng Backend.
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     expose:
       - 6379
     volumes:
@@ -43,13 +40,13 @@ services:
     container_name: p_minio_prod
     restart: unless-stopped
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-s3_admin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-s3_admin_Secure_Key}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_DOMAIN: "25namminio.hcmutertic.com"
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000" # Cloudflare Tunnel: 25namminio.hcmutertic.com -> localhost:9000
-      - "9001:9001" # MinIO Console (chỉ dùng nội bộ, không expose Cloudflare)
+      - "9001:9001" # MinIO Console (nội bộ, không expose Cloudflare)
     volumes:
       - minio_data_prod:/data
     networks:
@@ -64,7 +61,13 @@ services:
     depends_on:
       - minio_prod
     entrypoint: >
-      /bin/sh -c " sleep 10; /usr/bin/mc alias set myminio http://minio-prod:9000 s3_admin s3_admin_Secure_Key; /usr/bin/mc mb myminio/media-fit || true; /usr/bin/mc anonymous set public myminio/media-fit || true; exit 0; "
+      /bin/sh -c "
+        sleep 10;
+        /usr/bin/mc alias set myminio http://minio-prod:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+        /usr/bin/mc mb myminio/${MINIO_BUCKET_NAME} || true;
+        /usr/bin/mc anonymous set public myminio/${MINIO_BUCKET_NAME} || true;
+        exit 0;
+      "
     networks:
       - fit_hcmute_prod_network
 
@@ -80,20 +83,14 @@ services:
       - postgres_prod
       - redis_prod
       - minio_prod
+    env_file:
+      - ../env/server/.env.production
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://${POSTGRES_USER:-SYS_ADMIN_HCMUTE}:${POSTGRES_PASSWORD:-VERY_Sc3cr3t_P@ssw0rd}@postgres_prod:5432/${POSTGRES_DB:-fit_25years_prod}?schema=public
-      REDIS_HOST: redis_prod
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-PROD_REDIS_s3cx_xxyy}
-      JWT_SECRET: ${JWT_SECRET}
-      # MinIO — gọi nội bộ qua container network
+      # Ghi đè các giá trị cần chỉ định cứng cho container network
       MINIO_ENDPOINT: minio_prod
-      MINIO_PORT: 9000
+      MINIO_PORT: "9000"
       MINIO_USE_SSL: "false"
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-s3_admin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-s3_admin_Secure_Key}
-      MINIO_BUCKET_NAME: media-fit
     ports:
       - "3001:3001" # Cloudflare Tunnel: api25nam.fit.hcmute.edu.vn -> localhost:3001
     networks:
@@ -109,10 +106,10 @@ services:
     restart: unless-stopped
     depends_on:
       - backend_api
+    env_file:
+      - ../env/client/.env.production
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: https://api25nam.fit.hcmute.edu.vn
-      # Proxy /media_storage/ -> MinIO nội bộ (thay vì localhost:9000)
       MINIO_INTERNAL_URL: http://minio_prod:9000
     ports:
       - "3000:3000" # Cloudflare Tunnel: 25nam.fit.hcmute.edu.vn -> localhost:3000
@@ -123,7 +120,6 @@ volumes:
   pg_data_prod:
   redis_data_prod:
   minio_data_prod:
-
 
 networks:
   fit_hcmute_prod_network:
