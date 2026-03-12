@@ -84,7 +84,7 @@ services:
       - redis_prod
       - minio_prod
     env_file:
-      - ../env/server/.env.production
+      - ./server/.env.production
     environment:
       NODE_ENV: production
       # Ghi đè các giá trị cần chỉ định cứng cho container network
@@ -107,7 +107,7 @@ services:
     depends_on:
       - backend_api
     env_file:
-      - ../env/client/.env.production
+      - ./client/apps/web/.env.production
     environment:
       NODE_ENV: production
       MINIO_INTERNAL_URL: http://minio_prod:9000
