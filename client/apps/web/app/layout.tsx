@@ -1,5 +1,5 @@
 import { Inter, Geist_Mono } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import "@workspace/ui/globals.css";
 import "../styles/theme.css";
@@ -15,6 +15,13 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0066cc',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://25nam.fit.hcmute.edu.vn'),
@@ -50,6 +57,9 @@ export const metadata: Metadata = {
     description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh',
     images: ['https://25nam.fit.hcmute.edu.vn/twitter-image'],
   },
+  alternates: {
+    canonical: '/',
+  },
   robots: {
     index: true,
     follow: true,
@@ -69,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="m-0 p-0">
+    <html lang="vi" suppressHydrationWarning className="m-0 p-0">
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased m-0 p-0`}
       >
