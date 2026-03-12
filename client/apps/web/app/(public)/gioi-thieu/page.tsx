@@ -15,7 +15,7 @@ const highlights = [
   {
     Icon: BookOpen,
     title: "Chương trình đào tạo",
-    desc: "Cập nhật liên tục theo xu hướng công nghệ mới, chuẩn quốc tế ABET",
+    desc: "Cập nhật liên tục theo xu hướng công nghệ mới",
   },
   {
     Icon: Users,
@@ -25,7 +25,7 @@ const highlights = [
   {
     Icon: Globe,
     title: "Hợp tác quốc tế",
-    desc: "Liên kết với các trường đại học hàng đầu Mỹ, Úc, Nhật, Hàn Quốc",
+    desc: "Liên kết với các trường đại học và doanh nghiệp hàng đầu Việt Nam và khu vực",
   },
   {
     Icon: Lightbulb,
@@ -123,10 +123,10 @@ export default function GioiThieu() {
                 color: "#e2e8f0",
               }}
             >
-              Được thành lập năm 2000, Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ
+              Được thành lập năm 2001, Khoa Công Nghệ Thông Tin - Trường Đại học Công nghệ Kỹ
               thuật TP.HCM là một trong những đơn vị đào tạo công nghệ thông tin hàng đầu tại Việt
               Nam, với sứ mệnh đào tạo nguồn nhân lực chất lượng cao và phát triển nghiên cứu khoa
-              học ứng dụng.
+              học ứng dụng
             </p>
           </motion.div>
         </div>
@@ -173,47 +173,50 @@ export default function GioiThieu() {
               <div className="mb-10">
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-20 h-1 rounded"
+                    className="w-24 h-2 rounded-full"
                     style={{ backgroundColor: "#dc2626" }}
                   />
                 </div>
                 <p
-                  className="font-bold mb-4"
-                  style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                  className="font-extrabold mb-4"
+                  style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
                 >
-                  SỨ MỆNH
+                  SỨ MẠNG
                 </p>
                 <p
                   className="leading-relaxed"
-                  style={{ fontSize: 18, color: "#64748b", lineHeight: "27.2px" }}
+                  style={{ fontSize: 18, color: "#64748b", lineHeight: "1.6" }}
                 >
-                  Đào tạo nguồn nhân lực công nghệ thông tin chất lượng cao, có năng lực
-                  chuyên môn vững vàng, kỹ năng thực hành tốt và đạo đức nghề nghiệp cao,
-                  đáp ứng nhu cầu phát triển của xã hội.
+                  Khoa Công nghệ Thông tin, trường Đại học Công nghệ Kỹ thuật TP. HCM là nơi cung cấp nguồn nhân lực chất lượng cao đáp ứng nhu cầu của thị trường lao động, thực hiện nghiên cứu khoa học và chuyển giao công nghệ về công nghệ thông tin và các lĩnh vực liên quan.
                 </p>
               </div>
 
-              {/* Giá trị cốt lõi */}
+              {/* Giá trị CORE */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-20 h-1 rounded"
+                    className="w-24 h-2 rounded-full"
                     style={{ backgroundColor: "#dc2626" }}
                   />
                 </div>
                 <p
-                  className="font-bold mb-4"
-                  style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                  className="font-extrabold mb-4"
+                  style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
                 >
-                  GIÁ TRỊ CỐT LÕI
+                  CÁC GIÁ TRỊ CƠ BẢN
                 </p>
-                <p
-                  className="leading-relaxed"
-                  style={{ fontSize: 18, color: "#64748b", lineHeight: "27.2px" }}
+                <div
+                  className="leading-relaxed space-y-2 text-[#64748b]"
+                  style={{ fontSize: 16 }}
                 >
-                  Nhân bản - Đặt con người làm trung tâm. Sáng tạo - Khuyến khích đổi mới
-                  và tư duy sáng tạo. Hội nhập - Định hướng quốc tế và kết nối toàn cầu.
-                </p>
+                  <p>Các giá trị cơ bản của một nền giáo dục tiên tiến; hiện đại đã, đang và sẽ được Trường Đại học Công nghệ Kỹ thuật TPHCM tôn vinh, gìn giữ, phát huy một cách sáng tạo:</p>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Gìn giữ và phát huy các giá trị truyền thống nhân văn của dân tộc Việt Nam</li>
+                    <li>Nâng đỡ tài năng và tính sáng tạo; chú trọng đào tạo kỹ năng và trách nhiệm nghề nghiệp</li>
+                    <li>Tôn trọng lợi ích của người học và của cộng đồng. Xây dựng xã hội học tập</li>
+                    <li>Đề cao chất lượng, hiệu quả và sự đổi mới trong các hoạt động. Hội nhập, hợp tác và chia sẻ</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -221,23 +224,21 @@ export default function GioiThieu() {
             <div className="p-12 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
                 <div
-                  className="w-20 h-1 rounded"
+                  className="w-24 h-2 rounded-full"
                   style={{ backgroundColor: "#dc2626" }}
                 />
               </div>
               <p
-                className="font-bold mb-6"
-                style={{ fontSize: 14, color: "#1e3a8a", letterSpacing: "0.05em" }}
+                className="font-extrabold mb-6"
+                style={{ fontSize: 24, color: "#1e3a8a", letterSpacing: "0.02em" }}
               >
                 TẦM NHÌN
               </p>
               <p
                 className="leading-relaxed"
-                style={{ fontSize: 18, color: "#64748b", lineHeight: "27.2px" }}
+                style={{ fontSize: 18, color: "#64748b", lineHeight: "1.6" }}
               >
-                Trở thành đơn vị đào tạo công nghệ thông tin hàng đầu khu vực, được công
-                nhận về chất lượng đào tạo, nghiên cứu khoa học và đóng góp cho sự phát
-                triển của ngành CNTT Việt Nam.
+                Khoa Công nghệ Thông tin, trường Đại học Công nghệ Kỹ thuật TP. HCM sẽ trở thành đơn vị đào tạo, nghiên cứu khoa học và đổi mới sáng tạo hàng đầu Việt Nam trong lĩnh vực Công nghệ Thông tin, từng bước vươn đến tầm khu vực và thế giới.
               </p>
 
               {/* Gradient badge */}
@@ -350,7 +351,7 @@ export default function GioiThieu() {
         </div>
 
         {/* Gradient Overlay */}
-        <div 
+        <div
           className="absolute inset-0 z-0"
           style={{
             background: "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.75) 100%)",
@@ -373,7 +374,7 @@ export default function GioiThieu() {
               CHƯƠNG TRÌNH ĐÀO TẠO
             </h2>
             <p className="text-white/80" style={{ fontSize: 20 }}>
-              Khám phá các chương trình đào tạo chất lượng cao
+              Khám phá các chương trình đào tạo kỹ sư chất lượng cao của FIT-HCMUTE
             </p>
           </motion.div>
 
@@ -387,7 +388,7 @@ export default function GioiThieu() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: idx * 0.15 }}
               >
-                <div 
+                <div
                   className="rounded-3xl p-8 h-full"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -431,14 +432,14 @@ export default function GioiThieu() {
                   <ul className="space-y-3">
                     {prog.items.map((item, i) => (
                       <li key={i}>
-                        <Link 
+                        <Link
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-3 text-white/90 hover:text-white group transition-all duration-300 hover:translate-x-2"
                         >
                           <ArrowRight size={16} className="flex-shrink-0 text-blue-400 group-hover:text-blue-300" />
-                          <span 
+                          <span
                             className="transition-all"
                             style={{ fontSize: 15, fontWeight: 500 }}
                           >

@@ -207,7 +207,7 @@ export default function Gallery() {
                 color: "#ffffff",
               }}
             >
-              Life at FIT-HCMUTE
+              HÀNH TRÌNH TẠI FIT-HCMUTE
             </h1>
             <p
               style={{

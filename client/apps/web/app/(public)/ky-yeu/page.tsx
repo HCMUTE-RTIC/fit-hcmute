@@ -50,7 +50,7 @@ export default function KyYeuPage() {
             <p
               className="text-xl leading-relaxed text-gray-200"
             >
-              Lưu giữ những khoảnh khắc đáng nhớ của Khoa Công nghệ Thông tin qua 25 năm hình thành và phát triển
+              Cùng ôn lại những trang ký ức đẹp nhất trong hành trình 25 năm phát triển của FIT-HCMUTE
             </p>
           </motion.div>
         </div>
