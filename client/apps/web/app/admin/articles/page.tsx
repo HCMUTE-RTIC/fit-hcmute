@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Plus, Filter, Download, MoreVertical, Edit, Trash2 } from "lucide-react";
+import { Search, Plus, Filter, Download, Edit, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { ArticlesService, Article } from "@/services/articles.service";
 
 export default function ArticleList() {
@@ -28,14 +29,21 @@ export default function ArticleList() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Bạn có chắc chắn muốn xoá bài viết này?")) return;
-    
-    try {
-      await ArticlesService.remove(id);
-      fetchArticles(); // Refresh list
-    } catch (err: any) {
-      alert("Xoá bài viết thất bại: " + err.message);
-    }
+    toast("Bạn có chắc chắn muốn xóa bài viết này?", {
+      action: {
+        label: "Xóa",
+        onClick: async () => {
+          try {
+            await ArticlesService.remove(id);
+            toast.success("Đã xóa bài viết thành công");
+            fetchArticles();
+          } catch (err: any) {
+            toast.error("Xóa thất bại: " + err.message);
+          }
+        },
+      },
+      cancel: { label: "Hủy", onClick: () => {} },
+    });
   };
 
   const filteredData = articles.filter((article) =>
@@ -197,7 +205,7 @@ export default function ArticleList() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Link href={`/admin/articles/edit/${article.id}`}>
+                        <Link href={`/admin/articles/edit/${article.slug}`}>
                           <button className="p-1.5 text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors" title="Chỉnh sửa">
                             <Edit className="h-4 w-4" />
                           </button>

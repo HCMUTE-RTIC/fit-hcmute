@@ -2,77 +2,33 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { ArticlesService, Article } from "@/services/articles.service";
 
-const imgFeatured = "/temp.jpg";
-const imgGoogleCloud = "/temp.jpg";
-const imgIoT = "/temp.jpg";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface Article {
-  id: number;
-  image: string;
-  badge: string;
-  date: string;
-  readTime: string;
-  title: string;
-  excerpt?: string;
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function formatDate(iso: string | null) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const featured: Article = {
-  id: 1,
-  image: imgFeatured,
-  badge: "Sự kiện",
-  date: "20/02/2026",
-  readTime: "5 phút đọc",
-  title: "Khoa CNTT tổ chức Lễ kỷ niệm 25 năm thành lập long trọng",
-  excerpt:
-    "Sự kiện kỷ niệm 25 năm thành lập Khoa CNTT sẽ diễn ra vào ngày 15/03/2025 với sự tham dự của lãnh đạo nhà trường, cựu sinh viên và đối tác...",
-};
+function estimateReadTime(content: string) {
+  try {
+    const blocks = JSON.parse(content)?.blocks ?? [];
+    const text = blocks.map((b: any) => b.data?.text ?? "").join(" ");
+    const words = text.trim().split(/\s+/).length;
+    return `${Math.max(1, Math.ceil(words / 200))} phút đọc`;
+  } catch {
+    return "3 phút đọc";
+  }
+}
 
-const secondary: Article = {
-  id: 2,
-  image: imgIoT,
-  badge: "Cơ sở vật chất",
-  date: "10/02/2026",
-  readTime: "4 phút đọc",
-  title: "Khai trương Phòng thí nghiệm IoT và Smart City hiện đại",
-  excerpt:
-    "Phòng lab mới với trang thiết bị hiện đại nhất, phục vụ nghiên cứu và đào tạo về Internet of Things...",
-};
+function categoryLabel(cat: string) {
+  return cat === "EVENT" ? "Sự kiện" : "Tin tức";
+}
 
-const smallArticles: Article[] = [
-  {
-    id: 3,
-    image: imgGoogleCloud,
-    badge: "Hợp tác",
-    date: "12/02/2026",
-    readTime: "6 phút đọc",
-    title: "Ký kết hợp tác với Google Cloud về đào tạo Cloud Computing",
-    excerpt:
-      "Chương trình đào tạo sẽ trang bị cho sinh viên những kỹ năng thực tế về điện toán đám mây, được chứng nhận bởi Google...",
-  },
-  {
-    id: 4,
-    image: imgGoogleCloud,
-    badge: "Hợp tác",
-    date: "12/02/2026",
-    readTime: "6 phút đọc",
-    title: "Ký kết hợp tác với Google Cloud về đào tạo Cloud Computing",
-    excerpt:
-      "Chương trình đào tạo sẽ trang bị cho sinh viên những kỹ năng thực tế về điện toán đám mây, được chứng nhận bởi Google...",
-  },
-  {
-    id: 5,
-    image: imgGoogleCloud,
-    badge: "Hợp tác",
-    date: "12/02/2026",
-    readTime: "6 phút đọc",
-    title: "Ký kết hợp tác với Google Cloud về đào tạo Cloud Computing",
-    excerpt:
-      "Chương trình đào tạo sẽ trang bị cho sinh viên những kỹ năng thực tế về điện toán đám mây, được chứng nhận bởi Google...",
-  },
-];
+const FALLBACK = "/temp.jpg";
 
 // ─── Shared icon components ───────────────────────────────────────────────────
 function CalendarIcon() {
@@ -100,7 +56,6 @@ function ClockIcon() {
   );
 }
 
-// ─── Meta Row ─────────────────────────────────────────────────────────────────
 function Meta({ date, readTime }: { date: string; readTime: string }) {
   return (
     <div className="flex items-center gap-4">
@@ -116,7 +71,6 @@ function Meta({ date, readTime }: { date: string; readTime: string }) {
   );
 }
 
-// ─── Badge ────────────────────────────────────────────────────────────────────
 function Badge({ label }: { label: string }) {
   return (
     <span
@@ -128,7 +82,6 @@ function Badge({ label }: { label: string }) {
   );
 }
 
-// ─── Read More Link ───────────────────────────────────────────────────────────
 function ReadMore() {
   return (
     <div className="flex items-center gap-2">
@@ -143,116 +96,117 @@ function ReadMore() {
   );
 }
 
-// ─── Featured Card (large, left column) ──────────────────────────────────────
+// ─── Cards ────────────────────────────────────────────────────────────────────
 function FeaturedCard({ article }: { article: Article }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow"
-      style={{
-        borderRadius: 16,
-        border: "1px solid #f3f4f6",
-        boxShadow: "0px 4px 20px 0px rgba(0,0,0,0.05)",
-      }}
-    >
-      {/* Image */}
-      <div className="relative overflow-hidden flex-shrink-0" style={{ height: 323 }}>
-        <Image
-          src={article.image}
-          alt={article.title}
-          fill
-          className="object-cover"
-        />
-        <Badge label={article.badge} />
-      </div>
-
-      {/* Content */}
-      <div className="p-6 flex flex-col gap-4">
-        <Meta date={article.date} readTime={article.readTime} />
-        <h3
-          className="font-bold leading-tight"
-          style={{ fontSize: 18, color: "#1e3a8a", lineHeight: "27px" }}
-        >
-          {article.title}
-        </h3>
-        {article.excerpt && (
-          <p
-            className="leading-relaxed"
-            style={{ fontSize: 16, color: "#64748b", lineHeight: "24px" }}
-          >
-            {article.excerpt}
-          </p>
-        )}
-        <ReadMore />
-      </div>
-    </motion.article>
+    <Link href={`/tin-tuc/${article.slug}`}>
+      <motion.article
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow h-full"
+        style={{ borderRadius: 16, border: "1px solid #f3f4f6", boxShadow: "0px 4px 20px 0px rgba(0,0,0,0.05)" }}
+      >
+        <div className="relative overflow-hidden flex-shrink-0" style={{ height: 323 }}>
+          <Image
+            src={article.thumbnail || FALLBACK}
+            alt={article.title}
+            fill
+            className="object-cover"
+            unoptimized={!!(article.thumbnail?.startsWith("http"))}
+          />
+          <Badge label={categoryLabel(article.category)} />
+        </div>
+        <div className="p-6 flex flex-col gap-4">
+          <Meta date={formatDate(article.publishedAt)} readTime={estimateReadTime(article.content)} />
+          <h3 className="font-bold leading-tight" style={{ fontSize: 18, color: "#1e3a8a", lineHeight: "27px" }}>
+            {article.title}
+          </h3>
+          {article.summary && (
+            <p className="leading-relaxed" style={{ fontSize: 16, color: "#64748b", lineHeight: "24px" }}>
+              {article.summary}
+            </p>
+          )}
+          <ReadMore />
+        </div>
+      </motion.article>
+    </Link>
   );
 }
 
-// ─── Secondary Card (right column, shorter) ──────────────────────────────────
 function SecondaryCard({ article, delay = 0 }: { article: Article; delay?: number }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow"
-      style={{
-        borderRadius: 16,
-        border: "1px solid #f3f4f6",
-        boxShadow: "0px 4px 20px 0px rgba(0,0,0,0.05)",
-      }}
-    >
-      {/* Image */}
-      <div className="relative overflow-hidden flex-shrink-0" style={{ height: 192 }}>
-        <Image
-          src={article.image}
-          alt={article.title}
-          fill
-          className="object-cover"
-        />
-        <Badge label={article.badge} />
-      </div>
+    <Link href={`/tin-tuc/${article.slug}`}>
+      <motion.article
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay }}
+        className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow h-full"
+        style={{ borderRadius: 16, border: "1px solid #f3f4f6", boxShadow: "0px 4px 20px 0px rgba(0,0,0,0.05)" }}
+      >
+        <div className="relative overflow-hidden flex-shrink-0" style={{ height: 192 }}>
+          <Image
+            src={article.thumbnail || FALLBACK}
+            alt={article.title}
+            fill
+            className="object-cover"
+            unoptimized={!!(article.thumbnail?.startsWith("http"))}
+          />
+          <Badge label={categoryLabel(article.category)} />
+        </div>
+        <div className="p-6 flex flex-col gap-3">
+          <Meta date={formatDate(article.publishedAt)} readTime={estimateReadTime(article.content)} />
+          <h3 className="font-bold leading-tight" style={{ fontSize: 18, color: "#1e3a8a", lineHeight: "27px" }}>
+            {article.title}
+          </h3>
+          {article.summary && (
+            <p className="leading-relaxed line-clamp-3" style={{ fontSize: 16, color: "#64748b", lineHeight: "24px" }}>
+              {article.summary}
+            </p>
+          )}
+          <ReadMore />
+        </div>
+      </motion.article>
+    </Link>
+  );
+}
 
-      {/* Content */}
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+function SkeletonCard({ height = 192 }: { height?: number }) {
+  return (
+    <div className="animate-pulse bg-white rounded-2xl overflow-hidden border border-slate-100">
+      <div className="bg-slate-100" style={{ height }} />
       <div className="p-6 flex flex-col gap-3">
-        <Meta date={article.date} readTime={article.readTime} />
-        <h3
-          className="font-bold leading-tight"
-          style={{ fontSize: 18, color: "#1e3a8a", lineHeight: "27px" }}
-        >
-          {article.title}
-        </h3>
-        {article.excerpt && (
-          <p
-            className="leading-relaxed line-clamp-3"
-            style={{ fontSize: 16, color: "#64748b", lineHeight: "24px" }}
-          >
-            {article.excerpt}
-          </p>
-        )}
-        <ReadMore />
+        <div className="h-3 bg-slate-100 rounded w-1/2" />
+        <div className="h-4 bg-slate-100 rounded w-3/4" />
+        <div className="h-4 bg-slate-100 rounded w-full" />
       </div>
-    </motion.article>
+    </div>
   );
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function News() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    ArticlesService.findAll()
+      .then((data) => setArticles(data.filter((a) => a.status === "PUBLISHED")))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const featured = articles.find((a) => a.isPinned) ?? articles[0];
+  const rest = articles.filter((a) => a !== featured);
+  const secondary = rest[0];
+  const smallArticles = rest.slice(1, 4);
+
   return (
     <div className="min-h-screen">
-      {/* ─── Hero Section ────────────────────────────────────────────────── */}
-      <section
-        style={{
-          backgroundColor: "#f0f9ff",
-          paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
-        }}
-      >
+      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#f0f9ff", paddingTop: "var(--spacing-section)", paddingBottom: "var(--spacing-section)" }}>
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -260,23 +214,10 @@ export default function News() {
             transition={{ duration: 0.8 }}
             className="text-center flex flex-col gap-6"
           >
-            <h1
-              className="font-extrabold"
-              style={{
-                fontSize: "clamp(32px, 5vw, 48px)",
-                lineHeight: "72px",
-                color: "#1e3a8a",
-              }}
-            >
+            <h1 className="font-extrabold" style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: "72px", color: "#1e3a8a" }}>
               TIN TỨC &amp; SỰ KIỆN
             </h1>
-            <p
-              style={{
-                fontSize: 20,
-                lineHeight: "32.5px",
-                color: "#64748b",
-              }}
-            >
+            <p style={{ fontSize: 20, lineHeight: "32.5px", color: "#64748b" }}>
               Cập nhật những hoạt động mới nhất của Khoa CNTT và chuỗi sự kiện kỷ niệm 25 năm
             </p>
           </motion.div>
@@ -284,26 +225,49 @@ export default function News() {
       </section>
 
       {/* ─── Article Grid ─────────────────────────────────────────────────── */}
-      <section
-        className="bg-white"
-        style={{
-          paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
-        }}
-      >
+      <section className="bg-white" style={{ paddingTop: "var(--spacing-section)", paddingBottom: "var(--spacing-section)" }}>
         <div className="max-w-[1280px] mx-auto px-6 flex flex-col gap-6">
-          {/* Row 1: Featured (large) + Secondary (IoT) */}
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-            <FeaturedCard article={featured} />
-            <SecondaryCard article={secondary} delay={0.15} />
-          </div>
+          {loading ? (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+                <SkeletonCard height={323} />
+                <SkeletonCard height={192} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <SkeletonCard /><SkeletonCard /><SkeletonCard />
+              </div>
+            </>
+          ) : articles.length === 0 ? (
+            <p className="text-center text-slate-400 py-16">Chưa có bài viết nào được đăng.</p>
+          ) : (
+            <>
+              {/* Row 1: Featured + Secondary */}
+              {(featured || secondary) && (
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+                  {featured && <FeaturedCard article={featured} />}
+                  {secondary && <SecondaryCard article={secondary} delay={0.15} />}
+                </div>
+              )}
 
-          {/* Row 2: Three equal cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {smallArticles.map((article, idx) => (
-              <SecondaryCard key={article.id} article={article} delay={idx * 0.1} />
-            ))}
-          </div>
+              {/* Row 2: Up to 3 cards */}
+              {smallArticles.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {smallArticles.map((article, idx) => (
+                    <SecondaryCard key={article.id} article={article} delay={idx * 0.1} />
+                  ))}
+                </div>
+              )}
+
+              {/* Row 3+: Remaining as grid */}
+              {rest.length > 4 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {rest.slice(4).map((article, idx) => (
+                    <SecondaryCard key={article.id} article={article} delay={idx * 0.1} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </section>
     </div>

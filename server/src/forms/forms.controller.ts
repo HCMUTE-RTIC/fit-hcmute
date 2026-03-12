@@ -14,7 +14,7 @@ import { Role } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { CreateFormDefinitionDto } from 'src/forms/dto/create-form.dto';
+import { CreateFormDefinitionDto, UpdateFormDefinitionDto } from 'src/forms/dto/create-form.dto';
 import { FormsService } from 'src/forms/forms.service';
 import { SubmitFormDto } from './dto/submit-form.dto';
 
@@ -47,10 +47,17 @@ export class FormsController {
     return this.formsService.findOne(slug);
   }
 
+  @Get(':id/submissions')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN)
+  getSubmissions(@Param('id') id: string) {
+    return this.formsService.getSubmissions(id);
+  }
+
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.SUPER_ADMIN)
-  update(@Param('id') id: string, @Body() dto: CreateFormDefinitionDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateFormDefinitionDto) {
     return this.formsService.update(id, dto);
   }
 

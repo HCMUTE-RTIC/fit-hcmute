@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
 interface EditorJSWrapperProps {
   value: any;
   onChange: (value: any) => void;
@@ -24,12 +26,13 @@ export default function EditorJSWrapper({
       "https://cdn.jsdelivr.net/npm/@editorjs/list@latest/dist/bundle.js",
       "https://cdn.jsdelivr.net/npm/@editorjs/quote@latest/dist/bundle.js",
       "https://cdn.jsdelivr.net/npm/@editorjs/embed@latest/dist/bundle.js",
+      "https://cdn.jsdelivr.net/npm/@editorjs/image@latest/dist/bundle.js",
     ];
 
     let cancelled = false;
 
     const loadScript = (src: string): Promise<void> => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         if (document.querySelector(`script[src="${src}"]`)) {
           resolve();
           return;
@@ -37,10 +40,7 @@ export default function EditorJSWrapper({
         const script = document.createElement("script");
         script.src = src;
         script.onload = () => resolve();
-        script.onerror = () => {
-          console.error(`Failed to load Editor.js script: ${src}`);
-          resolve(); // resolve anyway so remaining scripts still load
-        };
+        script.onerror = () => resolve(); // resolve anyway
         document.body.appendChild(script);
       });
     };
@@ -68,23 +68,39 @@ export default function EditorJSWrapper({
 
   useEffect(() => {
     if (isReady && !editorRef.current) {
-      // UMD bundle exports module object — constructor is at .default
       // @ts-ignore
       const EditorJSModule = window.EditorJS;
       const EditorJS = EditorJSModule?.default || EditorJSModule;
 
-      if (typeof EditorJS !== "function") {
-        console.error(
-          "EditorJS constructor not found on window.EditorJS",
-          EditorJSModule,
-        );
-        return;
-      }
+      if (typeof EditorJS !== "function") return;
 
       const editorData =
         typeof value === "string" && value.length > 0
           ? JSON.parse(value)
           : value;
+
+      // Image uploader: gọi API upload, trả về URL từ MinIO
+      const imageUploader = {
+        uploadByFile: async (file: File) => {
+          const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+          const formData = new FormData();
+          formData.append("file", file);
+          const res = await fetch(`${API_URL}/api/media/upload`, {
+            method: "POST",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            body: formData,
+          });
+          if (!res.ok) return { success: 0 };
+          const data = await res.json();
+          const url = data?.data?.url || "";
+          // Nếu là relative path (/media_storage/...) thì giữ nguyên, browser tự resolve
+          return { success: 1, file: { url } };
+        },
+        uploadByUrl: async (url: string) => {
+          // URL từ CDN/internet — dùng thẳng không cần re-upload
+          return { success: 1, file: { url } };
+        },
+      };
 
       const config: any = {
         holder: "editorjs",
@@ -93,25 +109,38 @@ export default function EditorJSWrapper({
           // @ts-ignore
           ...(window.Header ? { header: { class: window.Header } } : {}),
           // @ts-ignore
-          ...(window.List ? { list: { class: window.List } } : {}),
+          ...(window.List ? { list: { class: window.List, inlineToolbar: true } } : {}),
           // @ts-ignore
-          ...(window.Quote ? { quote: { class: window.Quote } } : {}),
+          ...(window.Quote ? { quote: { class: window.Quote, config: { quotePlaceholder: "Trích dẫn...", captionPlaceholder: "Nguồn trích dẫn" } } } : {}),
           // @ts-ignore
           ...(window.Embed ? { embed: { class: window.Embed } } : {}),
+          // @ts-ignore
+          ...(window.ImageTool ? {
+            image: {
+              // @ts-ignore
+              class: window.ImageTool,
+              config: {
+                uploader: imageUploader,
+                captionPlaceholder: "Chú thích ảnh (ghi nguồn nếu có)...",
+                buttonContent: "Chọn ảnh",
+              },
+            },
+          } : {}),
         },
         onChange: async () => {
           const content = await editor.save();
-          onChange(content); // Luôn pass JSON Object ra ngoài cho form submit
+          onChange(content);
         },
       };
 
-      // Chỉ gắn data vào config khi value thực sự có chứa array blocks hợp lệ để tránh Crash lỗi
       if (editorData && editorData.blocks && Array.isArray(editorData.blocks)) {
         config.data = editorData;
       }
 
       const editor = new EditorJS(config);
       editorRef.current = editor;
+      // Expose instance for testing/automation
+      (window as any).__fitEditor = editor;
     }
   }, [isReady]);
 
@@ -124,8 +153,22 @@ export default function EditorJSWrapper({
         .ce-block__content, .ce-toolbar__content {
           max-width: 100%;
         }
-        
-        /* Dark mode overrides for EditorJS */
+        /* Image tool styles */
+        .image-tool__image {
+          border-radius: 0.5rem;
+          overflow: hidden;
+        }
+        .image-tool__caption[contenteditable] {
+          font-size: 0.8rem;
+          color: #64748b;
+          text-align: center;
+          font-style: italic;
+          margin-top: 0.5rem;
+        }
+        .dark .image-tool__caption[contenteditable] {
+          color: #94a3b8;
+        }
+        /* Dark mode overrides */
         .dark .ce-block__content {
           color: #f8fafc;
         }
@@ -157,6 +200,9 @@ export default function EditorJSWrapper({
           background-color: #0f172a;
           color: #f8fafc;
           border-color: #334155;
+        }
+        .dark .image-tool {
+          background-color: transparent;
         }
       `}</style>
       <div
