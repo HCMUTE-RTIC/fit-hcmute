@@ -87,7 +87,7 @@ services:
     environment:
       NODE_ENV: production
       # Ghi đè các giá trị cần chỉ định cứng cho container network
-      MINIO_ENDPOINT: minio_prod
+      MINIO_ENDPOINT: minio-prod
       MINIO_PORT: "9000"
       MINIO_USE_SSL: "false"
     ports:
