@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { removeAuthToken } from "../../lib/auth";
 
 export function Header({
   sidebarOpen,
@@ -24,6 +26,12 @@ export function Header({
   const { theme, setTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    removeAuthToken();
+    router.push("/admin/login");
+  };
 
   // Use state strictly on client side to prevent hydration mismatches for theme icons
   const [mounted, setMounted] = useState(false);
@@ -158,7 +166,10 @@ export function Header({
                   </Link>
                 </div>
                 <div className="py-1 border-t border-slate-200 dark:border-slate-700">
-                  <button className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  >
                     <LogOut className="h-4 w-4" /> Đăng xuất
                   </button>
                 </div>

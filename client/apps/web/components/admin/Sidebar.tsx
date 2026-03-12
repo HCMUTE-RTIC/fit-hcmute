@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
   Image as ImageIcon,
@@ -15,7 +15,7 @@ import {
   ChevronDown,
   Users,
 } from "lucide-react";
-import { getAuthToken } from "../../lib/auth";
+import { getAuthToken, removeAuthToken } from "../../lib/auth";
 import { jwtDecode } from "jwt-decode";
 
 type NavItem = {
@@ -34,6 +34,12 @@ export function Sidebar({
   setSidebarOpen: (v: boolean) => void;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    removeAuthToken();
+    router.push("/admin/login");
+  };
 
   // Navigation Items (Base)
   const [navigation, setNavigation] = useState<NavItem[]>([
@@ -264,6 +270,7 @@ export function Sidebar({
         className={`shrink-0 p-4 border-t border-slate-200 dark:border-slate-800 ${!sidebarOpen && "xl:p-2 xl:flex xl:justify-center"}`}
       >
         <button
+          onClick={handleLogout}
           className={`group flex w-full items-center gap-x-3 rounded-md py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors ${sidebarOpen ? "px-3" : "px-0 xl:justify-center"}`}
         >
           <img
