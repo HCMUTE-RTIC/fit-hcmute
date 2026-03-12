@@ -206,18 +206,33 @@ export default function News() {
   return (
     <div className="min-h-screen">
       {/* ─── Hero ─────────────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f0f9ff", paddingTop: "var(--spacing-section)", paddingBottom: "var(--spacing-section)" }}>
-        <div className="max-w-[1280px] mx-auto px-6">
+      <section 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        style={{ paddingTop: "var(--spacing-section)", paddingBottom: "var(--spacing-section)" }}
+      >
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/thu-vien/thuvienkiniem1.jpg"
+            alt="Tin tức sự kiện Khoa CNTT"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center flex flex-col gap-6"
           >
-            <h1 className="font-extrabold" style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: "72px", color: "#1e3a8a" }}>
+            <h1 className="font-extrabold" style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: "72px", color: "#ffffff" }}>
               TIN TỨC &amp; SỰ KIỆN
             </h1>
-            <p style={{ fontSize: 20, lineHeight: "32.5px", color: "#64748b" }}>
+            <p style={{ fontSize: 20, lineHeight: "32.5px", color: "#e2e8f0" }}>
               Cập nhật những hoạt động mới nhất của Khoa CNTT và chuỗi sự kiện kỷ niệm 25 năm
             </p>
           </motion.div>

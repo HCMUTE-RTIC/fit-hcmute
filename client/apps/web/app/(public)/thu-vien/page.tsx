@@ -169,13 +169,25 @@ export default function Gallery() {
     <div className="min-h-screen">
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          backgroundColor: "#f0f9ff",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/thu-vien/2.jpg"
+            alt="Thư viện hình ảnh Khoa CNTT"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -184,7 +196,7 @@ export default function Gallery() {
           >
             {/* Camera icon */}
             <div>
-              <Camera size={64} color="#2563EB" strokeWidth={1.5} />
+              <Camera size={64} color="#ffffff" strokeWidth={1.5} />
             </div>
 
             <h1
@@ -192,7 +204,7 @@ export default function Gallery() {
               style={{
                 fontSize: "clamp(32px, 5vw, 48px)",
                 lineHeight: "72px",
-                color: "#1e3a8a",
+                color: "#ffffff",
               }}
             >
               Life at FIT-HCMUTE
@@ -201,7 +213,7 @@ export default function Gallery() {
               style={{
                 fontSize: 20,
                 lineHeight: "32.5px",
-                color: "#64748b",
+                color: "#e2e8f0",
               }}
             >
               Lưu giữ những khoảnh khắc đáng nhớ qua 25 năm hình thành và phát triển

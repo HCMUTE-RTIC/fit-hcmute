@@ -80,13 +80,25 @@ export default function GioiThieu() {
     <div className="min-h-screen">
       {/* ─── Section 1: Hero ─────────────────────────────────────────────── */}
       <section
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          backgroundColor: "#f0f9ff",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/thu-vien/CuuSV24-1.jpg"
+            alt="Giới thiệu Khoa CNTT"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -98,7 +110,7 @@ export default function GioiThieu() {
               style={{
                 fontSize: "clamp(32px, 5vw, 48px)",
                 lineHeight: "72px",
-                color: "#1e3a8a",
+                color: "#ffffff",
               }}
             >
               VỀ KHOA CÔNG NGHỆ THÔNG TIN
@@ -108,7 +120,7 @@ export default function GioiThieu() {
               style={{
                 fontSize: "18px",
                 lineHeight: "29.25px",
-                color: "#64748b",
+                color: "#e2e8f0",
               }}
             >
               Được thành lập năm 2000, Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ

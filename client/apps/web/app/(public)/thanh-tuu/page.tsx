@@ -33,14 +33,25 @@ export default function Achievements() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{ 
-          backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/thu-vien/thuvienkiniem2.jpg"
+            alt="Thành tựu Khoa CNTT"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,14 +62,14 @@ export default function Achievements() {
               className="font-extrabold mb-6"
               style={{
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
-                color: "var(--color-primary-900)",
+                color: "#ffffff",
               }}
             >
               THÀNH TỰU NỔI BẬT
             </h1>
             <p
               className="text-xl leading-relaxed"
-              style={{ color: "var(--color-text-gray)" }}
+              style={{ color: "#e2e8f0" }}
             >
               25 năm xây dựng và phát triển, Khoa CNTT tự hào với những thành tựu vượt bậc
               trong đào tạo, nghiên cứu và đóng góp cho cộng đồng
