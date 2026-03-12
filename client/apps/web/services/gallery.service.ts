@@ -1,3 +1,5 @@
+import { getAuthToken } from "@/lib/auth";
+
 export interface Media {
   id: string;
   albumId?: string | null;
@@ -29,7 +31,6 @@ export interface MediaAlbum {
   };
 }
 
-// Temporary Base URL for the API
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export const GalleryService = {
@@ -37,145 +38,81 @@ export const GalleryService = {
    * Fetch all albums
    */
   async getAlbums(): Promise<MediaAlbum[]> {
-    try {
-      const res = await fetch(`${API_URL}/api/albums`, { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to fetch albums");
-      return await res.json();
-    } catch (error) {
-      console.warn("Backend not available, using mock albums data.");
-      // Return dummy data for frontend development if backend is not available
-      return [
-        {
-          id: "1",
-          title: "Hội thao truyền thống Khoa CNTT 2025",
-          slug: "hoi-thao-truyen-thong-khoa-cntt-2025",
-          description: "Những khoảnh khắc đáng nhớ tại Hội thao.",
-          status: "PUBLISHED",
-          createdAt: "2026-02-25T00:00:00.000Z",
-          updatedAt: "2026-02-25T00:00:00.000Z",
-          coverPhoto: {
-            id: "m1",
-            url: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&h=300&fit=crop",
-            fileName: "cover.jpg",
-            mimeType: "image/jpeg",
-            size: 102400,
-            category: "IMAGE",
-            createdAt: "2026-02-25T00:00:00.000Z",
-          },
-          _count: { media: 120 },
-        },
-        {
-          id: "2",
-          title: "Lễ bảo vệ Đồ án Tốt nghiệp K20",
-          slug: "le-bao-ve-do-an-tot-nghiep-k20",
-          description: "Các Sinh viên khóa 20 bảo vệ đồ án trước hội đồng.",
-          status: "DRAFT",
-          createdAt: "2026-02-20T00:00:00.000Z",
-          updatedAt: "2026-02-20T00:00:00.000Z",
-          _count: { media: 0 },
-        },
-      ];
-    }
+    const res = await fetch(`${API_URL}/api/albums`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch albums");
+    return await res.json();
   },
 
   /**
    * Fetch album by ID
    */
-  async getAlbumById(id: string): Promise<MediaAlbum | null> {
-    try {
-      const res = await fetch(`${API_URL}/api/albums/${id}`, {
-        cache: "no-store",
-      });
-      if (!res.ok) throw new Error("Failed to fetch album");
-      return await res.json();
-    } catch (error) {
-      console.warn(`Backend not available, using mock data for album ${id}`);
-      // Return dummy data
-      return null;
-    }
+  async getAlbumById(id: string): Promise<MediaAlbum> {
+    const res = await fetch(`${API_URL}/api/albums/${id}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch album");
+    return await res.json();
   },
 
   /**
    * Create new album
    */
   async createAlbum(data: Partial<MediaAlbum>): Promise<MediaAlbum> {
-    try {
-      const res = await fetch(`${API_URL}/api/albums`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error("Failed to create album");
-      return await res.json();
-    } catch (error) {
-      console.warn("Backend not available, simulating album creation");
-      // Simulate success
-      return {
-        ...data,
-        id: Math.random().toString(36).substring(7),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      } as MediaAlbum;
-    }
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/albums`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Failed to create album");
+    return await res.json();
   },
 
   /**
    * Update album
    */
-  async updateAlbum(
-    id: string,
-    data: Partial<MediaAlbum>,
-  ): Promise<MediaAlbum> {
-    try {
-      const res = await fetch(`${API_URL}/api/albums/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error("Failed to update album");
-      return await res.json();
-    } catch (error) {
-      console.warn(`Backend not available, simulating album update for ${id}`);
-      // Simulate success
-      return { ...data, id } as MediaAlbum;
-    }
+  async updateAlbum(id: string, data: Partial<MediaAlbum>): Promise<MediaAlbum> {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/albums/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Failed to update album");
+    return await res.json();
   },
 
   /**
    * Delete album
    */
   async deleteAlbum(id: string): Promise<boolean> {
-    try {
-      const res = await fetch(`${API_URL}/api/albums/${id}`, {
-        method: "DELETE",
-      });
-      return res.ok;
-    } catch (error) {
-      console.warn(
-        `Backend not available, simulating album deletion for ${id}`,
-      );
-      return true;
-    }
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/albums/${id}`, {
+      method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) throw new Error("Failed to delete album");
+    return true;
   },
 
   /**
-   * Batch Upload Media to an Album
+   * Batch Upload Media to an Album — uses XHR for real progress tracking
    */
   async uploadBatchMedia(
     albumId: string,
     files: File[],
     onProgress?: (progress: number, fileIndex: number) => void,
   ): Promise<Media[]> {
-    // Determine target upload URL based on backend implementation
-    // The requirement mentions 'stream' protocol directly to MinIO,
-    // but typically it's routed via `/api/media/upload-batch` as per media_album_sequence.md
-
+    const token = getAuthToken();
     const results: Media[] = [];
-
-    // NOTE: Simulating batch uploading with individual progress updates.
-    // Since XHR is typically needed for real upload progress, we use
-    // XMLHttpRequest instead of fetch for real progress tracking,
-    // or simulate it if the backend api is not ready.
 
     let i = 0;
     for (const file of files) {
@@ -184,47 +121,33 @@ export const GalleryService = {
         formData.append("file", file);
         formData.append("albumId", albumId);
 
-        // Simulating an upload with progress
-        await new Promise<void>((resolve) => {
-          let progress = 0;
-          const interval = setInterval(() => {
-            progress += 20;
-            if (onProgress) onProgress(progress, i);
-            if (progress >= 100) {
-              clearInterval(interval);
-              resolve();
+        const responseText = await new Promise<string>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", `${API_URL}/api/media/upload`);
+          if (token) {
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+          }
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable && onProgress) {
+              const percent = Math.round((event.loaded / event.total) * 100);
+              onProgress(percent, i);
             }
-          }, 200);
+          };
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve(xhr.responseText);
+            } else {
+              reject(new Error(`Upload failed: ${xhr.statusText}`));
+            }
+          };
+          xhr.onerror = () => reject(new Error(xhr.statusText));
+          xhr.send(formData);
         });
 
-        // If using real backend, uncomment this snippet:
-        /*
-                const response = await new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", `${API_URL}/api/media/upload-batch`);
-                    xhr.upload.onprogress = (event) => {
-                        if (event.lengthComputable && onProgress) {
-                            const percentComplete = Math.round((event.loaded / event.total) * 100);
-                            onProgress(percentComplete, i);
-                        }
-                    };
-                    xhr.onload = () => resolve(xhr.responseText);
-                    xhr.onerror = () => reject(xhr.statusText);
-                    xhr.send(formData);
-                });
-                */
-
-        // Dummy uploaded media response
-        results.push({
-          id: `media-${Date.now()}-${i}`,
-          albumId,
-          url: URL.createObjectURL(file), // Using local URL for preview in dev
-          fileName: file.name,
-          mimeType: file.type,
-          size: file.size,
-          category: file.type.startsWith("image/") ? "IMAGE" : "VIDEO",
-          createdAt: new Date().toISOString(),
-        });
+        const parsed = JSON.parse(responseText);
+        const media: Media = parsed.data ?? parsed;
+        results.push(media);
+        if (onProgress) onProgress(100, i);
       } catch (error) {
         console.error(`Failed to upload ${file.name}`, error);
       }

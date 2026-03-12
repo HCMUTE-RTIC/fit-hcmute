@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Bell,
   Search,
@@ -14,7 +14,7 @@ import {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { removeAuthToken } from "../../lib/auth";
+import { removeAuthToken, getUserInfo, type UserInfo } from "../../lib/auth";
 
 export function Header({
   sidebarOpen,
@@ -25,8 +25,16 @@ export function Header({
 }) {
   const { theme, setTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState<UserInfo | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const roleLabel = (role?: string) => {
+    if (role === "SUPER_ADMIN") return "Quản trị viên";
+    if (role === "EDITOR") return "Biên tập viên";
+    if (role === "AUTHOR") return "Tác giả";
+    return role ?? "";
+  };
 
   const handleLogout = () => {
     removeAuthToken();
@@ -37,6 +45,7 @@ export function Header({
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+    setUser(getUserInfo());
   }, []);
 
   useEffect(() => {
@@ -125,18 +134,14 @@ export function Header({
             >
               <span className="hidden text-right lg:block">
                 <span className="block text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Cán bộ Quản lý
+                  {user?.name ?? "Đang tải..."}
                 </span>
                 <span className="block text-xs font-medium text-slate-500 dark:text-slate-400">
-                  Supper Admin
+                  {roleLabel(user?.role)}
                 </span>
               </span>
-              <span className="h-10 w-10 rounded-full">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="User"
-                  className="rounded-full border border-slate-200 dark:border-slate-700"
-                />
+              <span className="h-10 w-10 rounded-full flex items-center justify-center bg-blue-600 text-white font-bold text-sm border border-slate-200 dark:border-slate-700">
+                {user?.name ? user.name.charAt(0).toUpperCase() : "?"}
               </span>
             </button>
 
@@ -145,10 +150,10 @@ export function Header({
               <div className="absolute right-0 top-14 mt-2 w-56 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#24303F] shadow-lg py-1 z-50">
                 <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
                   <p className="text-sm font-medium text-slate-900 dark:text-white">
-                    Cán bộ Quản lý
+                    {user?.name ?? ""}
                   </p>
                   <p className="text-sm truncate text-slate-500 dark:text-slate-400">
-                    admin@fit.hcmute.edu.vn
+                    {user?.email ?? ""}
                   </p>
                 </div>
                 <div className="py-1">

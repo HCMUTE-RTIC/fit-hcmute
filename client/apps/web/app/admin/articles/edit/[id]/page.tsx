@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ChevronRight, Save, Image as ImageIcon, X } from "lucide-react";
 import { toast } from "sonner";
@@ -24,15 +24,18 @@ const EditorJSWrapper = dynamic(
   },
 );
 
-export default function NewArticlePage() {
+export default function EditArticlePage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
+
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
     category: "NEWS",
     status: "DRAFT",
-    content: null,
+    content: null as any,
     metaTitle: "",
     metaDescription: "",
     focusKeyword: "",
@@ -40,8 +43,32 @@ export default function NewArticlePage() {
   const [thumbnail, setThumbnail] = useState<string>("");
   const [thumbnailUploading, setThumbnailUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Basic auto-generate slug for Vietnamese
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const article = await ArticlesService.findById(id);
+        setFormData({
+          title: article.title,
+          slug: article.slug,
+          category: article.category,
+          status: article.status,
+          content: article.content ? JSON.parse(article.content) : null,
+          metaTitle: article.metaTitle ?? "",
+          metaDescription: article.metaDescription ?? "",
+          focusKeyword: article.focusKeywords ?? "",
+        });
+        setThumbnail(article.thumbnail ?? "");
+      } catch (e: any) {
+        toast.error("Không tải được bài viết: " + e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
+  }, [id]);
+
   const generateSlug = (text: string) => {
     return text
       .toLowerCase()
@@ -76,7 +103,7 @@ export default function NewArticlePage() {
     }
     setIsSaving(true);
     try {
-      await ArticlesService.create({
+      await ArticlesService.update(id, {
         title: formData.title,
         slug: formData.slug,
         summary: "",
@@ -88,10 +115,10 @@ export default function NewArticlePage() {
         metaDescription: formData.metaDescription,
         focusKeywords: formData.focusKeyword,
       });
-      toast.success("Bài viết đã được lưu thành công!");
+      toast.success("Bài viết đã được cập nhật!");
       router.push("/admin/articles");
     } catch (e: any) {
-      toast.error(e.message || "Lỗi khi lưu bài viết");
+      toast.error(e.message || "Lỗi khi cập nhật bài viết");
     } finally {
       setIsSaving(false);
     }
@@ -102,7 +129,6 @@ export default function NewArticlePage() {
     setFormData((prev) => ({
       ...prev,
       title: newTitle,
-      // Only auto-update slug if user hasn't manually edited it
       slug:
         prev.slug === generateSlug(prev.title)
           ? generateSlug(newTitle)
@@ -110,12 +136,23 @@ export default function NewArticlePage() {
     }));
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin relative flex h-8 w-8">
+          <span className="absolute inline-flex h-full w-full rounded-full border-2 border-slate-300/20"></span>
+          <span className="absolute inline-flex h-full w-full rounded-full border-2 border-blue-600 border-t-transparent"></span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Breadcrumb & Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Thêm Bài Viết Mới
+          Chỉnh sửa Bài Viết
         </h2>
         <nav>
           <ol className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
@@ -142,7 +179,7 @@ export default function NewArticlePage() {
               <ChevronRight className="h-4 w-4" />
             </li>
             <li className="text-blue-600 dark:text-blue-500 font-medium">
-              Thêm mới
+              Chỉnh sửa
             </li>
           </ol>
         </nav>
@@ -257,10 +294,7 @@ export default function NewArticlePage() {
                   className="w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-slate-900 dark:text-white focus:border-blue-500 outline-none transition-colors resize-none"
                   value={formData.metaDescription}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      metaDescription: e.target.value,
-                    })
+                    setFormData({ ...formData, metaDescription: e.target.value })
                   }
                 />
               </div>
@@ -298,7 +332,7 @@ export default function NewArticlePage() {
                   </div>
                   <div className="text-sm text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">
                     {formData.metaDescription ||
-                      "Đoạn mô tả ngắn gọn (snippet) sẽ hiển thị ở đây. Bạn nên viết mô tả hấp dẫn và chứa từ khóa chính..."}
+                      "Đoạn mô tả ngắn gọn (snippet) sẽ hiển thị ở đây..."}
                   </div>
                 </div>
               </div>
@@ -329,6 +363,7 @@ export default function NewArticlePage() {
                 >
                   <option value="DRAFT">Lưu Nháp (Draft)</option>
                   <option value="PUBLISHED">Công khai (Published)</option>
+                  <option value="ARCHIVED">Lưu trữ (Archived)</option>
                 </select>
               </div>
 
@@ -363,7 +398,7 @@ export default function NewArticlePage() {
                   className="flex-1 inline-flex justify-center items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Save className="h-4 w-4" />
-                  {isSaving ? "Đang lưu..." : "Đăng tải"}
+                  {isSaving ? "Đang lưu..." : "Cập nhật"}
                 </button>
               </div>
             </div>
