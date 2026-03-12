@@ -126,7 +126,7 @@ export default function AdminFormsListPage() {
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200">
-                        {form._count.submissions}
+                        {form._count?.submissions ?? 0}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
@@ -183,7 +183,7 @@ export default function AdminFormsListPage() {
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
             <div className="text-sm font-medium text-slate-600 dark:text-slate-400">Tổng Submissions</div>
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">
-              {forms.reduce((sum, f) => sum + f._count.submissions, 0)}
+              {forms.reduce((sum, f) => sum + (f._count?.submissions ?? 0), 0)}
             </div>
           </div>
         </div>
