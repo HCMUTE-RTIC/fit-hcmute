@@ -218,7 +218,7 @@ export default function News() {
               TIN TỨC &amp; SỰ KIỆN
             </h1>
             <p style={{ fontSize: 20, lineHeight: "32.5px", color: "#64748b" }}>
-              Cập nhật những hoạt động mới nhất của Khoa CNTT và chuỗi sự kiện kỷ niệm 25 năm
+              Cập nhật những hoạt động mới nhất của FIT-HCMUTE và chuỗi sự kiện kỷ niệm 25 năm thành lập
             </p>
           </motion.div>
         </div>

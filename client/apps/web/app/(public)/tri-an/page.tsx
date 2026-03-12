@@ -46,7 +46,7 @@ export default function Alumni() {
       {/* Hero Section */}
       <section
         className="relative min-h-[400px] flex items-center"
-        style={{ 
+        style={{
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
@@ -80,8 +80,7 @@ export default function Alumni() {
             <p
               className="text-xl leading-relaxed text-gray-200 mb-10"
             >
-              Gửi lời chúc mừng, chia sẻ kỷ niệm hoặc đăng ký tham dự các sự kiện kỷ niệm 25 năm.
-              Hãy cùng chúng tôi tạo nên những khoảnh khắc đáng nhớ!
+              Tri ân người đi trước, kết nối thế hệ mai sau. Hãy để lại lời chúc hoặc đăng ký tham dự để cùng viết tiếp hành trình rực rỡ này
             </p>
             <button
               onClick={() => {
@@ -233,7 +232,7 @@ export default function Alumni() {
                     onBlur={(e) => {
                       e.target.style.borderColor = "#E2E8F0";
                     }}
-                   
+
                   />
                 </div>
 
@@ -319,7 +318,7 @@ export default function Alumni() {
         </div>
       </section>
 
-    
+
     </div>
   );
 }

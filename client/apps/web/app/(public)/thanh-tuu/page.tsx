@@ -34,7 +34,7 @@ export default function Achievements() {
       {/* Hero Section */}
       <section
         className="relative"
-        style={{ 
+        style={{
           backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
@@ -60,7 +60,7 @@ export default function Achievements() {
               className="text-xl leading-relaxed"
               style={{ color: "var(--color-text-gray)" }}
             >
-              25 năm xây dựng và phát triển, Khoa CNTT tự hào với những thành tựu vượt bậc
+              25 năm xây dựng và phát triển, FIT-HCMUTE tự hào với những thành tựu vượt bậc
               trong đào tạo, nghiên cứu và đóng góp cho cộng đồng
             </p>
           </motion.div>
