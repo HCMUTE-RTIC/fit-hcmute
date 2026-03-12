@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
@@ -11,10 +12,16 @@ import {
 import { generateSlug } from '../common/utils/slug.util';
 import { validateFieldType } from '../common/utils/validation.util';
 import { SubmitFormDto } from 'src/forms/dto/submit-form.dto';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class FormsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(FormsService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
 
   private async generateUniqueSlug(title: string): Promise<string> {
     let slug = generateSlug(title);
@@ -133,12 +140,56 @@ export class FormsService {
       }
     }
 
-    return this.prisma.formSubmission.create({
+    const submission = await this.prisma.formSubmission.create({
       data: {
         formId: formDef.id,
         eventId: formDef.eventId,
         data: cleanData,
       },
     });
+
+    // === PUSH JOB GỬI EMAIL CẢM ƠN (Fire-and-forget) ===
+    this.queueThankYouEmail(cleanData, formDef.title);
+
+    return submission;
+  }
+
+  /**
+   * Tìm email + tên từ form data rồi đẩy job email cảm ơn vào queue.
+   * Best-effort: nếu không tìm thấy email thì bỏ qua.
+   */
+  private queueThankYouEmail(
+    data: Record<string, any>,
+    formTitle: string,
+  ): void {
+    // Tìm field email (best-effort matching)
+    const emailKeys = ['email', 'e_mail', 'e-mail', 'mail'];
+    const emailKey = Object.keys(data).find((key) =>
+      emailKeys.includes(key.toLowerCase()),
+    );
+    if (!emailKey || !data[emailKey]) return;
+
+    // Tìm field tên (best-effort matching)
+    const nameKeys = [
+      'full_name',
+      'fullname',
+      'ho_ten',
+      'hoten',
+      'name',
+      'ten',
+      'ho_va_ten',
+    ];
+    const nameKey = Object.keys(data).find((key) =>
+      nameKeys.includes(key.toLowerCase()),
+    );
+    const recipientName = nameKey ? String(data[nameKey]) : 'Bạn';
+
+    // Fire-and-forget – không await, không ảnh hưởng response
+    this.mailService
+      .sendThankYouEmail(String(data[emailKey]), recipientName, formTitle)
+      .catch((err) =>
+        this.logger.error('Failed to queue thank-you email', err),
+      );
   }
 }
+
