@@ -132,7 +132,7 @@ export function SeoScorePanel({
       <div className="p-6 space-y-5">
         {/* Score circle */}
         <div className="flex items-center gap-4">
-          <div className="relative flex-shrink-0">
+          <div className="relative shrink-0">
             <svg width="72" height="72" viewBox="0 0 72 72" className="-rotate-90">
               <circle cx="36" cy="36" r="28" fill="none" stroke="currentColor" strokeWidth="6" className="text-slate-200 dark:text-slate-700" />
               <circle
@@ -161,19 +161,19 @@ export function SeoScorePanel({
           {checks.map((c, i) => (
             <li key={i} className="flex items-start gap-2 text-sm">
               {c.pass ? (
-                <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <span className="mt-0.5 shrink-0 w-4 h-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                   <svg className="w-2.5 h-2.5 text-green-600" viewBox="0 0 10 10" fill="none">
                     <path d="M2 5l2.5 2.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>
               ) : c.warn ? (
-                <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                <span className="mt-0.5 shrink-0 w-4 h-4 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
                   <svg className="w-2.5 h-2.5 text-yellow-600" viewBox="0 0 10 10" fill="none">
                     <path d="M5 3v3M5 7.5v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </span>
               ) : (
-                <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                <span className="mt-0.5 shrink-0 w-4 h-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                   <svg className="w-2.5 h-2.5 text-red-500" viewBox="0 0 10 10" fill="none">
                     <path d="M3 3l4 4M7 3l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
@@ -188,7 +188,58 @@ export function SeoScorePanel({
             </li>
           ))}
         </ul>
+
+        {/* Validate tools */}
+        {slug && (
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+              Kiểm tra sau khi publish
+            </p>
+            <div className="space-y-2">
+              <ValidateLink
+                href={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL || "https://25nam.fit.hcmute.edu.vn"}/tin-tuc/${slug}`)}`}
+                label="PageSpeed / Lighthouse"
+                desc="Chấm SEO, hiệu năng, a11y"
+                color="text-blue-600 dark:text-blue-400"
+              />
+              <ValidateLink
+                href={`https://search.google.com/test/rich-results?url=${encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL || "https://25nam.fit.hcmute.edu.vn"}/tin-tuc/${slug}`)}`}
+                label="Rich Results Test"
+                desc="Kiểm tra JSON-LD structured data"
+                color="text-green-600 dark:text-green-400"
+              />
+              <ValidateLink
+                href={`https://developers.facebook.com/tools/debug/?q=${encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL || "https://25nam.fit.hcmute.edu.vn"}/tin-tuc/${slug}`)}`}
+                label="Facebook OG Debugger"
+                desc="Preview ảnh khi share Facebook"
+                color="text-indigo-600 dark:text-indigo-400"
+              />
+            </div>
+            <p className="mt-2 text-xs text-slate-400 dark:text-slate-500 italic">
+              Chỉ hoạt động sau khi bài đã được publish.
+            </p>
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+function ValidateLink({ href, label, desc, color }: { href: string; label: string; desc: string; color: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-between gap-2 rounded-md px-3 py-2 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition group"
+    >
+      <div>
+        <span className={`text-xs font-medium ${color}`}>{label}</span>
+        <p className="text-xs text-slate-400 dark:text-slate-500">{desc}</p>
+      </div>
+      <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 shrink-0" viewBox="0 0 14 14" fill="none">
+        <path d="M3 11L11 3M11 3H7M11 3V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </a>
   );
 }
