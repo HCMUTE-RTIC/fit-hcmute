@@ -2,26 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getAuthHeaders } from '@/lib/auth';
-
-interface Form {
-  id: string;
-  title: string;
-  slug: string;
-  description?: string;
-  active: boolean;
-  createdAt: string;
-  _count: {
-    submissions: number;
-  };
-  event?: {
-    title: string;
-    slug: string;
-  };
-}
+import { toast } from 'sonner';
+import { FormsService, type FormDefinition } from '@/services/forms.service';
 
 export default function AdminFormsListPage() {
-  const [forms, setForms] = useState<Form[]>([]);
+  const [forms, setForms] = useState<FormDefinition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,31 +17,12 @@ export default function AdminFormsListPage() {
   const fetchForms = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/forms', {
-        headers: getAuthHeaders(),
-      });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          setError('Chưa đăng nhập. Vui lòng đăng nhập với tài khoản SUPER_ADMIN');
-          return;
-        }
-        if (response.status === 403) {
-          setError('Không có quyền truy cập. Cần quyền SUPER_ADMIN');
-          return;
-        }
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.message || 'Failed to fetch forms');
-      }
-      
-      const data = await response.json();
+      const data = await FormsService.findAll();
       setForms(data);
       setError('');
     } catch (err) {
-      console.error('Error fetching forms:', err);
-      if (!error) {
-        setError(err instanceof Error ? err.message : 'Không thể kết nối tới server');
-      }
+      const msg = err instanceof Error ? err.message : 'Không thể kết nối tới server';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -64,27 +30,12 @@ export default function AdminFormsListPage() {
 
   const deleteForm = async (id: string, title: string) => {
     if (!confirm(`Bạn có chắc muốn xóa form "${title}"?`)) return;
-
     try {
-      const response = await fetch(`http://localhost:3001/api/forms/${id}`, {
-        method: 'DELETE',
-        headers: getAuthHeaders(),
-      });
-
-      if (response.ok) {
-        alert('Xóa form thành công');
-        fetchForms();
-      } else {
-        if (response.status === 401 || response.status === 403) {
-          alert('Không có quyền xóa form. Cần đăng nhập với quyền SUPER_ADMIN');
-          return;
-        }
-        const errorData = await response.json().catch(() => null);
-        alert(errorData?.message || 'Lỗi khi xóa form');
-      }
-    } catch (error) {
-      console.error('Error deleting form:', error);
-      alert('Không thể kết nối tới server');
+      await FormsService.remove(id);
+      toast.success('Xóa form thành công');
+      fetchForms();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Lỗi khi xóa form');
     }
   };
 

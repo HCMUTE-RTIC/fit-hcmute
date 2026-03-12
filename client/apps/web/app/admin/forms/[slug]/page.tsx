@@ -3,38 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { getAuthHeaders } from '@/lib/auth';
-
-interface FormField {
-  id: string;
-  name: string;
-  label: string;
-  type: string;
-  required: boolean;
-  options?: string[];
-  order: number;
-}
-
-interface FormDetails {
-  id: string;
-  title: string;
-  slug: string;
-  description?: string;
-  active: boolean;
-  createdAt: string;
-  fields: FormField[];
-  event?: {
-    title: string;
-  };
-  _count?: {
-    submissions: number;
-  };
-}
+import { FormsService, type FormDefinition } from '@/services/forms.service';
 
 export default function FormDetailsPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const [form, setForm] = useState<FormDetails | null>(null);
+  const [form, setForm] = useState<FormDefinition | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -45,30 +19,11 @@ export default function FormDetailsPage() {
   const fetchForm = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3001/api/forms/${slug}`, {
-        headers: getAuthHeaders(),
-      });
-      
-      if (!response.ok) {
-        if (response.status === 404) {
-          setError('Không tìm thấy form');
-          return;
-        }
-        if (response.status === 401 || response.status === 403) {
-          setError('Không có quyền xem form này');
-          return;
-        }
-        throw new Error('Failed to fetch form');
-      }
-      
-      const data = await response.json();
+      const data = await FormsService.findOne(slug);
       setForm(data);
       setError('');
     } catch (err) {
-      console.error('Error fetching form:', err);
-      if (!error) {
-        setError('Không thể tải thông tin form');
-      }
+      setError(err instanceof Error ? err.message : 'Không thể tải thông tin form');
     } finally {
       setLoading(false);
     }

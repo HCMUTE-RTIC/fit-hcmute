@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getAuthHeaders } from '@/lib/auth';
 import { toast } from 'sonner';
+import { FormsService } from '@/services/forms.service';
 import { Trash2, ChevronDown, ChevronUp, GripVertical, Plus, Type, AlignLeft, Mail, Phone, CheckSquare, ListOrdered, Upload, Circle, CheckCircle2 } from 'lucide-react';
 
 import { Card, CardContent, CardFooter, CardHeader } from "@workspace/ui/components/card";
@@ -101,27 +101,11 @@ export default function FormBuilderPage() {
 
     try {
       setSaving(true);
-      const response = await fetch('http://localhost:3001/api/forms', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        toast.success('Tạo form thành công!');
-        router.push(`/admin/forms/${result.slug}`);
-      } else {
-        if (response.status === 401 || response.status === 403) {
-          toast.error('Không có quyền tạo form (cần quyền SUPER_ADMIN)');
-          return;
-        }
-        const error = await response.json().catch(() => null);
-        toast.error(`Lỗi: ${error?.message || 'Không thể tạo form'}`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Không thể kết nối tới server.');
+      const result = await FormsService.create(formData);
+      toast.success('Tạo form thành công!');
+      router.push(`/admin/forms/${result.slug}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Không thể kết nối tới server');
     } finally {
       setSaving(false);
     }
