@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Plus, Filter, Download, MoreVertical, Edit, Trash2 } from "lucide-react";
+import { Search, Plus, Filter, Download, Edit, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { ArticlesService, Article } from "@/services/articles.service";
 
 export default function ArticleList() {
@@ -28,14 +29,21 @@ export default function ArticleList() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Bạn có chắc chắn muốn xoá bài viết này?")) return;
-    
-    try {
-      await ArticlesService.remove(id);
-      fetchArticles(); // Refresh list
-    } catch (err: any) {
-      alert("Xoá bài viết thất bại: " + err.message);
-    }
+    toast("Bạn có chắc chắn muốn xóa bài viết này?", {
+      action: {
+        label: "Xóa",
+        onClick: async () => {
+          try {
+            await ArticlesService.remove(id);
+            toast.success("Đã xóa bài viết thành công");
+            fetchArticles();
+          } catch (err: any) {
+            toast.error("Xóa thất bại: " + err.message);
+          }
+        },
+      },
+      cancel: { label: "Hủy", onClick: () => {} },
+    });
   };
 
   const filteredData = articles.filter((article) =>

@@ -78,7 +78,6 @@ export default function NewArticlePage() {
     try {
       await ArticlesService.create({
         title: formData.title,
-        slug: formData.slug,
         summary: "",
         content: formData.content ? JSON.stringify(formData.content) : "",
         thumbnail,
@@ -178,7 +177,7 @@ export default function NewArticlePage() {
                 </label>
                 <div className="flex items-center">
                   <span className="inline-flex items-center px-4 py-2.5 rounded-l-md border border-r-0 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-sm">
-                    fit.hcmute.edu.vn/
+                    25nam.fit.hcmute.edu.vn/
                   </span>
                   <input
                     type="text"
@@ -199,7 +198,7 @@ export default function NewArticlePage() {
                   <EditorJSWrapper
                     value={formData.content}
                     onChange={(val) =>
-                      setFormData({ ...formData, content: val })
+                      setFormData((prev) => ({ ...prev, content: val }))
                     }
                   />
                 </div>
@@ -287,7 +286,7 @@ export default function NewArticlePage() {
                 </p>
                 <div className="max-w-xl">
                   <div className="text-sm text-slate-800 dark:text-slate-200 truncate flex items-center gap-1">
-                    https://fit.hcmute.edu.vn{" "}
+                    https://25nam.fit.hcmute.edu.vn{" "}
                     <span className="text-slate-400">›</span>{" "}
                     {formData.slug || "duong-dan"}
                   </div>

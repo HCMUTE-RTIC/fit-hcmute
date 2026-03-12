@@ -49,7 +49,7 @@ export default function EditArticlePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const article = await ArticlesService.findBySlug(slug);
+        const article = await ArticlesService.findBySlugAdmin(slug);
         setArticleId(article.id);
         let parsedContent = null;
         try {
@@ -113,12 +113,11 @@ export default function EditArticlePage() {
     try {
       await ArticlesService.update(articleId, {
         title: formData.title,
-        slug: formData.slug,
         summary: "",
         content: formData.content ? JSON.stringify(formData.content) : "",
         thumbnail,
         category: formData.category as "NEWS" | "EVENT",
-        status: formData.status as "DRAFT" | "PUBLISHED",
+        status: formData.status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
         metaTitle: formData.metaTitle,
         metaDescription: formData.metaDescription,
         focusKeywords: formData.focusKeyword,
@@ -220,18 +219,17 @@ export default function EditArticlePage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   Đường dẫn (Slug)
+                  <span className="ml-2 text-xs font-normal text-slate-400">tự động cập nhật khi đổi tiêu đề</span>
                 </label>
                 <div className="flex items-center">
                   <span className="inline-flex items-center px-4 py-2.5 rounded-l-md border border-r-0 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-sm">
-                    fit.hcmute.edu.vn/
+                    25nam.fit.hcmute.edu.vn/
                   </span>
                   <input
                     type="text"
-                    className="flex-1 rounded-none rounded-r-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+                    readOnly
+                    className="flex-1 rounded-none rounded-r-md border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-2.5 text-slate-500 dark:text-slate-400 outline-none cursor-default"
                     value={formData.slug}
-                    onChange={(e) =>
-                      setFormData({ ...formData, slug: e.target.value })
-                    }
                   />
                 </div>
               </div>
@@ -244,7 +242,7 @@ export default function EditArticlePage() {
                   <EditorJSWrapper
                     value={formData.content}
                     onChange={(val) =>
-                      setFormData({ ...formData, content: val })
+                      setFormData((prev) => ({ ...prev, content: val }))
                     }
                   />
                 </div>
@@ -329,7 +327,7 @@ export default function EditArticlePage() {
                 </p>
                 <div className="max-w-xl">
                   <div className="text-sm text-slate-800 dark:text-slate-200 truncate flex items-center gap-1">
-                    https://fit.hcmute.edu.vn{" "}
+                    https://25nam.fit.hcmute.edu.vn{" "}
                     <span className="text-slate-400">›</span>{" "}
                     {formData.slug || "duong-dan"}
                   </div>

@@ -13,10 +13,10 @@ export class ArticlesService {
     ) { }
 
     // Hàm tạo Slug duy nhất chuẩn SEO
-    private async generateUniqueSlug(title: string): Promise<string> {
+    private async generateUniqueSlug(title: string, excludeId?: string): Promise<string> {
         let slug = slugify(title, { lower: true, strict: true, locale: 'vi' });
         const exists = await this.prisma.article.findUnique({ where: { slug } });
-        if (exists) {
+        if (exists && exists.id !== excludeId) {
             slug = `${slug}-${Date.now()}`;
         }
         return slug;
@@ -37,7 +37,7 @@ export class ArticlesService {
                 slug,
                 authorId,
                 publishedAt: createArticleDto.status === 'PUBLISHED' ? new Date() : null,
-            },
+            } as any,
         });
 
         // Ngay khi tạo thành công, tiến hành invalidates cache Redis 
@@ -73,12 +73,25 @@ export class ArticlesService {
         return article;
     }
 
+    // Dùng cho admin edit — KHÔNG tăng lượt xem
+    async findBySlugAdmin(slug: string) {
+        const article = await this.prisma.article.findUnique({
+            where: { slug },
+            include: {
+                author: { select: { id: true, name: true, avatar: true } }
+            }
+        });
+
+        if (!article) throw new NotFoundException('Không tìm thấy bài viết');
+        return article;
+    }
+
     async update(id: string, updateArticleDto: UpdateArticleDto) {
         const data: any = { ...updateArticleDto };
 
         // Nếu user sửa tiêu đề, ta có thể sinh lại đường dẫn thân thiện mới
         if (updateArticleDto.title) {
-            data.slug = await this.generateUniqueSlug(updateArticleDto.title);
+            data.slug = await this.generateUniqueSlug(updateArticleDto.title, id);
         }
 
         // Auto stamp ngày tháng xuất bản
