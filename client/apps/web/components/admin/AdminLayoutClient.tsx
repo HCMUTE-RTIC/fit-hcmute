@@ -1,11 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import { usePathname, useRouter } from "next/navigation";
+import { getAuthToken } from "../../../lib/auth";
 
 export function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+    const token = getAuthToken();
+
+    // Auth Guard Logic
+    if (pathname === "/admin/login") {
+      // Ignore auth requirement for login page itself
+      setIsAuthenticated(true);
+    } else {
+      if (!token || token === "undefined") {
+        setIsAuthenticated(false);
+        router.push("/admin/login");
+      } else {
+        setIsAuthenticated(true);
+      }
+    }
+  }, [pathname, router]);
+
+  if (!mounted || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0B1120]">
+        <div className="animate-spin relative flex h-8 w-8">
+          <span className="absolute inline-flex h-full w-full rounded-full border-2 border-slate-300/20 dark:border-slate-700/20"></span>
+          <span className="absolute inline-flex h-full w-full rounded-full border-2 border-blue-600 border-t-transparent"></span>
+        </div>
+      </div>
+    )
+  }
+
+  // Nếu đang ở trang Login, render riêng biệt phần lưới layout, xoá bỏ Header/Sidebar
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   return (
     <div className="min-h-screen bg-transparent text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 relative overflow-x-hidden">
