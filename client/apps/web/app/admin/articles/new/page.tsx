@@ -61,7 +61,9 @@ export default function NewArticlePage() {
     try {
       const response = await MediaService.uploadSingle(file);
       const media = Array.isArray(response.data) ? response.data[0] : response.data;
-      setThumbnail(media.url);
+      if (media?.url) {
+        setThumbnail(media.url);
+      }
     } catch {
       toast.error("Lỗi khi tải ảnh bìa lên");
     } finally {

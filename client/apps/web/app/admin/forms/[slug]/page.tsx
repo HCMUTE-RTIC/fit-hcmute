@@ -173,7 +173,9 @@ export default function FormDetailsPage() {
       const arr = [...prev];
       const swap = direction === 'up' ? index - 1 : index + 1;
       if (swap < 0 || swap >= arr.length) return arr;
-      [arr[index], arr[swap]] = [arr[swap], arr[index]];
+      const temp = arr[index];
+      arr[index] = arr[swap] as EditableField;
+      arr[swap] = temp as EditableField;
       return arr;
     });
   };
