@@ -58,7 +58,7 @@ export function generatePageMetadata({
       card: 'summary_large_image',
       title: `${title} | ${siteConfig.shortName}`,
       description,
-      images: [image],
+      images: image ? [image] : [],
     },
   };
 

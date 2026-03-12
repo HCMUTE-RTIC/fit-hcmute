@@ -20,7 +20,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'https://25nam.fit.hcmute.edu.vn'
+      'http://localhost:3001',
+      'https://25nam.fit.hcmute.edu.vn',
     ],
     credentials: true,
   });

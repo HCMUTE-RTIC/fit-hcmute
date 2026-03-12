@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ChevronRight, Save, Image as ImageIcon, Check, X } from "lucide-react";
+import { ChevronRight, Save, Image as ImageIcon, X } from "lucide-react";
+import { toast } from "sonner";
+import { ArticlesService } from "@/services/articles.service";
+import { MediaService } from "@/services/media.service";
 
 // Dynamically import EditorJS
 const EditorJSWrapper = dynamic(
@@ -21,16 +25,21 @@ const EditorJSWrapper = dynamic(
 );
 
 export default function NewArticlePage() {
+  const router = useRouter();
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    category: "news",
+    category: "NEWS",
     status: "DRAFT",
     content: null,
     metaTitle: "",
     metaDescription: "",
     focusKeyword: "",
   });
+  const [thumbnail, setThumbnail] = useState<string>("");
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Basic auto-generate slug for Vietnamese
   const generateSlug = (text: string) => {
@@ -43,6 +52,50 @@ export default function NewArticlePage() {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
       .trim();
+  };
+
+  const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setThumbnailUploading(true);
+    try {
+      const response = await MediaService.uploadSingle(file);
+      const media = Array.isArray(response.data) ? response.data[0] : response.data;
+      if (media?.url) {
+        setThumbnail(media.url);
+      }
+    } catch {
+      toast.error("Lỗi khi tải ảnh bìa lên");
+    } finally {
+      setThumbnailUploading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!formData.title) {
+      toast.error("Vui lòng nhập tiêu đề bài viết");
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await ArticlesService.create({
+        title: formData.title,
+        summary: "",
+        content: formData.content ? JSON.stringify(formData.content) : "",
+        thumbnail,
+        category: formData.category as "NEWS" | "EVENT",
+        status: formData.status as "DRAFT" | "PUBLISHED",
+        metaTitle: formData.metaTitle,
+        metaDescription: formData.metaDescription,
+        focusKeywords: formData.focusKeyword,
+      });
+      toast.success("Bài viết đã được lưu thành công!");
+      router.push("/admin/articles");
+    } catch (e: any) {
+      toast.error(e.message || "Lỗi khi lưu bài viết");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +179,7 @@ export default function NewArticlePage() {
                 </label>
                 <div className="flex items-center">
                   <span className="inline-flex items-center px-4 py-2.5 rounded-l-md border border-r-0 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-sm">
-                    fit.hcmute.edu.vn/
+                    25nam.fit.hcmute.edu.vn/
                   </span>
                   <input
                     type="text"
@@ -147,7 +200,7 @@ export default function NewArticlePage() {
                   <EditorJSWrapper
                     value={formData.content}
                     onChange={(val) =>
-                      setFormData({ ...formData, content: val })
+                      setFormData((prev) => ({ ...prev, content: val }))
                     }
                   />
                 </div>
@@ -235,7 +288,7 @@ export default function NewArticlePage() {
                 </p>
                 <div className="max-w-xl">
                   <div className="text-sm text-slate-800 dark:text-slate-200 truncate flex items-center gap-1">
-                    https://fit.hcmute.edu.vn{" "}
+                    https://25nam.fit.hcmute.edu.vn{" "}
                     <span className="text-slate-400">›</span>{" "}
                     {formData.slug || "duong-dan"}
                   </div>
@@ -291,19 +344,27 @@ export default function NewArticlePage() {
                     setFormData({ ...formData, category: e.target.value })
                   }
                 >
-                  <option value="news">Tin tức - Sự kiện</option>
-                  <option value="academic">Học thuật</option>
-                  <option value="alumni">Chuyên mục Cựu Sinh Viên</option>
+                  <option value="NEWS">Tin tức</option>
+                  <option value="EVENT">Sự kiện</option>
                 </select>
               </div>
 
               <div className="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
-                <button className="flex-1 rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                <button
+                  type="button"
+                  onClick={() => router.push("/admin/articles")}
+                  className="flex-1 rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition"
+                >
                   Hủy
                 </button>
-                <button className="flex-1 inline-flex justify-center items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition">
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="flex-1 inline-flex justify-center items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                >
                   <Save className="h-4 w-4" />
-                  Đăng tải
+                  {isSaving ? "Đang lưu..." : "Đăng tải"}
                 </button>
               </div>
             </div>
@@ -317,18 +378,47 @@ export default function NewArticlePage() {
               </h3>
             </div>
             <div className="p-6">
-              <div className="relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-6 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 group">
-                <ImageIcon className="h-10 w-10 text-slate-400 dark:text-slate-500 mb-3 group-hover:text-blue-500 transition-colors" />
-                <p className="text-sm font-medium text-slate-600 dark:text-slate-300 text-center">
-                  Kéo thả file ảnh hoặc{" "}
-                  <span className="text-blue-600 dark:text-blue-500 cursor-pointer hover:underline">
-                    nhấn vào đây
-                  </span>
-                </p>
-                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 text-center">
-                  PNG, JPG up to 5MB
-                </p>
-              </div>
+              <input
+                ref={thumbnailInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleThumbnailChange}
+              />
+              {thumbnail ? (
+                <div className="relative rounded-lg overflow-hidden">
+                  <img src={thumbnail} alt="Thumbnail" className="w-full h-40 object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setThumbnail("")}
+                    className="absolute top-2 right-2 rounded-full bg-black/50 p-1 text-white hover:bg-black/70 transition"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  onClick={() => thumbnailInputRef.current?.click()}
+                  className="relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-6 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 group cursor-pointer"
+                >
+                  {thumbnailUploading ? (
+                    <p className="text-sm text-slate-500">Đang tải lên...</p>
+                  ) : (
+                    <>
+                      <ImageIcon className="h-10 w-10 text-slate-400 dark:text-slate-500 mb-3 group-hover:text-blue-500 transition-colors" />
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-300 text-center">
+                        Kéo thả file ảnh hoặc{" "}
+                        <span className="text-blue-600 dark:text-blue-500 cursor-pointer hover:underline">
+                          nhấn vào đây
+                        </span>
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1 text-center">
+                        PNG, JPG up to 5MB
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

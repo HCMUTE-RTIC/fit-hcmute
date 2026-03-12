@@ -86,6 +86,20 @@ export const UsersService = {
         return res.json();
     },
 
+    getById: async (id: string): Promise<UserItem> => {
+        const res = await fetch(`${API_URL}/api/v1/users/${id}`, {
+            headers: {
+                Authorization: `Bearer ${getAuthToken()}`,
+            },
+            cache: "no-store",
+        });
+
+        if (!res.ok) {
+            throw new Error("Không thể tải thông tin người dùng");
+        }
+        return res.json();
+    },
+
     delete: async (id: string): Promise<void> => {
         const res = await fetch(`${API_URL}/api/v1/users/${id}`, {
             method: "DELETE",

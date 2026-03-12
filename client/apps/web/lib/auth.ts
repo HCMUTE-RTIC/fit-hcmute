@@ -18,9 +18,29 @@ export const getAuthToken = (): string | null => {
   export const removeAuthToken = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("userInfo");
     }
   };
 
+
+  export interface UserInfo {
+    id: string;
+    email: string;
+    name: string;
+    role: "SUPER_ADMIN" | "EDITOR" | "AUTHOR";
+  }
+
+  export const setUserInfo = (user: UserInfo) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("userInfo", JSON.stringify(user));
+    }
+  };
+
+  export const getUserInfo = (): UserInfo | null => {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem("userInfo");
+    return raw ? JSON.parse(raw) : null;
+  };
 
   // tự động thêm jwt token vào request, chuẩn hoá header, bảo vệ endpoint
   export const getAuthHeaders = (): HeadersInit => {
