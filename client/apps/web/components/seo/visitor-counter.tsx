@@ -31,18 +31,24 @@ async function getVisitorStats() {
   const token = await getUmamiToken();
   if (!token) return null;
 
+  // startAt: ngày thành lập web (1/1/2025), endAt: hiện tại
+  const startAt = new Date("2025-01-01").getTime();
+  const endAt = Date.now();
+
   try {
     const res = await fetch(
-      `${apiUrl}/api/websites/${websiteId}/stats?startAt=0&endAt=${Date.now()}`,
+      `${apiUrl}/api/websites/${websiteId}/stats?startAt=${startAt}&endAt=${endAt}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-        next: { revalidate: 3600 },
+        next: { revalidate: 300 }, // cache 5 phút
       }
     );
     if (!res.ok) return null;
     const data = await res.json();
+    const visitors = data.visitors?.value ?? 0;
+    if (visitors === 0) return null; // ẩn nếu chưa có dữ liệu
     return {
-      visitors: data.visitors?.value ?? 0,
+      visitors,
       pageviews: data.pageviews?.value ?? 0,
     };
   } catch {
@@ -62,7 +68,7 @@ export async function VisitorCounter() {
     >
       <Users size={15} className="shrink-0" />
       <span>
-        <span className="font-semibold" style={{ color: "var(--color-primary-700)" }}>
+        <span className="font-semibold" style={{ color: "var(--color-primary-600)" }}>
           {stats.visitors.toLocaleString("vi-VN")}
         </span>{" "}
         lượt truy cập

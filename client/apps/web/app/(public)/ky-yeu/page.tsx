@@ -12,14 +12,23 @@ export default function KyYeuPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "40px",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Banner */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/ky-yeu/banner_kyyeu.jpg"
+            alt="Banner Kỷ yếu 25 năm"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -28,23 +37,20 @@ export default function KyYeuPage() {
           >
             <BookOpen
               size={64}
-              className="mx-auto mb-6"
-              style={{ color: "var(--color-primary-600)" }}
+              className="mx-auto mb-6 text-white"
             />
             <h1
-              className="font-extrabold mb-6"
+              className="font-extrabold mb-6 text-white"
               style={{
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
-                color: "var(--color-primary-900)",
               }}
             >
               KỶ YẾU 25 NĂM
             </h1>
             <p
-              className="text-xl leading-relaxed"
-              style={{ color: "var(--color-text-gray)" }}
+              className="text-xl leading-relaxed text-gray-200"
             >
-              Lưu giữ những khoảnh khắc đáng nhớ của Khoa Công nghệ Thông tin qua 25 năm hình thành và phát triển
+              Cùng ôn lại những trang ký ức đẹp nhất trong hành trình 25 năm phát triển của FIT-HCMUTE
             </p>
           </motion.div>
         </div>

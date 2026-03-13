@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ChevronUp, Lightbulb, Globe, Award } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const imgImageHcmuteCampus = "/temp.jpg";
+const imgImageHcmuteCampus = "/trang-chu-home/banner_trangchu.jpg";
 
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -169,7 +169,7 @@ export default function Home() {
               className="max-w-2xl mx-auto"
               style={{ fontSize: "18px", color: "#64748b" }}
             >
-              Ba giá trị cốt lõi định hình nên thế hệ kỹ sư CNTT chất lượng cao
+              Ba giá trị cốt lõi định hình nên thế hệ kỹ sư FIT-HCMUTE
             </p>
           </motion.div>
 
@@ -177,24 +177,24 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
               {
-                icon: Lightbulb,
-                title: "Sáng tạo",
-                description:
-                  "Khuyến khích tư duy đổi mới, sáng tạo và nghiên cứu khoa học ứng dụng thực tiễn.",
-                iconColor: "#2563EB",
-              },
-              {
                 icon: Award,
                 title: "Nhân bản",
                 description:
-                  "Đào tạo không chỉ kiến thức mà còn đạo đức, trách nhiệm xã hội và tinh thần cống hiến.",
+                  "Đặt con người làm trung tâm, giáo dục kết hợp hài hòa giữa truyền đạt tri thức chuyên môn và bồi dưỡng đạo đức, lòng nhân ái cùng trách nhiệm phụng sự cộng đồng.",
                 iconColor: "#DC2626",
+              },
+              {
+                icon: Lightbulb,
+                title: "Sáng tạo",
+                description:
+                  "Lấy đổi mới làm cốt lõi, nhà trường thúc đẩy phương pháp học tập chủ động và nghiên cứu khoa học nhằm giúp sinh viên kiến tạo các giá trị thực tiễn cho xã hội.",
+                iconColor: "#2563EB",
               },
               {
                 icon: Globe,
                 title: "Hội nhập",
                 description:
-                  "Chương trình đào tạo chuẩn quốc tế, kết nối với các trường đại học hàng đầu thế giới.",
+                  "Trang bị toàn diện về ngoại ngữ, kỹ năng mềm và tư duy toàn cầu để sinh viên tự tin làm việc và thích ứng nhanh chóng trong môi trường quốc tế đa văn hóa.",
                 iconColor: "#1E3A8A",
               },
             ].map((card, index) => (
@@ -286,8 +286,8 @@ export default function Home() {
                 color: "#64748b",
               }}
             >
-              Hãy cùng chúng tôi tạo nên những kỷ niệm đẹp trong dịp kỷ niệm
-              25 năm thành lập
+              Hãy cùng tạo nên những kỷ niệm đẹp trong dịp kỷ niệm
+              25 năm thành lập FIT-HCMUTE
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link

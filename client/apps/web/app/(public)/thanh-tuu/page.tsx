@@ -33,14 +33,25 @@ export default function Achievements() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{ 
-          backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/thu-vien/thuvienkiniem2.jpg"
+            alt="Thành tựu Khoa CNTT"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,16 +62,16 @@ export default function Achievements() {
               className="font-extrabold mb-6"
               style={{
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
-                color: "var(--color-primary-900)",
+                color: "#ffffff",
               }}
             >
               THÀNH TỰU NỔI BẬT
             </h1>
             <p
               className="text-xl leading-relaxed"
-              style={{ color: "var(--color-text-gray)" }}
+              style={{ color: "#e2e8f0" }}
             >
-              25 năm xây dựng và phát triển, Khoa CNTT tự hào với những thành tựu vượt bậc
+              25 năm xây dựng và phát triển, FIT-HCMUTE tự hào với những thành tựu vượt bậc
               trong đào tạo, nghiên cứu và đóng góp cho cộng đồng
             </p>
           </motion.div>
@@ -154,57 +165,78 @@ export default function Achievements() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: BookOpen,
-                title: "Đề tài cấp Nhà nước",
-                count: "15+",
-                description: "Các đề tài nghiên cứu trọng điểm về AI, IoT, Big Data được triển khai thành công",
-              },
-              {
-                icon: Globe,
-                title: "Công bố quốc tế",
-                count: "200+",
-                description: "Bài báo khoa học trên các tạp chí và hội nghị quốc tế uy tín",
-              },
-              {
-                icon: Trophy,
-                title: "Sáng chế & Giải pháp",
-                count: "30+",
-                description: "Bằng sáng chế và giải pháp hữu ích được cấp bởi Bộ Khoa học & Công nghệ",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 hover:shadow-xl transition-shadow"
-                style={{ boxShadow: "var(--shadow-soft)" }}
-              >
-                <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
-                  style={{ background: "var(--gradient-hero)" }}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Image side */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-xl"
+            >
+              <Image
+                src="/thanh-tuu/nghien-cuu-khoa-hoc/FB_IMG_1772637601718.jpg"
+                alt="Nghiên cứu khoa học"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </motion.div>
+
+            {/* Stats side */}
+            <div className="flex flex-col gap-6">
+              {[
+                {
+                  icon: BookOpen,
+                  title: "Đề tài cấp Nhà nước",
+                  count: "15+",
+                  description: "Các đề tài nghiên cứu trọng điểm về AI, IoT, Big Data được triển khai thành công",
+                },
+                {
+                  icon: Globe,
+                  title: "Công bố quốc tế",
+                  count: "200+",
+                  description: "Bài báo khoa học trên các tạp chí và hội nghị quốc tế uy tín",
+                },
+                {
+                  icon: Trophy,
+                  title: "Sáng chế & Giải pháp",
+                  count: "30+",
+                  description: "Bằng sáng chế và giải pháp hữu ích được cấp bởi Bộ Khoa học & Công nghệ",
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow flex items-center gap-6"
+                  style={{ boxShadow: "var(--shadow-soft)" }}
                 >
-                  <item.icon size={32} className="text-white" />
-                </div>
-                <h3
-                  className="font-bold mb-2"
-                  style={{ fontSize: "var(--text-h3)", color: "var(--color-primary-900)" }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  className="text-3xl font-bold mb-3"
-                  style={{ color: "var(--color-accent-500)" }}
-                >
-                  {item.count}
-                </p>
-                <p style={{ color: "var(--color-text-gray)" }}>{item.description}</p>
-              </motion.div>
-            ))}
+                  <div
+                    className="w-16 h-16 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: "var(--gradient-hero)" }}
+                  >
+                    <item.icon size={32} className="text-white" />
+                  </div>
+                  <div>
+                    <h3
+                      className="font-bold mb-1"
+                      style={{ fontSize: "var(--text-h3)", color: "var(--color-primary-900)" }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-1">{item.description}</p>
+                    <p
+                      className="text-2xl font-bold"
+                      style={{ color: "var(--color-accent-500)" }}
+                    >
+                      {item.count}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -230,33 +262,59 @@ export default function Achievements() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              "University of Technology Sydney (Úc)",
-              "Kyoto Institute of Technology (Nhật)",
-              "California State University (Mỹ)",
-              "Hanyang University (Hàn Quốc)",
-              "Microsoft Innovation Center",
-              "Google Cloud Partner",
-              "AWS Academy",
-              "Cisco Networking Academy",
-            ].map((partner, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="bg-white border-2 border-gray-100 rounded-xl p-6 text-center hover:border-blue-200 transition-all"
-              >
-                <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-3">
-                  <Globe size={24} style={{ color: "var(--color-primary-600)" }} />
-                </div>
-                <p className="font-semibold text-sm" style={{ color: "var(--color-primary-900)" }}>
-                  {partner}
-                </p>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Logos Grid */}
+            <div className="order-2 lg:order-1 grid grid-cols-3 sm:grid-cols-4 gap-4">
+              {[
+                "logo-KMS.png",
+                "dxc-logo.png",
+                "fujinet-logo.png",
+                "hvn_logo.png",
+                "logo-csc.png",
+                "logo-dek.png",
+                "logo-elca.png",
+                "logo-global-cybersoft.png",
+                "logo-lacviet.png",
+                "logo-lampart.png",
+                "logo-tma.png",
+                "logo_gameloft_black.png",
+              ].map((logo, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="bg-white border-2 border-gray-50 rounded-xl p-3 flex items-center justify-center hover:border-blue-100 transition-all hover:-translate-y-1 shadow-sm"
+                  style={{ height: "80px" }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={`/thanh-tuu/source-doi-tac/${logo}`}
+                      alt={`Partner ${index}`}
+                      fill
+                      className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Feature Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="order-1 lg:order-2 relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-xl"
+            >
+              <Image
+                src="/thanh-tuu/hop-tac-quoc-te/KOREAN-BRIDGE-1.jpg"
+                alt="Hợp tác quốc tế và doanh nghiệp"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -353,63 +411,97 @@ export default function Achievements() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                year: "2024",
-                award: "Top 3 Trường đào tạo CNTT hàng đầu Việt Nam",
-                org: "VNExpress Education",
-              },
-              {
-                year: "2023",
-                award: "Chứng nhận chất lượng đào tạo AUN-QA",
-                org: "ASEAN University Network",
-              },
-              {
-                year: "2022",
-                award: "Giải thưởng Sao Khuê cho Đơn vị đào tạo xuất sắc",
-                org: "VINASA",
-              },
-              {
-                year: "2021",
-                award: "Cờ thi đua của Bộ Giáo dục và Đào tạo",
-                org: "Bộ GD&ĐT",
-              },
-            ].map((item, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Certifications / Images */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="flex items-start space-x-4 p-6 bg-white border-l-4 rounded-lg"
-                style={{
-                  borderColor: "var(--color-accent-500)",
-                  boxShadow: "var(--shadow-soft)",
-                }}
+                className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border-4 border-white"
               >
-                <div
-                  className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "var(--color-bg-light)" }}
-                >
-                  <Award size={24} style={{ color: "var(--color-accent-500)" }} />
-                </div>
-                <div>
-                  <p className="font-bold mb-1" style={{ color: "var(--color-accent-500)" }}>
-                    {item.year}
-                  </p>
-                  <h4
-                    className="font-bold mb-1"
-                    style={{ fontSize: "18px", color: "var(--color-primary-900)" }}
-                  >
-                    {item.award}
-                  </h4>
-                  <p className="text-sm" style={{ color: "var(--color-text-gray)" }}>
-                    {item.org}
-                  </p>
-                </div>
+                <Image
+                  src="/thanh-tuu/thanh-tuu/6. HỆ THẠC SĨ ĐẠT KIỂM ĐỊNH CHẤT LƯỢNG.jpg"
+                  alt="Hệ Thạc Sĩ Đạt Kiểm Định"
+                  fill
+                  className="object-cover"
+                />
               </motion.div>
-            ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border-4 border-white sm:mt-12"
+              >
+                <Image
+                  src="/thanh-tuu/thanh-tuu/Bản sao của 470210687_1004949328333965_3121029532383090489_n.jpg"
+                  alt="Chứng nhận chất lượng"
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* Awards List */}
+            <div className="flex flex-col gap-5">
+              {[
+                {
+                  year: "2024",
+                  award: "Đạt chuẩn kiểm định chất lượng AUN-QA",
+                  org: "ASEAN University Network",
+                },
+                {
+                  year: "2023",
+                  award: "Kiểm định chất lượng nội bộ MOET",
+                  org: "Bộ Giáo dục và Đào tạo",
+                },
+                {
+                  year: "2022",
+                  award: "Top 3 Trường đào tạo CNTT xuất sắc khu vực phía Nam",
+                  org: "Các tổ chức đánh giá giáo dục ĐH",
+                },
+                {
+                  year: "2021",
+                  award: "Bằng khen của Bộ Giáo dục và Đào tạo về thành tích xuất sắc",
+                  org: "Bộ GD&ĐT",
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="flex items-start space-x-4 p-5 bg-white border-l-4 rounded-lg hover:-translate-x-1 transition-transform"
+                  style={{
+                    borderColor: "var(--color-accent-500)",
+                    boxShadow: "var(--shadow-soft)",
+                  }}
+                >
+                  <div
+                    className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: "var(--color-bg-light)" }}
+                  >
+                    <Award size={24} style={{ color: "var(--color-accent-500)" }} />
+                  </div>
+                  <div>
+                    <h4
+                      className="font-bold mb-1 leading-tight"
+                      style={{ fontSize: "18px", color: "var(--color-primary-900)" }}
+                    >
+                      {item.award}
+                    </h4>
+                    <p className="font-semibold text-sm mb-1" style={{ color: "var(--color-accent-500)" }}>
+                      Năm {item.year}
+                    </p>
+                    <p className="text-sm" style={{ color: "var(--color-text-gray)" }}>
+                      {item.org}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

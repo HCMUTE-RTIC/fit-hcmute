@@ -33,8 +33,18 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="/tin-tuc" className="hover:opacity-80 transition-opacity" style={{ color: 'var(--color-text-gray)' }}>
+                  Tin tức & Sự kiện
+                </a>
+              </li>
+              <li>
                 <a href="/thanh-tuu" className="hover:opacity-80 transition-opacity" style={{ color: 'var(--color-text-gray)' }}>
                   Thành tựu
+                </a>
+              </li>
+              <li>
+                <a href="/thu-vien" className="hover:opacity-80 transition-opacity" style={{ color: 'var(--color-text-gray)' }}>
+                  Thư viện
                 </a>
               </li>
               <li>
