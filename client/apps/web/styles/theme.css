@@ -429,3 +429,495 @@
   line-height: 1.55;
   margin: 0;
 }
+
+/* ------------------------------------------------------------------ */
+/*  History Card — Enhanced visual elements                           */
+/* ------------------------------------------------------------------ */
+
+/* Inactive cards: slightly dimmed */
+[data-active="false"] .history-card {
+  opacity: 0.88;
+  filter: brightness(0.95);
+  transition: opacity 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Active card: glow ring */
+[data-active="true"] .history-card {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    0 0 0 2px rgba(255, 255, 255, 0.18),
+    0 0 40px rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.35);
+  opacity: 1;
+  filter: brightness(1);
+}
+
+/* Decorative large stage number — positioned top-right */
+.history-card__stage-num {
+  position: absolute;
+  top: -0.5rem;
+  right: 1.5rem;
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.055);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.04em;
+  z-index: 5;
+  transition: color 0.4s ease;
+}
+[data-active="true"] .history-card__stage-num {
+  color: rgba(255, 255, 255, 0.09);
+}
+
+/* Inactive meta row: milestone count + scroll hint */
+.history-card__inactive-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  max-height: 2rem;
+  transition: max-height 0.35s ease-out, opacity 0.35s ease-out, margin-top 0.35s ease-out;
+  opacity: 1;
+}
+[data-active="true"] .history-card__inactive-meta {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+/* Milestone count badge */
+.history-card__ms-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 0.2rem 0.7rem;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(4px);
+}
+.history-card__ms-count-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Scroll hint text — pulses subtly */
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50%       { opacity: 0.75; transform: translateY(2px); }
+}
+
+.history-card__hint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: hint-pulse 2.2s ease-in-out infinite;
+}
+
+/* Milestone tag — warm golden tint */
+.history-card__ms-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 222, 160, 0.95);
+  background: rgba(255, 200, 80, 0.12);
+  border: 1px solid rgba(255, 200, 80, 0.2);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  History Stat Bar                                                   */
+/* ------------------------------------------------------------------ */
+.history-stat-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(29, 78, 216, 0.12);
+  border-radius: 9999px;
+  padding: 0.55rem 1.75rem;
+  box-shadow: 0 2px 16px rgba(29, 78, 216, 0.08), 0 1px 3px rgba(0,0,0,0.06);
+  margin-bottom: 2.5rem;
+}
+
+.history-stat-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.25rem;
+}
+
+.history-stat-bar__value {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 800;
+  color: var(--color-primary-900);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.history-stat-bar__label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-gray);
+  margin-top: 0.1rem;
+}
+
+.history-stat-bar__sep {
+  width: 1px;
+  height: 2.25rem;
+  background: linear-gradient(to bottom, transparent, rgba(29, 78, 216, 0.2), transparent);
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  History Timeline Nav                                               */
+/* ------------------------------------------------------------------ */
+.history-timeline-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.history-timeline-nav__item {
+  display: flex;
+  align-items: center;
+}
+
+.history-timeline-nav__pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(29, 78, 216, 0.14);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 6px rgba(29, 78, 216, 0.07);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+  user-select: none;
+}
+.history-timeline-nav__pill:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(29, 78, 216, 0.28);
+  box-shadow: 0 2px 12px rgba(29, 78, 216, 0.12);
+}
+
+.history-timeline-nav__num {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-primary-600);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 9999px;
+  padding: 0.15rem 0.4rem;
+}
+
+.history-timeline-nav__period {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary-900);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.history-timeline-nav__connector {
+  width: clamp(1.5rem, 3vw, 3rem);
+  height: 1px;
+  background: linear-gradient(to right, rgba(29, 78, 216, 0.25), rgba(126, 34, 206, 0.25));
+  flex-shrink: 0;
+  position: relative;
+}
+.history-timeline-nav__connector::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(126, 34, 206, 0.35);
+}
+
+@media (max-width: 480px) {
+  .history-timeline-nav {
+    gap: 0.5rem;
+  }
+  .history-timeline-nav__connector {
+    display: none;
+  }
+  .history-stat-bar {
+    padding: 0.45rem 1rem;
+  }
+  .history-stat-bar__item {
+    padding: 0 0.75rem;
+  }
+}
+
+/* ================================================================== */
+/*  History Scroll-Snap Layout                                         */
+/* ================================================================== */
+
+.history-snap-wrapper {
+  position: relative;
+}
+
+/* Full-viewport scroll container */
+.history-snap-container {
+  height: 100svh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Each slide */
+.history-snap-slide {
+  height: 100svh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  padding: 2rem 5rem 2rem 4rem;
+  background: #ffffff;
+  position: relative;
+}
+
+/* ── Image column ── */
+.history-snap-img-col {
+  flex: 0 0 52%;
+  height: min(72svh, 560px);
+  position: relative;
+}
+
+.history-snap-img-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Period badge on image */
+.history-snap-period-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  padding: 0.3rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  color: var(--color-primary-900);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Large faded number on image bottom-right */
+.history-snap-img-num {
+  position: absolute;
+  bottom: -0.5rem;
+  right: 0.75rem;
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.18);
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/* ── Content column ── */
+.history-snap-content-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Large gradient number */
+.history-snap-num {
+  font-size: clamp(4.5rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+}
+
+/* Stage label */
+.history-snap-stage-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-gray);
+}
+
+/* Title */
+.history-snap-title {
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  color: var(--color-primary-900);
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Summary */
+.history-snap-summary {
+  font-size: clamp(0.88rem, 1.1vw, 1rem);
+  color: var(--color-text-gray);
+  line-height: 1.65;
+  max-width: 48ch;
+  margin: 0;
+}
+
+/* Milestone list */
+.history-snap-ms-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.9rem;
+  margin-top: 0.25rem;
+  max-height: min(38svh, 260px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+  padding-right: 0.5rem;
+}
+
+.history-snap-ms-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.history-snap-ms-tag {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-primary-600);
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+}
+
+.history-snap-ms-desc {
+  color: #475569;
+  margin: 0;
+}
+
+/* ── Progress dots ── */
+.history-snap-dots {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 30;
+}
+
+.history-snap-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, height 0.2s ease;
+  padding: 0;
+}
+
+.history-snap-dot--active {
+  background: var(--color-primary-600);
+  height: 20px;
+  border-radius: 4px;
+}
+
+/* ── Next stage hint ── */
+.history-snap-next-hint {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-gray);
+  background: none;
+  border: none;
+  cursor: pointer;
+  animation: hint-pulse 2.2s ease-in-out infinite;
+  z-index: 20;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .history-snap-slide {
+    flex-direction: column;
+    padding: 4.5rem 1.5rem 3rem;
+    gap: 1.5rem;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .history-snap-img-col {
+    flex: none;
+    width: 100%;
+    height: min(40svh, 280px);
+  }
+
+  .history-snap-num {
+    font-size: clamp(3.5rem, 18vw, 5rem);
+  }
+
+  .history-snap-dots {
+    right: 0.75rem;
+  }
+}
