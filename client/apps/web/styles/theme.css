@@ -232,3 +232,200 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  History Stage Cards                                               */
+/* ------------------------------------------------------------------ */
+.history-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+[data-active="true"] .history-card {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Background image — will-change promotes to its own GPU layer */
+.history-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  transition: transform 0.6s ease-out;
+  transform: scale(1);
+}
+[data-active="true"] .history-card__bg {
+  transform: scale(1.04);
+}
+
+/* Gradient overlay */
+.history-card__overlay {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.4s ease;
+  opacity: 0.82;
+}
+[data-active="true"] .history-card__overlay {
+  opacity: 0.92;
+}
+
+/* Content wrapper — flex column so spacer pushes text down */
+.history-card__content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+@media (min-width: 640px) { .history-card__content { padding: 2rem; } }
+@media (min-width: 768px) { .history-card__content { padding: 2.5rem; } }
+
+/* Transparent spacer — keeps card tall without a fixed height */
+.history-card__spacer {
+  min-height: clamp(160px, 22vw, 220px);
+}
+
+/* Badge row */
+.history-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Title */
+.history-card__title {
+  font-size: clamp(1.4rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+/* Summary */
+.history-card__summary {
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  max-width: 56ch;
+  margin-bottom: 0;
+}
+
+/* ---- Expand panel: grid-template-rows trick (no reflow) ----------- */
+.history-card__expand {
+  display: grid;
+  grid-template-rows: 0fr;          /* collapsed */
+  transition: grid-template-rows 0.45s ease-out;
+  overflow: hidden;                 /* clips the inner div while animating */
+}
+[data-active="true"] .history-card__expand {
+  grid-template-rows: 1fr;          /* expanded */
+}
+
+/* Inner div must have min-height: 0 for the grid trick to work */
+.history-card__expand-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.history-card__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.history-card__ms-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.history-card__ms-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.history-card__ms-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.history-card__dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+.history-card__dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+.history-card__line {
+  width: 1px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.15);
+  margin-top: 0.25rem;
+  min-height: 20px;
+}
+
+.history-card__ms-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.history-card__ms-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.55;
+  margin: 0;
+}

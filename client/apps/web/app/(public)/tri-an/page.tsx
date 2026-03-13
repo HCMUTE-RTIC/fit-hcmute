@@ -45,43 +45,59 @@ export default function Alumni() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{ 
-          backgroundColor: "var(--color-bg-light)",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/tri-an/banner_trian.jpg"
+            alt="Banner Tri ân"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <Heart size={64} className="mx-auto mb-6" style={{ color: "var(--color-accent-500)" }} />
+            <Heart size={64} className="mx-auto mb-6 text-white" />
             <h1
-              className="font-extrabold mb-6"
+              className="font-extrabold mb-6 text-white"
               style={{
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
-                color: "var(--color-primary-900)",
               }}
             >
               TRI ÂN & KẾT NỐI
             </h1>
             <p
-              className="text-xl leading-relaxed"
-              style={{ color: "var(--color-text-gray)" }}
+              className="text-xl leading-relaxed text-gray-200 mb-10"
             >
-              Gửi lời chúc mừng, chia sẻ kỷ niệm hoặc đăng ký tham dự các sự kiện kỷ niệm 25 năm.
-              Hãy cùng chúng tôi tạo nên những khoảnh khắc đáng nhớ!
+              Tri ân người đi trước, kết nối thế hệ mai sau. Hãy để lại lời chúc hoặc đăng ký tham dự để cùng viết tiếp hành trình rực rỡ này
             </p>
+            <button
+              onClick={() => {
+                document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all space-x-2 text-lg shadow-lg"
+              style={{ backgroundColor: "var(--color-primary-600)" }}
+            >
+              <Send size={20} />
+              <span>Gửi lời chúc</span>
+            </button>
           </motion.div>
         </div>
       </section>
 
-      {/* Registration Form */}
       <section
+        id="registration-form"
         className="py-24"
         style={{ backgroundColor: "var(--color-bg-light)" }}
       >
@@ -216,7 +232,7 @@ export default function Alumni() {
                     onBlur={(e) => {
                       e.target.style.borderColor = "#E2E8F0";
                     }}
-                   
+
                   />
                 </div>
 
@@ -295,16 +311,14 @@ export default function Alumni() {
                   <span>Gửi lời chúc</span>
                 </button>
 
-                <p className="text-sm text-center" style={{ color: "var(--color-text-gray)" }}>
-                  * Thông tin bắt buộc
-                </p>
+
               </form>
             )}
           </motion.div>
         </div>
       </section>
 
-    
+
     </div>
   );
 }

@@ -62,7 +62,7 @@ export default function Navbar() {
       >
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
           {/* Mobile View - Logo Center, Menu Button Right */}
-          <div className="flex lg:hidden items-center justify-center py-3 relative">
+          <div className="flex lg:hidden items-center justify-center py-4 relative">
             <Link href="/" className="flex-shrink-0">
               <AnimatedLogo size={36} />
             </Link>
@@ -78,14 +78,14 @@ export default function Navbar() {
           </div>
 
           {/* Desktop View - Left Nav | Logo Center | Right Nav */}
-          <div className="hidden lg:grid lg:grid-cols-[1fr_auto_1fr] items-center gap-6 py-3">
+          <div className="hidden lg:grid lg:grid-cols-[1fr_auto_1fr] items-center gap-6 py-5">
             {/* Left Navigation */}
             <div className="flex items-center justify-end space-x-4 xl:space-x-6 pr-3">
               {leftLinks.map((link) => (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="text-xs font-semibold transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
+                  className="text-[13px] font-bold tracking-wide transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
                   style={{
                     color: isActive(link.path) ? "var(--color-primary-600)" : "var(--color-primary-900)",
                   }}
@@ -114,7 +114,7 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="text-xs font-semibold transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
+                  className="text-[13px] font-bold tracking-wide transition-colors hover:text-[#2563EB] relative py-1 whitespace-nowrap"
                   style={{
                     color: isActive(link.path) ? "var(--color-primary-600)" : "var(--color-primary-900)",
                   }}
