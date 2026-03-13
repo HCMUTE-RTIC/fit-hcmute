@@ -22,7 +22,11 @@
       "Bash(find d:/RTIC/fit-hcmute/client -name playwright.config*)",
       "Bash(pnpm add:*)",
       "Bash(node -e \"require\\(''@playwright/test''\\)\")",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(findstr \":3000 \\\\|:3001 \\\\|:3002 \")",
+      "Bash(tasklist /FI \"PID eq 25208\")",
+      "Bash(findstr \"3001\\\\|3002\")",
+      "Bash(findstr \":3002\\\\|:3000\\\\|:3001\")"
     ]
   }
 }
