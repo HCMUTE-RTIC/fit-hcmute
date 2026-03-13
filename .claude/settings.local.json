@@ -26,7 +26,8 @@
       "Bash(findstr \":3000 \\\\|:3001 \\\\|:3002 \")",
       "Bash(tasklist /FI \"PID eq 25208\")",
       "Bash(findstr \"3001\\\\|3002\")",
-      "Bash(findstr \":3002\\\\|:3000\\\\|:3001\")"
+      "Bash(findstr \":3002\\\\|:3000\\\\|:3001\")",
+      "WebFetch(domain:umami.is)"
     ]
   }
 }

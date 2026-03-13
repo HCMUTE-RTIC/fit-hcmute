@@ -1,0 +1,60 @@
+# ==============================================================================
+# UMAMI ANALYTICS — CHẠY ĐỘC LẬP TRƯỚC KHI DEPLOY APP CHÍNH
+# ==============================================================================
+# Bước 1: Tạo shared network (chạy 1 lần duy nhất)
+#   docker network create fit_hcmute_shared
+#
+# Bước 2: Chạy Umami
+#   docker-compose -f docker-compose.umami.yml --env-file .env.production up -d
+#
+# Bước 3: Vào dashboard lấy thông tin
+#   URL:      http://localhost:3002  (hoặc qua Cloudflare Tunnel)
+#   Login:    admin / umami  →  đổi mật khẩu ngay
+#   Tạo website → copy Website ID → điền vào NEXT_PUBLIC_UMAMI_WEBSITE_ID
+#   Settings → API Keys → tạo key → điền vào UMAMI_API_KEY
+#
+# Bước 4: Mới chạy app chính
+#   docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+# ==============================================================================
+
+services:
+  # PostgreSQL riêng cho Umami (không dùng chung với app)
+  umami_postgres:
+    image: postgres:16-alpine
+    container_name: p_umami_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASSWORD:-umami_db_pass}
+      POSTGRES_DB: umami
+    expose:
+      - 5432
+    volumes:
+      - umami_pg_data:/var/lib/postgresql/data
+    networks:
+      - umami_internal
+
+  # Umami Analytics
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: p_umami
+    restart: unless-stopped
+    depends_on:
+      - umami_postgres
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-umami_db_pass}@umami_postgres:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET}
+    ports:
+      - "3002:3000" # Cloudflare Tunnel: analytics25nam.hcmutertic.com -> localhost:3002
+    networks:
+      - umami_internal
+      - fit_hcmute_shared # Cho phép frontend app gọi http://umami:3000 nội bộ
+
+volumes:
+  umami_pg_data:
+
+networks:
+  umami_internal:
+    driver: bridge
+  fit_hcmute_shared:
+    external: true # Tạo trước bằng: docker network create fit_hcmute_shared

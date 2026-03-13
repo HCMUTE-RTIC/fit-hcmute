@@ -1,17 +1,41 @@
 import { Users } from "lucide-react";
 
+async function getUmamiToken(): Promise<string | null> {
+  const apiUrl = process.env.UMAMI_API_URL;
+  const username = process.env.UMAMI_USERNAME;
+  const password = process.env.UMAMI_PASSWORD;
+
+  if (!apiUrl || !username || !password) return null;
+
+  try {
+    const res = await fetch(`${apiUrl}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.token ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function getVisitorStats() {
   const apiUrl = process.env.UMAMI_API_URL;
-  const apiKey = process.env.UMAMI_API_KEY;
   const websiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 
-  if (!apiUrl || !apiKey || !websiteId) return null;
+  if (!apiUrl || !websiteId) return null;
+
+  const token = await getUmamiToken();
+  if (!token) return null;
 
   try {
     const res = await fetch(
       `${apiUrl}/api/websites/${websiteId}/stats?startAt=0&endAt=${Date.now()}`,
       {
-        headers: { "x-umami-api-key": apiKey },
+        headers: { Authorization: `Bearer ${token}` },
         next: { revalidate: 3600 },
       }
     );

@@ -2,7 +2,10 @@
 # MÔI TRƯỜNG MÁY CHỦ SẢN PHẨM (PRODUCTION DEPLOYMENT) - SETUP SERVER TRƯỜNG
 # ==============================================================================
 # Lệnh chạy: ./deploy.sh
-# Hoặc thủ công: docker-compose -f docker-compose.prod.yml --env-file ../env/.env.production up -d --build
+# Hoặc thủ công: docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# LƯU Ý: Chạy Umami TRƯỚC bằng docker-compose.umami.yml để lấy Website ID & API Key
+# Xem hướng dẫn chi tiết trong docker-compose.umami.yml
 
 services:
   # 1. POSTGRES SQL (DB Kín)
@@ -70,22 +73,7 @@ services:
     networks:
       - fit_hcmute_prod_network
 
-  # 5. UMAMI ANALYTICS (Self-hosted, truy cập qua Cloudflare Tunnel)
-  umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest
-    container_name: p_umami
-    restart: unless-stopped
-    depends_on:
-      - postgres_prod
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_prod:5432/umami
-      APP_SECRET: ${UMAMI_APP_SECRET}
-    ports:
-      - "3002:3000" # Cloudflare Tunnel: analytics25nam.hcmutertic.com -> localhost:3002
-    networks:
-      - fit_hcmute_prod_network
-
-  # 7. BACKEND NESTJS CORE (Application)
+  # 5. BACKEND NESTJS CORE (Application)
   backend_api:
     build:
       context: ./server
@@ -110,7 +98,7 @@ services:
     networks:
       - fit_hcmute_prod_network
 
-  # 8. FRONTEND NEXTJS (Web App SSR Server)
+  # 6. FRONTEND NEXTJS (Web App SSR Server)
   frontend_web:
     build:
       context: .
@@ -129,6 +117,7 @@ services:
       - "3000:3000" # Cloudflare Tunnel: 25nam.fit.hcmute.edu.vn -> localhost:3000
     networks:
       - fit_hcmute_prod_network
+      - fit_hcmute_shared # Kết nối tới Umami container (docker-compose.umami.yml)
 
 volumes:
   pg_data_prod:
@@ -138,3 +127,5 @@ volumes:
 networks:
   fit_hcmute_prod_network:
     driver: bridge
+  fit_hcmute_shared:
+    external: true # Tạo trước bằng: docker network create fit_hcmute_shared
