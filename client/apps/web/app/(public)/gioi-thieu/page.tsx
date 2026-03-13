@@ -343,7 +343,7 @@ export default function GioiThieu() {
         {/* Background Image - Full Width */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/temp.jpg"
+            src="/thu-vien/2.jpg"
             alt="Chương trình đào tạo"
             fill
             className="object-cover"
