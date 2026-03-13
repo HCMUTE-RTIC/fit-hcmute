@@ -2,14 +2,56 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { JSX } from "react";
+import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://25nam.fit.hcmute.edu.vn";
 
 // ─── Fetch article (SSR, tăng viewCount) ──────────────────────────────────────
 async function getArticle(slug: string) {
   const res = await fetch(`${API_URL}/api/articles/${slug}`, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
+}
+
+// ─── Dynamic Metadata ─────────────────────────────────────────────────────────
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+
+  if (!article || article.status !== "PUBLISHED") {
+    return { title: "Bài viết không tìm thấy" };
+  }
+
+  const title = article.metaTitle || article.title;
+  const description = article.metaDescription || article.summary || "";
+  const image = article.thumbnail || `${BASE_URL}/opengraph-image`;
+  const url = `${BASE_URL}/tin-tuc/${slug}`;
+
+  return {
+    title,
+    description,
+    keywords: article.focusKeywords?.split(",").map((k: string) => k.trim()),
+    alternates: { canonical: `/tin-tuc/${slug}` },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description,
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
 }
 
 // ─── EditorJS block renderer ──────────────────────────────────────────────────
@@ -119,8 +161,37 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     ? new Date(article.publishedAt).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })
     : "";
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": article.category === "EVENT" ? "Event" : "NewsArticle",
+    headline: article.title,
+    description: article.summary || "",
+    image: article.thumbnail ? [article.thumbnail] : [`${BASE_URL}/opengraph-image`],
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    url: `${BASE_URL}/tin-tuc/${article.slug}`,
+    author: {
+      "@type": "Person",
+      name: article.author?.name || "FIT HCMUTE",
+    },
+    publisher: {
+      "@type": "EducationalOrganization",
+      name: "Khoa Công nghệ Thông tin - HCMUTE",
+      url: "https://fit.hcmute.edu.vn",
+      logo: {
+        "@type": "ImageObject",
+        url: `${BASE_URL}/opengraph-image`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${BASE_URL}/tin-tuc/${article.slug}`,
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={articleSchema} />
       {/* ─── Hero / Thumbnail ─────────────────────────────────────────────── */}
       {article.thumbnail && (
         <div className="relative w-full overflow-hidden" style={{ height: "clamp(260px, 40vw, 480px)" }}>

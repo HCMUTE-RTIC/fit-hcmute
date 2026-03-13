@@ -66,6 +66,21 @@ services:
     networks:
       - fit_hcmute_dev_network
 
+  # 5. UMAMI ANALYTICS (Self-hosted)
+  umami_dev:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: m_umami_dev
+    restart: always
+    depends_on:
+      - postgres_dev
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-hcmute_dev}:${POSTGRES_PASSWORD:-admin123}@postgres_dev:5432/umami
+      APP_SECRET: dev_umami_secret_123
+    ports:
+      - "3002:3000" # Umami Dashboard: http://localhost:3002
+    networks:
+      - fit_hcmute_dev_network
+
 volumes:
   pg_data_dev:
   redis_data_dev:

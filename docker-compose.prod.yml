@@ -2,7 +2,10 @@
 # MÔI TRƯỜNG MÁY CHỦ SẢN PHẨM (PRODUCTION DEPLOYMENT) - SETUP SERVER TRƯỜNG
 # ==============================================================================
 # Lệnh chạy: ./deploy.sh
-# Hoặc thủ công: docker-compose -f docker-compose.prod.yml --env-file ../env/.env.production up -d --build
+# Hoặc thủ công: docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# LƯU Ý: Chạy Umami TRƯỚC bằng docker-compose.umami.yml để lấy Website ID & API Key
+# Xem hướng dẫn chi tiết trong docker-compose.umami.yml
 
 services:
   # 1. POSTGRES SQL (DB Kín)
@@ -114,6 +117,7 @@ services:
       - "3000:3000" # Cloudflare Tunnel: 25nam.fit.hcmute.edu.vn -> localhost:3000
     networks:
       - fit_hcmute_prod_network
+      - fit_hcmute_shared # Kết nối tới Umami container (docker-compose.umami.yml)
 
 volumes:
   pg_data_prod:
@@ -123,3 +127,5 @@ volumes:
 networks:
   fit_hcmute_prod_network:
     driver: bridge
+  fit_hcmute_shared:
+    external: true # Tạo trước bằng: docker network create fit_hcmute_shared
