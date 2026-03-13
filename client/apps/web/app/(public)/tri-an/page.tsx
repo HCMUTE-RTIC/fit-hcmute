@@ -42,10 +42,10 @@ export default function Alumni() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[calc(100vh-96px)]">
       {/* Hero Section */}
       <section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
         style={{ 
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
