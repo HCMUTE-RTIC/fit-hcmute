@@ -26,6 +26,7 @@
     "sonner": "^2.0.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",
@@ -33,6 +34,7 @@
     "@workspace/eslint-config": "workspace:^",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
+    "playwright": "^1.58.2",
     "typescript": "^5.9.3"
   }
 }

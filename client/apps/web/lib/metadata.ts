@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
 
 const siteConfig = {
-  name: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
-  shortName: 'FIT-HCMUTE',
-  description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
+  name: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Sư phạm Kỹ thuật TP.HCM',
+  shortName: 'FIT-HCMUTE 25 năm',
+  description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
   url: 'https://25nam.fit.hcmute.edu.vn',
+  defaultOgImage: 'https://25nam.fit.hcmute.edu.vn/opengraph-image',
 };
 
 interface PageMetadataProps {
   title: string;
   description?: string;
+  keywords?: string[];
   image?: string;
   url?: string;
   type?: 'website' | 'article';
@@ -24,6 +26,7 @@ interface PageMetadataProps {
 export function generatePageMetadata({
   title,
   description = siteConfig.description,
+  keywords,
   image,
   url,
   type = 'website',
@@ -36,21 +39,20 @@ export function generatePageMetadata({
   const metadata: Metadata = {
     title,
     description,
+    ...(keywords && { keywords }),
     openGraph: {
       title: `${title} | ${siteConfig.shortName}`,
       description,
       url: pageUrl,
       siteName: siteConfig.name,
-      ...(image && {
-        images: [
-          {
-            url: image,
-            width: 1200,
-            height: 630,
-            alt: title,
-          },
-        ],
-      }),
+      images: [
+        {
+          url: image ?? siteConfig.defaultOgImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
       locale: 'vi_VN',
       type,
     },
@@ -58,7 +60,7 @@ export function generatePageMetadata({
       card: 'summary_large_image',
       title: `${title} | ${siteConfig.shortName}`,
       description,
-      images: image ? [image] : [],
+      images: [image ?? siteConfig.defaultOgImage],
     },
   };
 

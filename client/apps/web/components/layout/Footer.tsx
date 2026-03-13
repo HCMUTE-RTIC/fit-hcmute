@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin, Facebook, Youtube } from "lucide-react";
+import { VisitorCounter } from "@/components/seo/visitor-counter";
 
 export default function Footer() {
   return (
@@ -66,17 +67,17 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start space-x-2" style={{ color: 'var(--color-text-gray)' }}>
-                <MapPin size={18} className="mt-1 flex-shrink-0" />
-                <span>01 Võ Văn Ngân, Phường Linh Chiểu, TP. Thủ Đức, TP.HCM</span>
+                <MapPin size={18} className="mt-1 shrink-0" />
+                <span>01 Võ Văn Ngân, Phường Thủ Đức, TP. Hồ Chí Minh</span>
               </li>
               <li className="flex items-center space-x-2" style={{ color: 'var(--color-text-gray)' }}>
-                <Phone size={18} />
-                <a href="tel:+84-028-37221223-8370" className="hover:opacity-80 transition-opacity">
+                <Phone size={18} className="shrink-0" />
+                <a href="tel:+842837221223" className="hover:opacity-80 transition-opacity">
                   (+84 - 028) 37221223 - 8370
                 </a>
               </li>
               <li className="flex items-center space-x-2" style={{ color: 'var(--color-text-gray)' }}>
-                <Mail size={18} />
+                <Mail size={18} className="shrink-0" />
                 <a href="mailto:kcntt@hcmute.edu.vn" className="hover:opacity-80 transition-opacity">
                   kcntt@hcmute.edu.vn
                 </a>
@@ -89,7 +90,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-4" style={{ color: 'var(--color-primary-900)' }}>
               Kết nối với chúng tôi
             </h4>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-4">
               <a
                 href="https://www.facebook.com/fit.hcmute.edu.vn"
                 target="_blank"
@@ -111,6 +112,7 @@ export default function Footer() {
                 <Youtube size={20} className="text-white" />
               </a>
             </div>
+            <VisitorCounter />
           </div>
         </div>
 

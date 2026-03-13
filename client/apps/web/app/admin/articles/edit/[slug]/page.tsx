@@ -8,6 +8,7 @@ import { ChevronRight, Save, Image as ImageIcon, X } from "lucide-react";
 import { toast } from "sonner";
 import { ArticlesService } from "@/services/articles.service";
 import { MediaService } from "@/services/media.service";
+import { SeoScorePanel } from "@/components/admin/SeoScorePanel";
 
 // Dynamically import EditorJS
 const EditorJSWrapper = dynamic(
@@ -463,6 +464,17 @@ export default function EditArticlePage() {
               )}
             </div>
           </div>
+
+          {/* SEO Score Card */}
+          <SeoScorePanel
+            title={formData.title}
+            metaTitle={formData.metaTitle}
+            metaDescription={formData.metaDescription}
+            focusKeyword={formData.focusKeyword}
+            thumbnail={thumbnail}
+            slug={formData.slug}
+            content={formData.content}
+          />
         </div>
       </div>
     </div>

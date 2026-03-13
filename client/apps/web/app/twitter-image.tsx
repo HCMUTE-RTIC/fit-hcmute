@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
+import fs from 'fs';
+import path from 'path';
 
-export const runtime = 'edge';
 export const alt = 'Khoa Công nghệ Thông tin - FIT HCMUTE';
 export const size = {
   width: 1200,
@@ -9,6 +10,9 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const logoData = fs.readFileSync(path.join(process.cwd(), 'public/logo-50-nam-4x.png'));
+  const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`;
+
   return new ImageResponse(
     (
       <div
@@ -23,47 +27,11 @@ export default async function Image() {
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '60px',
-          }}
-        >
-          <div
-            style={{
-              fontSize: 72,
-              fontWeight: 'bold',
-              color: 'white',
-              textAlign: 'center',
-              marginBottom: '24px',
-              lineHeight: 1.2,
-            }}
-          >
-            Khoa Công nghệ Thông tin
-          </div>
-          <div
-            style={{
-              fontSize: 48,
-              color: 'rgba(255, 255, 255, 0.9)',
-              textAlign: 'center',
-              marginBottom: '32px',
-            }}
-          >
-            FIT - HCMUTE
-          </div>
-          <div
-            style={{
-              fontSize: 32,
-              color: 'rgba(255, 255, 255, 0.8)',
-              textAlign: 'center',
-            }}
-          >
-            Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh
-          </div>
-        </div>
+        <img
+          src={logoBase64}
+          alt="FIT HCMUTE"
+          style={{ width: 480, objectFit: 'contain' }}
+        />
 
         <div
           style={{

@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:lobehub.com)",
+      "Bash(npx:*)",
+      "Bash(claude --resume 6e928e96-1898-4cdf-9265-18d3973b64ee --print \"Tóm tắt lại những gì đã làm trong session này\")",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"\"\"email\"\"\"\":\"\"\"\"admin@fit.hcmute.edu.vn\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"Admin@123\"\"\"\"}')",
+      "Bash(curl -sv -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"\"\"email\"\"\"\":\"\"\"\"admin@fit.hcmute.edu.vn\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"Admin@123\"\"\"\"}')",
+      "Bash(netstat -ano)",
+      "Bash(curl -s http://localhost:3000/api/articles)",
+      "Bash(docker ps:*)",
+      "Bash(curl -s http://localhost:3001/api/articles)",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"email\"\":\"\"admin@fit.hcmute.edu.vn\"\",\"\"password\"\":\"\"Admin@123\"\"}')",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"email\"\":\"\"admin@fit.hcmute.edu.vn\"\",\"\"password\"\":\"\"SysAdmin@Fit25Years!\"\"}')",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" --data-raw '{\"\"email\"\":\"\"admin@fit.hcmute.edu.vn\"\",\"\"password\"\":\"\"SysAdmin@Fit25Years!\"\"}')",
+      "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d \"{\"\"email\"\":\"\"admin@fit.hcmute.edu.vn\"\",\"\"password\"\":\"\"SysAdmin@Fit25Years!\"\"}\")",
+      "Bash(__NEW_LINE_d3920c2c74e25b61__ curl -s -X POST http://localhost:3001/api/articles -H \"Content-Type: application/json\" -H \"Authorization: Bearer $TOKEN\" -d \"{:*)",
+      "Bash(curl -s http://localhost:3002)",
+      "Bash(pnpm dlx:*)",
+      "Bash(npx playwright:*)",
+      "Bash(find d:/RTIC/fit-hcmute/client -name playwright.config*)",
+      "Bash(pnpm add:*)",
+      "Bash(node -e \"require\\(''@playwright/test''\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(findstr \":3000 \\\\|:3001 \\\\|:3002 \")",
+      "Bash(tasklist /FI \"PID eq 25208\")",
+      "Bash(findstr \"3001\\\\|3002\")",
+      "Bash(findstr \":3002\\\\|:3000\\\\|:3001\")",
+      "WebFetch(domain:umami.is)",
+      "Bash(head -20 \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/home/page.tsx\")"
+    ]
+  }
+}
