@@ -173,7 +173,7 @@ export default function AlbumsList() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-slate-500 font-medium">
-                      {album._count?.media || 0} mục
+                      {(album as any)._count?.medias || 0} mục
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {album.status === "PUBLISHED" ? (

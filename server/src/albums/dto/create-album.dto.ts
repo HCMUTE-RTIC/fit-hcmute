@@ -1,4 +1,5 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { AlbumStatus } from '@prisma/client';
 
 export class CreateAlbumDto {
   @IsNotEmpty({ message: 'Title is required' })
@@ -13,12 +14,28 @@ export class CreateAlbumDto {
   @IsString({ each: true })
   @IsOptional()
   mediaIds?: string[];
+
+  @IsOptional()
+  @IsEnum(AlbumStatus)
+  status?: AlbumStatus;
+
+  @IsOptional()
+  @IsString()
+  metaTitle?: string;
+
+  @IsOptional()
+  @IsString()
+  metaDescription?: string;
 }
 
 export class UpdateAlbumDto {
   @IsOptional()
   @IsString()
   title?: string;
+
+  @IsOptional()
+  @IsString()
+  slug?: string;
 
   @IsOptional()
   @IsString()
@@ -31,4 +48,16 @@ export class UpdateAlbumDto {
   @IsOptional()
   @IsArray()
   mediaIds?: string[];
+
+  @IsOptional()
+  @IsEnum(AlbumStatus)
+  status?: AlbumStatus;
+
+  @IsOptional()
+  @IsString()
+  metaTitle?: string;
+
+  @IsOptional()
+  @IsString()
+  metaDescription?: string;
 }

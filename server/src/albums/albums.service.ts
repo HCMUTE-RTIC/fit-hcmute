@@ -47,10 +47,22 @@ export class AlbumsService {
 
   async findAll() {
     return this.prisma.mediaAlbum.findMany({
+      where: { status: 'PUBLISHED' },
       orderBy: { createdAt: 'desc' },
       include: {
         medias: { take: 1 },
         user: { select: { name: true, email: true } },
+      },
+    });
+  }
+
+  async findAllAdmin() {
+    return this.prisma.mediaAlbum.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        medias: { take: 1 },
+        user: { select: { name: true, email: true } },
+        _count: { select: { medias: true } },
       },
     });
   }
@@ -68,17 +80,40 @@ export class AlbumsService {
     return album;
   }
 
+  async findById(id: string) {
+    const album = await this.prisma.mediaAlbum.findUnique({
+      where: { id },
+      include: {
+        medias: true,
+        user: { select: { name: true } },
+      },
+    });
+
+    if (!album) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
+    return album;
+  }
+
   async update(id: string, dto: UpdateAlbumDto) {
     const existingAlbum = await this.prisma.mediaAlbum.findUnique({
       where: { id },
     });
     if (!existingAlbum) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
 
-    const data: any = { ...dto };
+    const data: any = {};
 
     if (dto.title) {
-      data.slug = await this.generateUniqueSlug(dto.title);
+      data.title = dto.title;
+      // Only auto-generate slug if title changes AND no explicit slug provided
+      if (!dto.slug) {
+        data.slug = await this.generateUniqueSlug(dto.title);
+      }
     }
+    if (dto.slug) data.slug = dto.slug;
+    if (dto.description !== undefined) data.description = dto.description;
+    if (dto.coverPhotoId !== undefined) data.coverPhotoId = dto.coverPhotoId;
+    if (dto.status !== undefined) data.status = dto.status;
+    if (dto.metaTitle !== undefined) data.metaTitle = dto.metaTitle;
+    if (dto.metaDescription !== undefined) data.metaDescription = dto.metaDescription;
 
     if (dto.mediaIds) {
       data.medias = { set: dto.mediaIds.map((mediaId) => ({ id: mediaId })) };
