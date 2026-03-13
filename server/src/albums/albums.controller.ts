@@ -32,6 +32,20 @@ export class AlbumsController {
     return this.albumsService.findAll();
   }
 
+  @Get('admin/all')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN, Role.EDITOR)
+  findAllAdmin() {
+    return this.albumsService.findAllAdmin();
+  }
+
+  @Get('admin/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN, Role.EDITOR)
+  findById(@Param('id') id: string) {
+    return this.albumsService.findById(id);
+  }
+
   @Get(':slug')
   findOne(@Param('slug') slug: string) {
     return this.albumsService.findOne(slug);

@@ -38,7 +38,13 @@ export const GalleryService = {
    * Fetch all albums
    */
   async getAlbums(): Promise<MediaAlbum[]> {
-    const res = await fetch(`${API_URL}/api/albums`, { cache: "no-store" });
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/albums/admin/all`, {
+      cache: "no-store",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
     if (!res.ok) throw new Error("Failed to fetch albums");
     return await res.json();
   },
@@ -47,8 +53,12 @@ export const GalleryService = {
    * Fetch album by ID
    */
   async getAlbumById(id: string): Promise<MediaAlbum> {
-    const res = await fetch(`${API_URL}/api/albums/${id}`, {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/albums/admin/${id}`, {
       cache: "no-store",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
     if (!res.ok) throw new Error("Failed to fetch album");
     return await res.json();

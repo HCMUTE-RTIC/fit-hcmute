@@ -58,21 +58,27 @@ model AuditLog {
 // 2. TÀI NGUYÊN MEDIA & THƯ VIỆN CHỦ ĐỀ
 // ==========================================
 model MediaAlbum {
-  id              String   @id @default(uuid()) @db.Uuid
-  title           String   @db.VarChar(255)
-  slug            String   @unique @db.VarChar(255)
-  description     String?  @db.Text
-  coverPhotoId    String?  @db.Uuid @map("cover_photo_id")
-  metaTitle       String?  @db.VarChar(255) @map("meta_title")
-  metaDescription String?  @db.Text @map("meta_description")
-  createdBy       String   @db.Uuid @map("created_by")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id              String      @id @default(uuid()) @db.Uuid
+  title           String      @db.VarChar(255)
+  slug            String      @unique @db.VarChar(255)
+  description     String?     @db.Text
+  coverPhotoId    String?     @db.Uuid @map("cover_photo_id")
+  metaTitle       String?     @db.VarChar(255) @map("meta_title")
+  metaDescription String?     @db.Text @map("meta_description")
+  status          AlbumStatus @default(DRAFT)
+  createdBy       String      @db.Uuid @map("created_by")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
 
   user    User    @relation(fields: [createdBy], references: [id])
   medias  Media[]
 
   @@map("media_albums")
+}
+
+enum AlbumStatus {
+  DRAFT
+  PUBLISHED
 }
 
 model Media {
