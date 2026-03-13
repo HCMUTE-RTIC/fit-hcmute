@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Play, Camera, Menu, ImageIcon } from "lucide-react";
+import { Folder } from "@workspace/ui/components/folder";
+import { albumsService } from "@/services/albums.service";
+import { MediaAlbum } from "@/types/albums";
 
 const imgItFestival = "/thu-vien/thuvienkiniem1.jpg";
 const imgAiML = "/thu-vien/thuvienkiniem2.jpg";
@@ -163,10 +167,28 @@ function VideoCard({
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Gallery() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("Tất cả");
+  const [albums, setAlbums] = useState<MediaAlbum[]>([]);
+  const [loadingAlbums, setLoadingAlbums] = useState(true);
+  const [openingFolderId, setOpeningFolderId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const data = await albumsService.getAlbums();
+        setAlbums(data);
+      } catch (error) {
+        console.error("Failed to fetch albums:", error);
+      } finally {
+        setLoadingAlbums(false);
+      }
+    };
+    fetchAlbums();
+  }, []);
 
   return (
-    <div className="min-h-[calc(100vh-96px)]">
+    <div className={`min-h-[calc(100vh-96px)] ${openingFolderId ? 'cursor-wait' : ''}`}>
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
         className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
@@ -253,66 +275,48 @@ export default function Gallery() {
             ))}
           </div>
 
-          {/* Masonry 3-column photo grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
-            {/* Column 1 */}
-            <div className="flex flex-col gap-4">
-              {/* Placeholder slot matching Figma */}
-              <div
-                className="bg-[#f3f4f6] flex items-center justify-center"
-                style={{ borderRadius: 16, height: 256 }}
-              >
-                <ImageIcon size={88} color="#9ca3af" strokeWidth={1.5} />
-              </div>
-              <PhotoCard
-                src={imgTotNghiep}
-                alt="Lễ Tốt nghiệp K15"
-                label={null}
-                labelColor={null}
-                height={364}
-                delay={0.3}
-              />
-            </div>
-
-            {/* Column 2 */}
-            <div className="flex flex-col gap-4">
-              <PhotoCard
-                src={imgItFestival}
-                alt="IT Festival 2015"
-                label="Hội thảo"
-                labelColor="#7797d7"
-                height={366}
-                delay={0.1}
-              />
-              <PhotoCard
-                src={imgGoogleSingapore}
-                alt="Chuyến tham quan Google Singapore"
-                label={null}
-                labelColor={null}
-                height={256}
-                delay={0.4}
-              />
-            </div>
-
-            {/* Column 3 */}
-            <div className="flex flex-col gap-4">
-              <PhotoCard
-                src={imgAiML}
-                alt="Hội thảo AI & Machine Learning 2020"
-                label={null}
-                labelColor={null}
-                height={256}
-                delay={0.2}
-              />
-              <PhotoCard
-                src={imgKhoiNghiep}
-                alt="Ngày Hội Khởi Nghiệp 2022"
-                label={null}
-                labelColor={null}
-                height={375}
-                delay={0.5}
-              />
-            </div>
+          {/* Albums Masonry Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start mt-8">
+            {loadingAlbums ? (
+              <div className="col-span-full py-20 text-center text-gray-500 font-medium">Bơm dữ liệu thư viện...</div>
+            ) : albums.length > 0 ? (
+              albums.map((album) => (
+                <div
+                  key={album.id}
+                  onClick={() => {
+                    if (openingFolderId) return; // Prevent multiple clicks
+                    setOpeningFolderId(album.id);
+                    setTimeout(() => {
+                      router.push(`/thu-vien/${album.slug}`);
+                    }, 2500); // Tăng thời gian chờ lên 2.5s để ngắm animation kỹ hơn
+                  }}
+                  className={`flex flex-col gap-3 group ${openingFolderId === album.id ? 'opacity-80 scale-95 transition-all duration-1000' : 'cursor-pointer'} ${openingFolderId && openingFolderId !== album.id ? 'opacity-50 pointer-events-none' : ''}`}
+                >
+                  <div
+                    className="bg-[#f8fafc] group-hover:bg-[#f1f5f9] transition-colors flex items-center justify-center relative"
+                    style={{ borderRadius: 16, height: 220, padding: "1.5rem" }}
+                  >
+                    {/* Folder Component */}
+                    <Folder
+                      color="#1e3a8a"
+                      size={1.2}
+                      items={[
+                        <div key="1" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>,
+                        <div key="2" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>,
+                        <div key="3" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>
+                      ]}
+                    />
+                  </div>
+                  {/* Album Details Below Folder */}
+                  <div className="px-2 text-center">
+                    <h3 className="font-bold text-[#1e293b] text-lg line-clamp-2 leading-tight group-hover:text-[#1e3a8a] transition-colors">{album.title}</h3>
+                    <p className="text-sm text-gray-500 mt-1">{new Date(album.createdAt).toLocaleDateString("vi-VN")}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center text-gray-500 font-medium">Chưa có album nào.</div>
+            )}
           </div>
         </div>
       </section>
