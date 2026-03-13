@@ -32,7 +32,28 @@ export const metadata: Metadata = {
     template: '%s | FIT-HCMUTE 25 năm'
   },
   description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
-  keywords: ['FIT HCMUTE', 'Khoa Công nghệ Thông tin', 'HCMUTE', '25 năm', 'kỷ niệm', 'Đại học Sư phạm Kỹ thuật', 'Công nghệ Thông tin'],
+  keywords: [
+    // Tên khoa & viết tắt
+    'FIT', 'FIT HCMUTE', 'Khoa Công nghệ Thông tin', 'Khoa CNTT', 'CNTT HCMUTE',
+    // Tên trường & viết tắt
+    'HCMUTE', 'UTE', 'SPKT',
+    'Trường Đại học Sư phạm Kỹ thuật TP HCM',
+    'Trường Đại học Công nghệ Kỹ thuật TP HCM',
+    'Đại học Sư phạm Kỹ thuật TP Hồ Chí Minh',
+    'Đại học Công nghệ Kỹ thuật TP Hồ Chí Minh',
+    'fit.hcmute.edu.vn', 'hcmute.edu.vn',
+    // RTIC
+    'RTIC', 'HCMUTE RTIC', 'HCM UTE RTIC',
+    'Research on Technology and Innovation Club',
+    // Sự kiện kỷ niệm
+    '25 năm FIT', '25 năm thành lập', 'kỷ niệm 25 năm', 'FIT HCMUTE 25 năm',
+    '2001 2026', 'kỷ niệm thành lập khoa CNTT',
+    // Ngành đào tạo
+    'Công nghệ Thông tin', 'Kỹ thuật phần mềm', 'An toàn thông tin',
+    'Khoa học dữ liệu', 'Trí tuệ nhân tạo', 'IT HCMUTE',
+    // Tìm kiếm phổ biến
+    'khoa cntt hcmute', 'fit hcmute tuyển sinh',
+  ],
   authors: [{ name: 'FIT HCMUTE' }],
   creator: 'FIT HCMUTE',
   publisher: 'FIT HCMUTE',
