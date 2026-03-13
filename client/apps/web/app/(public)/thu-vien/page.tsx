@@ -166,10 +166,10 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("Tất cả");
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[calc(100vh-96px)]">
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
         style={{
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",

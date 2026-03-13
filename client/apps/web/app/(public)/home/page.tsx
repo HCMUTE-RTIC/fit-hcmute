@@ -24,10 +24,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[calc(100vh-96px)]">
       {/* ─── Hero Section ─────────────────────────────────────────── */}
       <section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
         style={{ backgroundColor: "#f0f9ff" }}
       >
         {/* Background Image */}
@@ -132,7 +132,7 @@ export default function Home() {
         className="relative overflow-hidden"
         style={{
           paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
+          paddingBottom: "calc(var(--spacing-section) * 0.5)",
           backgroundColor: "#f0f9ff",
         }}
       >
@@ -180,21 +180,21 @@ export default function Home() {
                 icon: Award,
                 title: "Nhân bản",
                 description:
-                  "Đặt con người làm trung tâm, giáo dục kết hợp hài hòa giữa truyền đạt tri thức chuyên môn và bồi dưỡng đạo đức, lòng nhân ái cùng trách nhiệm phụng sự cộng đồng.",
+                  "Đặt con người làm trung tâm, giáo dục kết hợp hài hòa giữa truyền đạt tri thức chuyên môn và bồi dưỡng đạo đức, lòng nhân ái cùng trách nhiệm phụng sự cộng đồng",
                 iconColor: "#DC2626",
               },
               {
                 icon: Lightbulb,
                 title: "Sáng tạo",
                 description:
-                  "Lấy đổi mới làm cốt lõi, nhà trường thúc đẩy phương pháp học tập chủ động và nghiên cứu khoa học nhằm giúp sinh viên kiến tạo các giá trị thực tiễn cho xã hội.",
+                  "Lấy đổi mới làm cốt lõi, nhà trường thúc đẩy phương pháp học tập chủ động và nghiên cứu khoa học nhằm giúp sinh viên kiến tạo các giá trị thực tiễn cho xã hội",
                 iconColor: "#2563EB",
               },
               {
                 icon: Globe,
                 title: "Hội nhập",
                 description:
-                  "Trang bị toàn diện về ngoại ngữ, kỹ năng mềm và tư duy toàn cầu để sinh viên tự tin làm việc và thích ứng nhanh chóng trong môi trường quốc tế đa văn hóa.",
+                  "Trang bị toàn diện về ngoại ngữ, kỹ năng mềm và tư duy toàn cầu để sinh viên tự tin làm việc và thích ứng nhanh chóng trong môi trường quốc tế đa văn hóa",
                 iconColor: "#1E3A8A",
               },
             ].map((card, index) => (
@@ -256,7 +256,7 @@ export default function Home() {
       {/* ─── CTA Section ──────────────────────────────────────────── */}
       <section
         style={{
-          paddingTop: "var(--spacing-section)",
+          paddingTop: "calc(var(--spacing-section) * 0.5)",
           paddingBottom: "var(--spacing-section)",
           backgroundColor: "white",
         }}
@@ -276,7 +276,7 @@ export default function Home() {
                 color: "#1e3a8a",
               }}
             >
-              Cùng kết nối và chia sẻ
+              Kết nối và chia sẻ
             </h2>
             <p
               className="mb-8 max-w-3xl mx-auto"
