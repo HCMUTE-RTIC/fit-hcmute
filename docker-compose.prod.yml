@@ -124,9 +124,9 @@ volumes:
   redis_data_prod:
   minio_data_prod:
 
+
 networks:
   fit_hcmute_prod_network:
     driver: bridge
   fit_hcmute_shared:
     external: true # Tạo trước bằng: docker network create fit_hcmute_shared
-d
