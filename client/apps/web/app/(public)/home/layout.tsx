@@ -1,8 +1,8 @@
 import { generatePageMetadata } from '@/lib/metadata';
 
 export const metadata = generatePageMetadata({
-  title: 'Trang chủ',
-  description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Đào tạo chất lượng cao, nghiên cứu sáng tạo, phát triển nguồn nhân lực IT chuyên nghiệp.',
+  title: 'Kỷ niệm 25 năm thành lập (2001–2026)',
+  description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
   url: '/home',
 });
 
