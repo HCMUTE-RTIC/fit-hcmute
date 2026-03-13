@@ -8,6 +8,8 @@ interface HistoryStageCardProps {
 }
 
 export default function HistoryStageCard({ stage }: HistoryStageCardProps) {
+    const stageNumStr = String(stage.id).padStart(2, "0");
+
     return (
         <div className="history-card group">
             {/* Background image */}
@@ -25,6 +27,11 @@ export default function HistoryStageCard({ stage }: HistoryStageCardProps) {
                 }}
             />
 
+            {/* Decorative large stage number — top-right corner */}
+            <div className="history-card__stage-num" aria-hidden="true">
+                {stageNumStr}
+            </div>
+
             {/* Content */}
             <div className="history-card__content">
                 <div className="history-card__spacer" />
@@ -40,6 +47,25 @@ export default function HistoryStageCard({ stage }: HistoryStageCardProps) {
 
                 {/* Summary */}
                 <p className="history-card__summary">{stage.summary}</p>
+
+                {/* Milestone count + scroll hint — shown when inactive, hidden when active */}
+                <div className="history-card__inactive-meta">
+                    <span className="history-card__ms-count">
+                        <svg
+                            className="history-card__ms-count-icon"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <circle cx="8" cy="8" r="3" fill="currentColor" opacity="0.7" />
+                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+                        </svg>
+                        {stage.milestones.length} mốc lịch sử
+                    </span>
+                    <span className="history-card__hint" aria-hidden="true">
+                        ▼ Chi tiết
+                    </span>
+                </div>
 
                 {/* Milestones — grid trick: triggered by [data-active="true"] on parent wrapper */}
                 <div className="history-card__expand">

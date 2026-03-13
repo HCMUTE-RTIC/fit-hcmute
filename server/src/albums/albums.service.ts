@@ -5,7 +5,7 @@ import { generateSlug } from 'src/common/utils/slug.util';
 
 @Injectable()
 export class AlbumsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   private async generateUniqueSlug(title: string): Promise<string> {
     let slug = generateSlug(title);
@@ -55,21 +55,24 @@ export class AlbumsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(slug: string) {
     const album = await this.prisma.mediaAlbum.findUnique({
-      where: { id },
+      where: { slug },
       include: {
         medias: true,
         user: { select: { name: true } },
       },
     });
 
-    if (!album) throw new NotFoundException(`Album with ID ${id} not found`);
+    if (!album) throw new NotFoundException(`Không tìm thấy Album: ${slug}`);
     return album;
   }
 
   async update(id: string, dto: UpdateAlbumDto) {
-    await this.findOne(id);
+    const existingAlbum = await this.prisma.mediaAlbum.findUnique({
+      where: { id },
+    });
+    if (!existingAlbum) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
 
     const data: any = { ...dto };
 
@@ -89,7 +92,11 @@ export class AlbumsService {
   }
 
   async remove(id: string) {
-    await this.findOne(id);
+    const existingAlbum = await this.prisma.mediaAlbum.findUnique({
+      where: { id },
+    });
+    if (!existingAlbum) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
+
     return this.prisma.mediaAlbum.delete({ where: { id } });
   }
 }
