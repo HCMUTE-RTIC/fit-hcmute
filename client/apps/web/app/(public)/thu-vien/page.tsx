@@ -300,11 +300,21 @@ export default function Gallery() {
                     <Folder
                       color="#1e3a8a"
                       size={1.2}
-                      items={[
-                        <div key="1" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>,
-                        <div key="2" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>,
-                        <div key="3" className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-400">IMG</div>
-                      ]}
+                      items={[0, 1, 2].map((i) => {
+                        const media = album.medias?.[i];
+                        if (media) {
+                          return (
+                            <div key={i} className="w-full h-full bg-white overflow-hidden rounded-[8px]">
+                              <img src={media.url} alt={`Preview ${i}`} className="w-full h-full object-cover" />
+                            </div>
+                          );
+                        }
+                        return (
+                          <div key={i} className="w-full h-full bg-white flex items-center justify-center text-xs font-semibold text-gray-300 rounded-[8px]">
+                            IMG
+                          </div>
+                        );
+                      })}
                     />
                   </div>
                   {/* Album Details Below Folder */}

@@ -50,7 +50,7 @@ export class AlbumsService {
       where: { status: 'PUBLISHED' },
       orderBy: { createdAt: 'desc' },
       include: {
-        medias: { take: 1 },
+        medias: { take: 3 },
         user: { select: { name: true, email: true } },
       },
     });
@@ -60,7 +60,7 @@ export class AlbumsService {
     return this.prisma.mediaAlbum.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
-        medias: { take: 1 },
+        medias: { take: 3 },
         user: { select: { name: true, email: true } },
         _count: { select: { medias: true } },
       },
