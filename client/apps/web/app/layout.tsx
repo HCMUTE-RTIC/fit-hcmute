@@ -28,11 +28,32 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://25nam.fit.hcmute.edu.vn'),
   title: {
-    default: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
-    template: '%s | FIT-HCMUTE'
+    default: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Sư phạm Kỹ thuật TP.HCM',
+    template: '%s | FIT-HCMUTE 25 năm'
   },
-  description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
-  keywords: ['FIT HCMUTE', 'Khoa Công nghệ Thông tin', 'HCMUTE', 'Đại học Công Nghệ Kỹ thuật', 'Công nghệ Thông tin', 'IT', 'Kỹ thuật Dữ liệu'],
+  description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
+  keywords: [
+    // Tên khoa & viết tắt
+    'FIT', 'FIT HCMUTE', 'Khoa Công nghệ Thông tin', 'Khoa CNTT', 'CNTT HCMUTE',
+    // Tên trường & viết tắt
+    'HCMUTE', 'UTE', 'SPKT',
+    'Trường Đại học Sư phạm Kỹ thuật TP HCM',
+    'Trường Đại học Công nghệ Kỹ thuật TP HCM',
+    'Đại học Sư phạm Kỹ thuật TP Hồ Chí Minh',
+    'Đại học Công nghệ Kỹ thuật TP Hồ Chí Minh',
+    'fit.hcmute.edu.vn', 'hcmute.edu.vn',
+    // RTIC
+    'RTIC', 'HCMUTE RTIC', 'HCM UTE RTIC',
+    'Research on Technology and Innovation Club',
+    // Sự kiện kỷ niệm
+    '25 năm FIT', '25 năm thành lập', 'kỷ niệm 25 năm', 'FIT HCMUTE 25 năm',
+    '2001 2026', 'kỷ niệm thành lập khoa CNTT',
+    // Ngành đào tạo
+    'Công nghệ Thông tin', 'Kỹ thuật phần mềm', 'An toàn thông tin',
+    'Khoa học dữ liệu', 'Trí tuệ nhân tạo', 'IT HCMUTE',
+    // Tìm kiếm phổ biến
+    'khoa cntt hcmute', 'fit hcmute tuyển sinh',
+  ],
   authors: [{ name: 'FIT HCMUTE' }],
   creator: 'FIT HCMUTE',
   publisher: 'FIT HCMUTE',
@@ -40,23 +61,23 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'vi_VN',
     url: 'https://25nam.fit.hcmute.edu.vn',
-    siteName: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
-    title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
-    description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh. Đào tạo chất lượng cao về Công nghệ Thông tin, Kỹ thuật Dữ liệu, An toàn Thông tin.',
+    siteName: 'Kỷ niệm 25 năm Khoa CNTT - FIT HCMUTE',
+    title: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Sư phạm Kỹ thuật TP.HCM',
+    description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
     images: [
       {
         url: 'https://25nam.fit.hcmute.edu.vn/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Khoa Công nghệ Thông tin - FIT HCMUTE',
+        alt: 'Kỷ niệm 25 năm Khoa CNTT - FIT HCMUTE',
         type: 'image/png',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Khoa Công nghệ Thông tin - ĐH Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
-    description: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật Thành phố Hồ Chí Minh',
+    title: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Sư phạm Kỹ thuật TP.HCM',
+    description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Sư phạm Kỹ thuật TP. Hồ Chí Minh',
     images: ['https://25nam.fit.hcmute.edu.vn/twitter-image'],
   },
   alternates: {
