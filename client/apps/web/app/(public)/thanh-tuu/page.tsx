@@ -5,30 +5,6 @@ import Image from "next/image";
 import { Award, BookOpen, Globe, TrendingUp, Trophy, Star } from "lucide-react";
 
 export default function Achievements() {
-  const alumniStories = [
-    {
-      name: "Nguyễn Văn A",
-      title: "CEO & Founder, TechViet Solutions",
-      year: "Khóa 2005",
-      image: "/temp.jpg",
-      story: "Sau khi tốt nghiệp, tôi đã thành lập công ty công nghệ với hơn 200 nhân viên, cung cấp giải pháp chuyển đổi số cho doanh nghiệp.",
-    },
-    {
-      name: "Trần Thị B",
-      title: "Senior AI Engineer, Google Singapore",
-      year: "Khóa 2010",
-      image: "/temp.jpg",
-      story: "Được đào tạo nền tảng vững chắc tại Khoa CNTT, tôi đã có cơ hội làm việc với những dự án AI lớn nhất thế giới.",
-    },
-    {
-      name: "Lê Văn C",
-      title: "Tech Lead, VNG Corporation",
-      year: "Khóa 2012",
-      image: "/temp.jpg",
-      story: "Khoa CNTT không chỉ dạy tôi lập trình mà còn dạy tôi cách tư duy giải quyết vấn đề và làm việc nhóm hiệu quả.",
-    },
-  ];
-
   return (
     <div className="min-h-[calc(100vh-96px)]">
       {/* ─── Section 1: Hero ─────────────────────────────────────────────── */}
@@ -319,82 +295,12 @@ export default function Achievements() {
         </div>
       </section>
 
-      {/* Alumni Success Stories */}
+
+      {/* Awards Highlight */}
       <section
         className="py-24"
         style={{ backgroundColor: "var(--color-bg-light)" }}
       >
-        <div className="max-w-[1280px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2
-              className="font-bold mb-4"
-              style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
-            >
-              CỰU SINH VIÊN TIÊU BIỂU
-            </h2>
-            <p className="text-xl" style={{ color: "var(--color-text-gray)" }}>
-              Những câu chuyện thành công truyền cảm hứng
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {alumniStories.map((alumni, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 hover:shadow-xl transition-shadow"
-                style={{ boxShadow: "var(--shadow-soft)" }}
-              >
-                <div className="flex flex-col items-center text-center mb-6">
-                  <div className="relative w-24 h-24 mb-4">
-                    <Image
-                      src={alumni.image}
-                      alt={alumni.name}
-                      fill
-                      className="rounded-full object-cover border-4"
-                      style={{ borderColor: "var(--color-primary-600)" }}
-                    />
-                  </div>
-                  <h3
-                    className="font-bold mb-1"
-                    style={{ fontSize: "20px", color: "var(--color-primary-900)" }}
-                  >
-                    {alumni.name}
-                  </h3>
-                  <p className="font-semibold mb-1" style={{ color: "var(--color-primary-600)" }}>
-                    {alumni.title}
-                  </p>
-                  <p className="text-sm" style={{ color: "var(--color-text-gray)" }}>
-                    {alumni.year}
-                  </p>
-                </div>
-                <div className="relative">
-                  <Star
-                    size={24}
-                    className="absolute -top-2 -left-2 opacity-20"
-                    style={{ color: "var(--color-accent-500)" }}
-                  />
-                  <p className="italic" style={{ color: "var(--color-text-gray)", lineHeight: "1.7" }}>
-                    "{alumni.story}"
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Awards Highlight */}
-      <section className="py-24 bg-white">
         <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Play, Camera, Menu, ImageIcon } from "lucide-react";
+import { Play, Camera, ImageIcon } from "lucide-react";
 import { Folder } from "@workspace/ui/components/folder";
 import { albumsService } from "@/services/albums.service";
 import { MediaAlbum } from "@/types/albums";
@@ -47,8 +47,6 @@ const videos = [
   },
 ];
 
-// ─── Filter categories ────────────────────────────────────────────────────────
-const categories = ["Tất cả", "Sự kiện", "Hội thảo", "Hợp tác", "Tốt nghiệp", "Khởi nghiệp"];
 
 // ─── Photo Card ───────────────────────────────────────────────────────────────
 function PhotoCard({
@@ -168,7 +166,7 @@ function VideoCard({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Gallery() {
   const router = useRouter();
-  const [activeCategory, setActiveCategory] = useState("Tất cả");
+
   const [albums, setAlbums] = useState<MediaAlbum[]>([]);
   const [loadingAlbums, setLoadingAlbums] = useState(true);
   const [openingFolderId, setOpeningFolderId] = useState<string | null>(null);
@@ -253,27 +251,7 @@ export default function Gallery() {
         }}
       >
         <div className="max-w-[1280px] mx-auto px-6">
-          {/* Filter bar */}
-          <div className="flex items-center gap-3 mb-8 flex-wrap">
-            <button className="flex items-center gap-2 p-1 hover:opacity-70 transition-opacity">
-              <Menu size={24} color="#0C0C0C" />
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-4 py-1.5 rounded-full font-semibold transition-all"
-                style={{
-                  fontSize: 14,
-                  backgroundColor: activeCategory === cat ? "#1e3a8a" : "#f3f4f6",
-                  color: activeCategory === cat ? "white" : "#64748b",
-                  lineHeight: "20px",
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+
 
           {/* Albums Masonry Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start mt-8">
