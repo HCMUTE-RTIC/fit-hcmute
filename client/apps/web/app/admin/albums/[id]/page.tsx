@@ -47,8 +47,10 @@ export default function AlbumEditPage({
             metaDescription: data.metaDescription || "",
             coverPhotoId: data.coverPhotoId,
           });
-          // Assuming an endpoint to fetch media by album id exists, mock setting empty for now
-          // if there is existing media, populate `setAlbumMedia` here.
+          // Load existing media from the album
+          if ((data as any).medias && Array.isArray((data as any).medias)) {
+            setAlbumMedia((data as any).medias);
+          }
         }
       } catch (error) {
         console.error("Failed to load album", error);
