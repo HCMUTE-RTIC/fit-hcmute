@@ -70,7 +70,22 @@ services:
     networks:
       - fit_hcmute_prod_network
 
-  # 5. BACKEND NESTJS CORE (Application)
+  # 5. UMAMI ANALYTICS (Self-hosted, truy cập qua Cloudflare Tunnel)
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: p_umami
+    restart: unless-stopped
+    depends_on:
+      - postgres_prod
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_prod:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET}
+    ports:
+      - "3002:3000" # Cloudflare Tunnel: analytics25nam.hcmutertic.com -> localhost:3002
+    networks:
+      - fit_hcmute_prod_network
+
+  # 7. BACKEND NESTJS CORE (Application)
   backend_api:
     build:
       context: ./server
@@ -95,7 +110,7 @@ services:
     networks:
       - fit_hcmute_prod_network
 
-  # 6. FRONTEND NEXTJS (Web App SSR Server)
+  # 8. FRONTEND NEXTJS (Web App SSR Server)
   frontend_web:
     build:
       context: .

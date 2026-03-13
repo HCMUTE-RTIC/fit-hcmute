@@ -1,5 +1,6 @@
 import { Inter, Geist_Mono } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 
 import "@workspace/ui/globals.css";
 import "../styles/theme.css";
@@ -100,6 +101,15 @@ const organizationSchema = {
     width: 1200,
     height: 630,
   },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '01 Võ Văn Ngân, Phường Linh Chiểu',
+    addressLocality: 'TP. Thủ Đức',
+    addressRegion: 'TP. Hồ Chí Minh',
+    addressCountry: 'VN',
+  },
+  telephone: '+84-28-37221223',
+  email: 'kcntt@hcmute.edu.vn',
   foundingDate: '2000',
   parentOrganization: {
     '@type': 'CollegeOrUniversity',
@@ -109,6 +119,8 @@ const organizationSchema = {
   },
   sameAs: [
     'https://fit.hcmute.edu.vn',
+    'https://www.facebook.com/fit.hcmute.edu.vn',
+    'https://youtube.com/@khoacongnghethongtin4401',
   ],
 };
 
@@ -124,6 +136,14 @@ export default function RootLayout({
       >
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <Script
+            async
+            src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            strategy="afterInteractive"
+          />
+        )}
         <Providers>
           {children}
         </Providers>
