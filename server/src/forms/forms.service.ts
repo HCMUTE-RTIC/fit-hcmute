@@ -4,6 +4,7 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
+import { SubmissionStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateFormDefinitionDto,
@@ -135,6 +136,32 @@ export class FormsService {
     return this.prisma.formSubmission.findMany({
       where: { formId },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async updateSubmissionStatus(submissionId: string, status: SubmissionStatus) {
+    const submission = await this.prisma.formSubmission.findUnique({
+      where: { id: submissionId },
+    });
+    if (!submission) throw new NotFoundException('Submission not found');
+
+    return this.prisma.formSubmission.update({
+      where: { id: submissionId },
+      data: { status },
+    });
+  }
+
+  async getApprovedSubmissions(slug: string) {
+    const form = await this.prisma.formDefinition.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+    if (!form) throw new NotFoundException('Form not found');
+
+    return this.prisma.formSubmission.findMany({
+      where: { formId: form.id, status: SubmissionStatus.APPROVED },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, data: true, createdAt: true },
     });
   }
 

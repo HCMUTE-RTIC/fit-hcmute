@@ -60,9 +60,18 @@ export interface UpdateFormDefinitionDto {
   fields?: CreateFormFieldDto[];
 }
 
+export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
 export interface FormSubmission {
   id: string;
   formId: string;
+  data: Record<string, string>;
+  status: SubmissionStatus;
+  createdAt: string;
+}
+
+export interface PublicWish {
+  id: string;
   data: Record<string, string>;
   createdAt: string;
 }
@@ -173,6 +182,42 @@ export const FormsService = {
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || "Gửi form thất bại");
+    }
+  },
+
+  updateSubmissionStatus: async (
+    submissionId: string,
+    status: SubmissionStatus,
+  ): Promise<FormSubmission> => {
+    const token = getAuthToken();
+    const res = await fetch(
+      `${API_URL}/api/forms/submissions/${submissionId}/status`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ status }),
+      },
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể cập nhật trạng thái");
+    }
+    return res.json();
+  },
+
+  getPublicSubmissions: async (slug: string): Promise<PublicWish[]> => {
+    try {
+      const res = await fetch(
+        `${API_URL}/api/forms/${slug}/public-submissions`,
+        { cache: "no-store" },
+      );
+      if (!res.ok) return [];
+      return res.json();
+    } catch {
+      return [];
     }
   },
 };

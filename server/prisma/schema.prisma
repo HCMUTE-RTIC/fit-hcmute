@@ -232,15 +232,23 @@ enum FieldType {
   FILE
 }
 
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model FormSubmission {
-  id        String   @id @default(uuid()) @db.Uuid
-  formId    String   @db.Uuid @map("form_id")
-  eventId   String?  @db.Uuid @map("event_id") // Tham chiếu phụ EventID để làm tính năng Lọc ra xuất EXCEL
-  data      Json     // Lưu trữ câu trả lời { "full_name": "A", "email": "a@mail.com" }
-  createdAt DateTime @default(now()) @map("created_at")
+  id        String           @id @default(uuid()) @db.Uuid
+  formId    String           @db.Uuid @map("form_id")
+  eventId   String?          @db.Uuid @map("event_id") // Tham chiếu phụ EventID để làm tính năng Lọc ra xuất EXCEL
+  data      Json             // Lưu trữ câu trả lời { "full_name": "A", "email": "a@mail.com" }
+  status    SubmissionStatus @default(PENDING)
+  createdAt DateTime         @default(now()) @map("created_at")
 
   form      FormDefinition @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
+  @@index([status])
   @@map("form_submissions")
 }

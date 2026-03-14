@@ -1,8 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion";
-import { Heart, Send, Calendar, Mail, User } from "lucide-react";
+import { Heart, Send, Calendar, Mail, User, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { FormsService } from "@/services/forms.service";
+import { WishesWall } from "@/components/wishes/wishes-wall";
 
 export default function Alumni() {
   const [formData, setFormData] = useState({
@@ -10,28 +12,31 @@ export default function Alumni() {
     email: "",
     graduationYear: "",
     message: "",
-    attendEvent: "no",
-    numberOfGuests: "1",
+    attendEvent: "Không",
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submission
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        fullName: "",
-        email: "",
-        graduationYear: "",
-        message: "",
-        attendEvent: "no",
-        numberOfGuests: "1",
+    setLoading(true);
+    setError(null);
+    try {
+      await FormsService.submit("loi-chuc", {
+        full_name: formData.fullName,
+        email: formData.email,
+        ...(formData.graduationYear ? { graduation_year: formData.graduationYear } : {}),
+        attend_event: formData.attendEvent,
+        message: formData.message,
       });
-    }, 3000);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Có lỗi xảy ra, vui lòng thử lại.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -46,7 +51,7 @@ export default function Alumni() {
       {/* Hero Section */}
       <section
         className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
-        style={{ 
+        style={{
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
@@ -77,14 +82,12 @@ export default function Alumni() {
             >
               TRI ÂN & KẾT NỐI
             </h1>
-            <p
-              className="text-xl leading-relaxed text-gray-200 mb-10"
-            >
+            <p className="text-xl leading-relaxed text-gray-200 mb-10">
               Tri ân người đi trước, kết nối thế hệ mai sau. Hãy để lại lời chúc hoặc đăng ký tham dự để cùng viết tiếp hành trình rực rỡ này
             </p>
             <button
               onClick={() => {
-                document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById("registration-form")?.scrollIntoView({ behavior: "smooth" });
               }}
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all space-x-2 text-lg shadow-lg"
               style={{ backgroundColor: "var(--color-primary-600)" }}
@@ -136,11 +139,19 @@ export default function Alumni() {
                   Cảm ơn bạn!
                 </h3>
                 <p style={{ color: "var(--color-text-gray)" }}>
-                  Lời chúc của bạn đã được gửi thành công. Chúng tôi sẽ liên hệ với bạn sớm nhất.
+                  Lời chúc của bạn đã được gửi thành công và đang chờ ban tổ chức duyệt. Chúng tôi sẽ liên hệ với bạn sớm nhất.
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Error */}
+                {error && (
+                  <div className="flex items-center gap-2 p-4 rounded-lg bg-red-50 text-red-600 text-sm">
+                    <AlertCircle size={16} className="shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                )}
+
                 {/* Full Name */}
                 <div>
                   <label
@@ -159,16 +170,9 @@ export default function Alumni() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
-                    style={{
-                      borderColor: "#E2E8F0",
-                      color: "#1e293b",
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "var(--color-primary-600)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#E2E8F0";
-                    }}
+                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
+                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
                     placeholder="Nguyễn Văn A"
                   />
                 </div>
@@ -191,16 +195,9 @@ export default function Alumni() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
-                    style={{
-                      borderColor: "#E2E8F0",
-                      color: "#1e293b",
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "var(--color-primary-600)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#E2E8F0";
-                    }}
+                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
+                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
                     placeholder="email@example.com"
                   />
                 </div>
@@ -222,17 +219,10 @@ export default function Alumni() {
                     value={formData.graduationYear}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
-                    style={{
-                      borderColor: "#E2E8F0",
-                      color: "#1e293b",
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "var(--color-primary-600)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#E2E8F0";
-                    }}
-
+                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
+                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
+                    placeholder="VD: Khóa 2020, 2018..."
                   />
                 </div>
 
@@ -253,19 +243,12 @@ export default function Alumni() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
-                    style={{
-                      borderColor: "#E2E8F0",
-                      color: "#1e293b",
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "var(--color-primary-600)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#E2E8F0";
-                    }}
+                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
+                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
                   >
-                    <option value="no">Không</option>
-                    <option value="yes">Có</option>
+                    <option value="Không">Không</option>
+                    <option value="Có">Có</option>
                   </select>
                 </div>
 
@@ -287,16 +270,9 @@ export default function Alumni() {
                     required
                     rows={6}
                     className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors resize-none bg-white text-gray-900"
-                    style={{
-                      borderColor: "#E2E8F0",
-                      color: "#1e293b",
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "var(--color-primary-600)";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#E2E8F0";
-                    }}
+                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
+                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
                     placeholder="Chia sẻ kỷ niệm đẹp của bạn với Khoa CNTT hoặc gửi lời chúc mừng nhân dịp 25 năm thành lập..."
                   />
                 </div>
@@ -304,21 +280,33 @@ export default function Alumni() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all flex items-center justify-center space-x-2 text-lg"
+                  disabled={loading}
+                  className="w-full py-4 rounded-xl text-white font-bold hover:opacity-90 transition-all flex items-center justify-center space-x-2 text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{ backgroundColor: "var(--color-primary-600)" }}
                 >
-                  <Send size={20} />
-                  <span>Gửi lời chúc</span>
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      <span>Đang gửi...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      <span>Gửi lời chúc</span>
+                    </>
+                  )}
                 </button>
-
-
               </form>
             )}
           </motion.div>
         </div>
       </section>
 
-
+      {/* Lời chúc từ cộng đồng */}
+      <WishesWall maxWishes={9} showCta={false} />
     </div>
   );
 }

@@ -14,7 +14,7 @@ import { Role } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { CreateFormDefinitionDto, UpdateFormDefinitionDto } from 'src/forms/dto/create-form.dto';
+import { CreateFormDefinitionDto, UpdateFormDefinitionDto, UpdateSubmissionStatusDto } from 'src/forms/dto/create-form.dto';
 import { FormsService } from 'src/forms/forms.service';
 import { SubmitFormDto } from './dto/submit-form.dto';
 
@@ -66,5 +66,20 @@ export class FormsController {
   @Roles(Role.SUPER_ADMIN)
   remove(@Param('id') id: string) {
     return this.formsService.remove(id);
+  }
+
+  @Patch('submissions/:id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN, Role.EDITOR)
+  updateSubmissionStatus(
+    @Param('id') id: string,
+    @Body() dto: UpdateSubmissionStatusDto,
+  ) {
+    return this.formsService.updateSubmissionStatus(id, dto.status);
+  }
+
+  @Get(':slug/public-submissions')
+  getApprovedSubmissions(@Param('slug') slug: string) {
+    return this.formsService.getApprovedSubmissions(slug);
   }
 }
