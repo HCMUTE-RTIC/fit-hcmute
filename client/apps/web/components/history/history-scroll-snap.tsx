@@ -49,6 +49,7 @@ export default function HistoryScrollSnap() {
                                     className="object-cover"
                                     sizes="(max-width: 768px) 100vw, 52vw"
                                     priority={i === 0}
+                                    unoptimized={stage.id === 1 || stage.id === 3}
                                 />
                                 {/* Period badge */}
                                 <span className="history-snap-period-badge">

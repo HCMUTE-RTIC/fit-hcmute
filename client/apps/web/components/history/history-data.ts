@@ -20,7 +20,7 @@ export const historyStages: HistoryStage[] = [
         period: "1990 – 2001",
         summary:
             "Từ Trung tâm Tin học ban đầu đến khi Khoa Công nghệ Thông tin chính thức được thành lập",
-        image: "/trang-chu-home/banner_trangchu.jpg",
+        image: "/hanh-trinh-25-nam/ttth_logo.jpg",
         gradient: "linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)",
         milestones: [
             {
@@ -72,7 +72,7 @@ export const historyStages: HistoryStage[] = [
         period: "2011 – 2020",
         summary:
             "Chuẩn hóa chất lượng đào tạo, mở rộng chương trình và đầu tư mạnh cho cơ sở vật chất",
-        image: "/thu-vien/csv23-1.jpg",
+        image: "/hanh-trinh-25-nam/lab.png",
         gradient: "linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)",
         milestones: [
             {
