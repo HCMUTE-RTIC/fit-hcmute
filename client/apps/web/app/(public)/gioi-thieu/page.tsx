@@ -8,6 +8,7 @@ import {
   Users,
   Globe,
   Lightbulb,
+  Award,
 } from "lucide-react";
 
 // ─── Highlights ────────────────────────────────────────────────────────────────
@@ -260,6 +261,132 @@ export default function GioiThieu() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ─── Triết lý đào tạo Section ─────────────────────────────── */}
+      <section
+        className="relative overflow-hidden"
+        style={{
+          paddingTop: "var(--spacing-section)",
+          paddingBottom: "calc(var(--spacing-section) * 0.5)",
+          backgroundColor: "#f0f9ff",
+        }}
+      >
+        {/* Blueprint Grid Background */}
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(30, 58, 138, 0.1) 0.13966%, rgba(0,0,0,0) 0.13966%),
+              linear-gradient(90deg, rgba(30, 58, 138, 0.1) 0%, rgba(0,0,0,0) 0%)
+            `,
+          }}
+        />
+
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+          {/* Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2
+              className="font-bold leading-tight mb-4"
+              style={{
+                fontSize: "clamp(32px, 5vw, 48px)",
+                color: "#1e3a8a",
+              }}
+            >
+              Triết lý đào tạo
+            </h2>
+            <p
+              className="max-w-2xl mx-auto"
+              style={{ fontSize: "18px", color: "#64748b" }}
+            >
+              Ba giá trị cốt lõi định hình nên thế hệ kỹ sư FIT-HCMUTE
+            </p>
+          </motion.div>
+
+          {/* Three Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                icon: Award,
+                title: "Nhân bản",
+                description:
+                  "Đặt con người làm trung tâm, giáo dục kết hợp hài hòa giữa truyền đạt tri thức chuyên môn và bồi dưỡng đạo đức, lòng nhân ái cùng trách nhiệm phụng sự cộng đồng",
+                iconColor: "#DC2626",
+              },
+              {
+                icon: Lightbulb,
+                title: "Sáng tạo",
+                description:
+                  "Lấy đổi mới làm cốt lõi, nhà trường thúc đẩy phương pháp học tập chủ động và nghiên cứu khoa học nhằm giúp sinh viên kiến tạo các giá trị thực tiễn cho xã hội",
+                iconColor: "#2563EB",
+              },
+              {
+                icon: Globe,
+                title: "Hội nhập",
+                description:
+                  "Trang bị toàn diện về ngoại ngữ, kỹ năng mềm và tư duy toàn cầu để sinh viên tự tin làm việc và thích ứng nhanh chóng trong môi trường quốc tế đa văn hóa",
+                iconColor: "#1E3A8A",
+              },
+            ].map((card, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  borderRadius: "16px",
+                  border: "2px solid #1b5bdb",
+                  padding: "31px",
+                  minHeight: "296px",
+                }}
+              >
+                {/* Icon */}
+                <div
+                  className="flex items-center justify-center mb-6"
+                  style={{ width: "80px", height: "80px" }}
+                >
+                  <card.icon
+                    size={48}
+                    style={{ color: card.iconColor }}
+                    strokeWidth={2}
+                  />
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="font-bold mb-4"
+                  style={{
+                    fontSize: "24px",
+                    lineHeight: "36px",
+                    color: "#1e3a8a",
+                  }}
+                >
+                  {card.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="leading-relaxed"
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: "26px",
+                    color: "#64748b",
+                  }}
+                >
+                  {card.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
