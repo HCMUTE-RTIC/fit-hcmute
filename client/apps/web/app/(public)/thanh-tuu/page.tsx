@@ -464,7 +464,7 @@ export default function Achievements() {
               THÀNH TÍCH THI ĐẤU &amp; HỌC THUẬT
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 17 }}>
-              Hover vào từng icon để xem chi tiết — ICPC, OLP và các sân chơi học thuật hằng năm
+              ICPC, OLP và các sân chơi học thuật hằng năm
             </p>
           </motion.div>
         </div>
