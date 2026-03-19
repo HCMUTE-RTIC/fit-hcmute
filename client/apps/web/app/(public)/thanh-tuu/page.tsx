@@ -464,7 +464,7 @@ export default function Achievements() {
               THÀNH TÍCH THI ĐẤU &amp; HỌC THUẬT
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 18 }}>
-              Hover vào từng biểu tượng để xem chi tiết thành tích — sinh viên Khoa CNTT liên tục ghi dấu ấn tại đấu trường quốc gia &amp; quốc tế
+              Sinh viên Khoa CNTT liên tục ghi dấu ấn tại đấu trường quốc gia &amp; quốc tế
             </p>
           </motion.div>
         </div>
