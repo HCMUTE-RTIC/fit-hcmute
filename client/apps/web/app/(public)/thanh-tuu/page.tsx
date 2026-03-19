@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Award, BookOpen, Globe, TrendingUp, Trophy, Star, Building2, Building, GraduationCap, HeartHandshake, Laptop, Presentation, Heart, Info } from "lucide-react";
 import LogoLoop, { type LogoItem } from "@/components/LogoLoop";
+import { PhongTraoCard, type PhongTraoActivity } from "@/components/PhongTraoCard";
 
 const iconBox = (bg: string) => ({
   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -167,10 +168,10 @@ export default function Achievements() {
               className="font-bold mb-4"
               style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
             >
-              NGHIÊN CỨU KHOA HỌC
+              HOẠT ĐỘNG NGHIÊN CỨU KHOA HỌC
             </h2>
-            <p className="text-xl" style={{ color: "var(--color-text-gray)" }}>
-              Đóng góp cho sự phát triển của khoa học công nghệ
+            <p className="text-xl max-w-3xl mx-auto" style={{ color: "var(--color-text-gray)" }}>
+              Tập thể cán bộ GV và SV khoa CNTT tự hào với những thành tích vượt bậc trong nghiên cứu và công bố quốc tế
             </p>
           </motion.div>
 
@@ -196,21 +197,20 @@ export default function Achievements() {
               {[
                 {
                   icon: BookOpen,
-                  title: "Đề tài cấp Nhà nước",
-                  count: "15+",
-                  description: "Các đề tài nghiên cứu trọng điểm về AI, IoT, Big Data được triển khai thành công",
+                  title: "Đề tài & Dự án",
+                 
+                  description: "Đạt 2 đề tài Nafosted, 1 đề tài cấp Bộ, 24 đề tài cấp cơ sở và 24 đề tài NCKH sinh viên",
                 },
                 {
                   icon: Globe,
-                  title: "Công bố quốc tế",
-                  count: "200+",
-                  description: "Bài báo khoa học trên các tạp chí và hội nghị quốc tế uy tín",
+                  title: "Công bố Quốc tế",
+               
+                  description: "36 bài tạp chí WoS/Scopus và hơn 60 bài hội thảo quốc tế chuyên ngành (Scopus)",
                 },
                 {
-                  icon: Trophy,
-                  title: "Sáng chế & Giải pháp",
-                  count: "30+",
-                  description: "Bằng sáng chế và giải pháp hữu ích được cấp bởi Bộ Khoa học & Công nghệ",
+                  icon: Award,
+                  title: "Sinh viên NCKH",
+                  description: "Hàng năm có hàng chục SV báo cáo và công bố kết quả trên các tạp chí, hội thảo quốc tế từ 2023",
                 },
               ].map((item, index) => (
                 <motion.div
@@ -240,7 +240,7 @@ export default function Achievements() {
                       className="text-2xl font-bold"
                       style={{ color: "var(--color-accent-500)" }}
                     >
-                      {item.count}
+                  
                     </p>
                   </div>
                 </motion.div>
@@ -327,7 +327,7 @@ export default function Achievements() {
           </div>
 
           {/* New Distinctive Hover Button */}
-          <div className="mt-16 flex justify-center relative z-50 group">
+          <div className="mt-16 flex justify-center relative z-30 group">
             <button
               className="inline-flex items-center justify-center w-14 h-14 rounded-full text-white transition-all transform hover:scale-110 shadow-lg hover:shadow-2xl cursor-default"
               style={{ background: "var(--gradient-hero)" }}
@@ -337,7 +337,7 @@ export default function Achievements() {
 
             {/* Hover Cards Container */}
             <div
-              className="absolute bottom-full left-1/2 -translate-x-1/2 pb-10 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-400 origin-bottom scale-95 group-hover:scale-100 z-50 pointer-events-none group-hover:pointer-events-auto w-[calc(100vw-3rem)] max-w-[1232px]"
+              className="absolute bottom-full left-1/2 -translate-x-1/2 pb-10 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-400 origin-bottom scale-95 group-hover:scale-100 z-30 pointer-events-none group-hover:pointer-events-auto w-[calc(100vw-3rem)] max-w-[1232px]"
             >
               <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-gray-100 shadow-2xl relative">
                 {/* Arrow pointing down */}
@@ -463,8 +463,8 @@ export default function Achievements() {
             <h2 className="font-bold mb-4" style={{ fontSize: 'var(--text-h2)', color: '#ffffff' }}>
               THÀNH TÍCH THI ĐẤU &amp; HỌC THUẬT
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 18 }}>
-              Sinh viên Khoa CNTT liên tục ghi dấu ấn tại đấu trường quốc gia &amp; quốc tế
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 17 }}>
+              Hover vào từng icon để xem chi tiết — ICPC, OLP và các sân chơi học thuật hằng năm
             </p>
           </motion.div>
         </div>
@@ -567,14 +567,18 @@ export default function Achievements() {
             },
           ];
           return (
-            <LogoLoop
-              logos={awards}
-              speed={55}
-              logoHeight={170}
-              gap={48}
-              pauseOnHover
-              ariaLabel="Thành tích thi đấu và học thuật"
-            />
+            <div className="mx-auto" style={{ maxWidth: 840 }}>
+              <LogoLoop
+                logos={awards}
+                speed={55}
+                logoHeight={170}
+                gap={40}
+                pauseOnHover
+                fadeOut
+                fadeOutColor="#0f2744"
+                ariaLabel="Thành tích thi đấu và học thuật"
+              />
+            </div>
           );
         })()}
       </section>
@@ -691,6 +695,81 @@ export default function Achievements() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+      {/* Phong trao Doan Hoi */}
+      <section className="py-24" style={{ backgroundColor: 'var(--color-bg-light)' }}>
+        <div className="max-w-[1280px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <p
+              className="text-sm font-bold uppercase tracking-widest mb-3"
+              style={{ color: 'var(--color-accent-500)' }}
+            >
+              Đoàn Thanh Niên — Hội Sinh Viên
+            </p>
+            <h2
+              className="font-bold mb-4"
+              style={{ fontSize: 'var(--text-h2)', color: 'var(--color-primary-900)' }}
+            >
+              PHONG TRÀO ĐOÀN HỘI
+            </h2>
+            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'var(--color-text-gray)' }}>
+              Các hoạt động tình nguyện, xã hội tiêu biểu thể hiện tinh thần trách nhiệm và
+              nhân ái của sinh viên Khoa CNTT
+            </p>
+          </motion.div>
+
+          <div className="flex flex-col gap-10">
+            {([
+              {
+                title: 'Mùa Hè Xanh',
+                subtitle: 'Tình nguyện hè',
+                description:
+                  'Hằng năm, sinh viên Khoa CNTT hăng hái tham gia chiến dịch Mùa Hè Xanh — đến các vùng nông thôn, vùng sâu vùng xa để xây dựng công trình dân sinh, hỗ trợ người dân và lan toa tinh thần thanh niên xung kích.',
+                emoji: '🌿',
+                gradient: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                accentColor: '#16a34a',
+                images: [
+                  '/thanh-tuu/phong-trao/mua-he-xanh/m1.JPG',
+                  '/thanh-tuu/phong-trao/mua-he-xanh/m2.JPG',
+                ] as [string, string],
+              },
+              {
+                title: 'Trung Thu Yêu Thương',
+                subtitle: 'Hoạt động vì cộng đồng',
+                description:
+                  'Chương trình Trung Thu Yêu Thương mang đến niềm vui cho các em nhỏ có hoàn cảnh khó khăn. Sinh viên tự tay làm lồng đèn, chuẩn bị quà và tổ chức các trò chơi dân gian, gửi gắm tình thương và hy vọng đến những mảnh đời còn nhiều thiếu thốn.',
+                emoji: '🏮',
+                gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                accentColor: '#d97706',
+                images: [
+                  '/thanh-tuu/phong-trao/trung-thu/m1.JPG',
+                  '/thanh-tuu/phong-trao/trung-thu/m2.JPG',
+                ] as [string, string],
+              },
+              {
+                title: 'Xuân Tình Nguyện',
+                subtitle: 'Tết yêu thương',
+                description:
+                  'Xuân Tình Nguyện là hoạt động thường niên dịp Tết Nguyên Đán, nơi sinh viên cùng nhau góp sức mang Xuân về cho những người có hoàn cảnh đặc biệt khó khăn — những bệnh nhân nằm viện, người vô gia cư và các gia đình nghèo chưa có Tết.',
+                emoji: '🌸',
+                gradient: 'linear-gradient(135deg, #ec4899, #be185d)',
+                accentColor: '#be185d',
+                images: [
+                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m1.jpg',
+                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m2.jpg',
+                ] as [string, string],
+              },
+            ] as PhongTraoActivity[]).map((activity, index) => (
+              <PhongTraoCard key={index} activity={activity} index={index} />
+            ))}
           </div>
         </div>
       </section>
