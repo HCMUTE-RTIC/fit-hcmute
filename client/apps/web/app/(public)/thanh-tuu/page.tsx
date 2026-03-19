@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Award, BookOpen, Globe, TrendingUp, Trophy, Star } from "lucide-react";
+import { Award, BookOpen, Globe, TrendingUp, Trophy, Star, Building2, Building, GraduationCap, HeartHandshake, Laptop, Presentation, Heart, Info } from "lucide-react";
 
 export default function Achievements() {
   return (
@@ -10,7 +10,7 @@ export default function Achievements() {
       {/* ─── Section 1: Hero ─────────────────────────────────────────────── */}
       <section
         className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
-        style={{ 
+        style={{
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
@@ -219,7 +219,7 @@ export default function Achievements() {
 
       {/* International Cooperation */}
       <section className="py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
+        <div className="max-w-[1280px] mx-auto px-6 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -238,7 +238,7 @@ export default function Achievements() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
             {/* Logos Grid */}
             <div className="order-2 lg:order-1 grid grid-cols-3 sm:grid-cols-4 gap-4">
               {[
@@ -292,6 +292,128 @@ export default function Achievements() {
               />
             </motion.div>
           </div>
+
+          {/* New Distinctive Hover Button */}
+          <div className="mt-16 flex justify-center relative z-50 group">
+            <button
+              className="inline-flex items-center justify-center w-14 h-14 rounded-full text-white transition-all transform hover:scale-110 shadow-lg hover:shadow-2xl cursor-default"
+              style={{ background: "var(--gradient-hero)" }}
+            >
+              <Info size={28} className="text-white" />
+            </button>
+
+            {/* Hover Cards Container */}
+            <div
+              className="absolute bottom-full left-1/2 -translate-x-1/2 pb-10 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-400 origin-bottom scale-95 group-hover:scale-100 z-50 pointer-events-none group-hover:pointer-events-auto w-[calc(100vw-3rem)] max-w-[1232px]"
+            >
+              <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-gray-100 shadow-2xl relative">
+                {/* Arrow pointing down */}
+                <div
+                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-white rotate-45"
+                  style={{
+                    borderRight: "1px solid rgba(0,0,0,0.05)",
+                    borderBottom: "1px solid rgba(0,0,0,0.05)",
+                    clipPath: "polygon(100% 100%, 0 100%, 100% 0)"
+                  }}
+                />
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10 text-left">
+                  {/* Card 1: Giao luu hoc thuat */}
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm relative overflow-hidden group/card hover:-translate-y-1 transition-transform hover:shadow-lg">
+                    <div
+                      className="absolute top-0 right-0 w-24 h-24 rounded-bl-full -z-0 transition-transform duration-500 group-hover/card:scale-110"
+                      style={{ backgroundColor: "var(--color-bg-light)" }}
+                    />
+                    <div className="relative z-10 flex items-center gap-4 mb-6">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50" style={{ color: "var(--color-primary-600)" }}>
+                        <Globe size={24} />
+                      </div>
+                      <h3 className="text-xl font-bold" style={{ color: "var(--color-primary-900)" }}>
+                        Hợp Tác Quốc Tế
+                      </h3>
+                    </div>
+                    <div className="relative z-10">
+                      <p className="text-[15px] leading-relaxed mb-4 text-gray-600">
+                        Khoa CNTT tiếp đón các đoàn công tác ĐH quốc tế, tạo cầu nối xin học bổng toàn phần đào tạo Sau đại học tại Úc, Hàn Quốc, Đài Loan...
+                      </p>
+                      <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
+                        <p className="text-[14px] font-medium" style={{ color: "var(--color-primary-600)" }}>
+                          <span className="font-bold">Nổi bật đầu năm 2026:</span>
+                        </p>
+                        <p className="text-[13px] text-gray-600 mt-1">2 SV tốt nghiệp học Tiến sĩ tại:</p>
+                        <ul className="mt-1 text-[14px] font-semibold space-y-1" style={{ color: "var(--color-primary-900)" }}>
+                          <li>• Hàn Quốc (SV Nguyễn Minh Triều)</li>
+                          <li>• Đài Loan (SV Lê Chánh Thành Tín)</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Quan he doanh nghiep */}
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm relative overflow-hidden group/card hover:-translate-y-1 transition-transform hover:shadow-lg">
+                    <div
+                      className="absolute top-0 right-0 w-24 h-24 rounded-bl-full -z-0 transition-transform duration-500 group-hover/card:scale-110"
+                      style={{ backgroundColor: "var(--color-bg-light)" }}
+                    />
+                    <div className="relative z-10 flex items-center gap-4 mb-6">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: "var(--color-bg-light)", color: "var(--color-primary-600)" }}>
+                        <Building2 size={24} />
+                      </div>
+                      <h3 className="text-xl font-bold" style={{ color: "var(--color-primary-900)" }}>
+                        Quan Hệ Doanh Nghiệp
+                      </h3>
+                    </div>
+                    <ul className="relative z-10 space-y-4">
+                      {[
+                        { icon: Presentation, text: "Tổ chức hơn 20 đợt giới thiệu và 4 hội thảo kết nối doanh nghiệp hằng năm." },
+                        { icon: Building, text: "Tham quan thực tế tại doanh nghiệp cho sinh viên năm 1, 2." },
+                        { icon: Globe, text: "Giới thiệu sinh viên thực tập tại doanh nghiệp trong và ngoài nước." }
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center bg-white border border-gray-100" style={{ color: "var(--color-accent-500)" }}>
+                            <item.icon size={12} />
+                          </div>
+                          <p className="text-[15px] leading-relaxed text-gray-600">{item.text}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Card 3: Hoc bong */}
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm relative overflow-hidden group/card hover:-translate-y-1 transition-transform hover:shadow-lg">
+                    <div
+                      className="absolute top-0 right-0 w-24 h-24 rounded-bl-full -z-0 transition-transform duration-500 group-hover/card:scale-110"
+                      style={{ backgroundColor: "var(--color-bg-light)" }}
+                    />
+                    <div className="relative z-10 flex items-center gap-4 mb-6">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: "var(--color-bg-light)", color: "var(--color-accent-500)" }}>
+                        <HeartHandshake size={24} />
+                      </div>
+                      <h3 className="text-xl font-bold" style={{ color: "var(--color-primary-900)" }}>
+                        Quỹ Học Bổng & Hỗ Trợ
+                      </h3>
+                    </div>
+                    <ul className="relative z-10 space-y-4">
+                      {[
+                        { icon: GraduationCap, text: "Quỹ học bổng từ doanh nghiệp và cựu sinh viên." },
+                        { icon: Heart, text: "Tài trợ học bổng cho SV khó khăn và bị ảnh hưởng bởi thiên tai." },
+                        { icon: Laptop, text: "Trao tặng máy tính, thiết bị học tập cho SV vượt khó." }
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center bg-white border border-gray-100" style={{ color: "var(--color-primary-600)" }}>
+                            <item.icon size={12} />
+                          </div>
+                          <p className="text-[15px] leading-relaxed text-gray-600">{item.text}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </section>
 
