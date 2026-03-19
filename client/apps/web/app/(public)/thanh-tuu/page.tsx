@@ -3,6 +3,39 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Award, BookOpen, Globe, TrendingUp, Trophy, Star, Building2, Building, GraduationCap, HeartHandshake, Laptop, Presentation, Heart, Info } from "lucide-react";
+import LogoLoop, { type LogoItem } from "@/components/LogoLoop";
+
+const iconBox = (bg: string) => ({
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  width: 72, height: 72, borderRadius: 18,
+  background: bg, boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+  transition: 'transform 0.2s',
+} as React.CSSProperties);
+
+const makeHoverCard = (
+  gradient: string,
+  Icon: React.ElementType,
+  title: string,
+  items: { emoji: string; label: string; sub?: string }[]
+) => (
+  <div style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.18)', border: '1px solid rgba(0,0,0,0.07)', background: '#fff' }}>
+    <div style={{ background: gradient, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <Icon size={18} color="#fff" />
+      <span style={{ color: '#fff', fontWeight: 700, fontSize: 13, lineHeight: 1.3 }}>{title}</span>
+    </div>
+    <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {items.map((it, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+          <span style={{ fontSize: 20, lineHeight: 1.2, flexShrink: 0 }}>{it.emoji}</span>
+          <div>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#1e293b' }}>{it.label}</p>
+            {it.sub && <p style={{ margin: '2px 0 0', fontSize: 12, color: '#64748b' }}>{it.sub}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 export default function Achievements() {
   return (
@@ -417,6 +450,134 @@ export default function Achievements() {
         </div>
       </section>
 
+      {/* Competition Awards — LogoLoop Section */}
+      <section className="py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0d2137 0%, #1a3a5c 60%, #0f2744 100%)' }}>
+        <div className="max-w-[1280px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <h2 className="font-bold mb-4" style={{ fontSize: 'var(--text-h2)', color: '#ffffff' }}>
+              THÀNH TÍCH THI ĐẤU &amp; HỌC THUẬT
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 18 }}>
+              Hover vào từng biểu tượng để xem chi tiết thành tích — sinh viên Khoa CNTT liên tục ghi dấu ấn tại đấu trường quốc gia &amp; quốc tế
+            </p>
+          </motion.div>
+        </div>
+        {(() => {
+          const awards: LogoItem[] = [
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#f59e0b,#d97706)')}><Trophy size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Vietnam<br/>National 2024</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#f59e0b,#d97706)', Trophy,
+                'ICPC Vietnam National Programming Contest 2024',
+                [
+                  { emoji: '🥈', label: 'Giải Nhì', sub: 'ICPC Vietnam National Programming Contest 2024' },
+                  { emoji: '✈️', label: 'Giành suất tham dự Vòng Châu Á tại Singapore', sub: 'ICPC Asia Regional 2024' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#3b82f6,#1d4ed8)')}><Award size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>OLP Tin học<br/>SV VN 2024</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#3b82f6,#1d4ed8)', Award,
+                'OLP Tin học Sinh Viên VN 2024',
+                [
+                  { emoji: '🥈', label: 'Khối chuyên tin & không chuyên: Giải Nhì' },
+                  { emoji: '🥉', label: 'Siêu cúp & Phần mềm nguồn mở: Giải cao (Nhì & Ba)', sub: 'Tất cả khối đều đạt giải cao' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#f97316,#c2410c)')}><Star size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Vietnam<br/>National 2025</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#f97316,#c2410c)', Star,
+                'The 2025 ICPC Vietnam National Programming Contest',
+                [
+                  { emoji: '🥇', label: 'Giải Nhất', sub: 'The 2025 ICPC Vietnam National Programming Contest' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#10b981,#047857)')}><Globe size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Asia<br/>HCMC 2025</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#10b981,#047857)', Globe,
+                'The 2025 ICPC Asia HCMC Regional Contest',
+                [
+                  { emoji: '🥇', label: 'Giải Nhất', sub: 'The 2025 ICPC Asia HCMC Regional Contest' },
+                  { emoji: '🌏', label: 'Đại diện Việt Nam tham dự Châu Á tại Đài Loan' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#a855f7,#7c3aed)')}><GraduationCap size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>OLP Tin học<br/>SV VN 2025</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#a855f7,#7c3aed)', GraduationCap,
+                'OLP Tin học Sinh Viên VN 2025',
+                [
+                  { emoji: '🥉', label: 'Khối chuyên tin: SV đạt Giải Ba' },
+                  { emoji: '🥉', label: 'Khối không chuyên: SV đạt Giải Ba' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#ec4899,#be185d)')}><Presentation size={34} color="#fff" /></div>
+                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>Sân chơi<br/>Học thuật</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#ec4899,#be185d)', Presentation,
+                'Sân Chơi Học Thuật Hằng Năm',
+                [
+                  { emoji: '🏆', label: 'Mastering IT, Hackathon, SV với An toàn thông tin' },
+                  { emoji: '🎓', label: 'Thu hút hàng trăm lượt SV & đội dự thi', sub: 'Từ các trường ĐH trên địa bàn TP. HCM' },
+                ]
+              ),
+            },
+          ];
+          return (
+            <LogoLoop
+              logos={awards}
+              speed={55}
+              logoHeight={170}
+              gap={48}
+              pauseOnHover
+              ariaLabel="Thành tích thi đấu và học thuật"
+            />
+          );
+        })()}
+      </section>
 
       {/* Awards Highlight */}
       <section
