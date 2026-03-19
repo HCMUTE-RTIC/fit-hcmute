@@ -39,7 +39,7 @@ export default function HistoryStackSection() {
 
             {/* Section header */}
             <div className="relative z-10 max-w-[1280px] mx-auto px-6 pt-16 md:pt-24">
-                <div className="text-center max-w-3xl mx-auto">
+                <div className="text-center max-w-4xl mx-auto">
                     {/* Eyebrow badge */}
                     <span
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase mb-5"
@@ -76,7 +76,7 @@ export default function HistoryStackSection() {
                     >
                         Từ những bước khởi đầu đầy nhiệt huyết, Khoa Công nghệ Thông tin
                         không ngừng lớn mạnh, trở thành cái nôi đào tạo nguồn nhân lực chất
-                        lượng cao cho ngành CNTT Việt Nam.
+                        lượng cao cho ngành CNTT <span className="whitespace-nowrap">Việt Nam</span>.
                     </p>
 
                     {/* Hero stat bar */}

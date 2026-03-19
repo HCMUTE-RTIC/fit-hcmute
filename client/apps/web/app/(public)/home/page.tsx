@@ -39,76 +39,10 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/60" />
+          {/* No Overlay to keep original image brightness */}
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Year Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-block mb-8"
-            >
-              <div
-                className="px-8 py-3 rounded-full font-bold text-sm tracking-wider"
-                style={{
-                  background: "linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%)",
-                  color: "#ffffff",
-                  boxShadow: "0px 4px 20px 0px rgba(37, 99, 235, 0.5), 0 0 40px rgba(37, 99, 235, 0.3)",
-                }}
-              >
-                2001 - 2026
-              </div>
-            </motion.div>
 
-            {/* Main Heading */}
-            <h1
-              className="font-extrabold mb-6 leading-tight text-white"
-              style={{
-                fontSize: "clamp(48px, 8vw, 96px)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Vững Bước Vươn Xa
-            </h1>
-
-            {/* Subtitle */}
-            <p
-              className="mb-12 max-w-3xl mx-auto leading-relaxed text-white/90"
-              style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
-            >
-              Kỷ niệm 25 năm hình thành và phát triển Khoa Công nghệ Thông tin
-              <br />
-              Trường Đại học Công nghệ Kỹ thuật TP.HCM
-            </p>
-
-            {/* CTA Button */}
-            <Link
-              href="/tri-an"
-              className="inline-flex items-center justify-center rounded-lg text-white font-bold uppercase text-base tracking-wider hover:opacity-90 transition-all group"
-              style={{
-                backgroundColor: "#1e3a8a",
-                padding: "16px 40px",
-                borderRadius: "10px",
-                boxShadow: "0px 25px 50px 0px rgba(0, 0, 0, 0.25)",
-              }}
-            >
-              ĐĂNG KÝ THAM DỰ
-              <ArrowRight
-                className="ml-3 group-hover:translate-x-1 transition-transform"
-                size={20}
-              />
-            </Link>
-          </motion.div>
-        </div>
 
         {/* Scroll Indicator */}
         <motion.div
@@ -127,7 +61,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ─── Triết lý đào tạo Section ─────────────────────────────── */}
+      {/* ─── Kỷ Yếu & Lời Tri Ân Section ─────────────────────────────── */}
       <section
         className="relative overflow-hidden"
         style={{
@@ -136,119 +70,92 @@ export default function Home() {
           backgroundColor: "#f0f9ff",
         }}
       >
-        {/* Blueprint Grid Background */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(30, 58, 138, 0.1) 0.13966%, rgba(0,0,0,0) 0.13966%),
-              linear-gradient(90deg, rgba(30, 58, 138, 0.1) 0%, rgba(0,0,0,0) 0%)
-            `,
-          }}
-        />
-
         <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-          {/* Header */}
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2
-              className="font-bold leading-tight mb-4"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column: Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
               style={{
-                fontSize: "clamp(32px, 5vw, 48px)",
-                color: "#1e3a8a",
+                borderRadius: "24px",
+                border: "4px solid white",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
               }}
             >
-              Triết lý đào tạo
-            </h2>
-            <p
-              className="max-w-2xl mx-auto"
-              style={{ fontSize: "18px", color: "#64748b" }}
-            >
-              Ba giá trị cốt lõi định hình nên thế hệ kỹ sư FIT-HCMUTE
-            </p>
-          </motion.div>
+              <Image
+                src="/ky-yeu/banner_kyyeu.jpg"
+                alt="25 năm thành lập Khoa CNTT"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </motion.div>
 
-          {/* Three Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {[
-              {
-                icon: Award,
-                title: "Nhân bản",
-                description:
-                  "Đặt con người làm trung tâm, giáo dục kết hợp hài hòa giữa truyền đạt tri thức chuyên môn và bồi dưỡng đạo đức, lòng nhân ái cùng trách nhiệm phụng sự cộng đồng",
-                iconColor: "#DC2626",
-              },
-              {
-                icon: Lightbulb,
-                title: "Sáng tạo",
-                description:
-                  "Lấy đổi mới làm cốt lõi, nhà trường thúc đẩy phương pháp học tập chủ động và nghiên cứu khoa học nhằm giúp sinh viên kiến tạo các giá trị thực tiễn cho xã hội",
-                iconColor: "#2563EB",
-              },
-              {
-                icon: Globe,
-                title: "Hội nhập",
-                description:
-                  "Trang bị toàn diện về ngoại ngữ, kỹ năng mềm và tư duy toàn cầu để sinh viên tự tin làm việc và thích ứng nhanh chóng trong môi trường quốc tế đa văn hóa",
-                iconColor: "#1E3A8A",
-              },
-            ].map((card, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+            {/* Right Column: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <h2
+                className="font-bold leading-tight mb-6"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  borderRadius: "16px",
-                  border: "2px solid #1b5bdb",
-                  padding: "31px",
-                  minHeight: "296px",
+                  fontSize: "clamp(32px, 4vw, 42px)",
+                  color: "#1e3a8a",
                 }}
               >
-                {/* Icon */}
+                Kỷ niệm 25 năm thành lập FIT-HCMUTE
+              </h2>
+              <p
+                className="mb-8"
+                style={{
+                  fontSize: "18px",
+                  lineHeight: "28px",
+                  color: "#475569",
+                }}
+              >
+                Năm 2026 đánh dấu cột mốc ¼ thế kỷ hình thành và phát triển của Khoa Công nghệ Thông tin (2001 - 2026). Một chặng đường đầy tự hào với những thế hệ kỹ sư công nghệ tài năng, nhiệt huyết đã và đang góp phần xây dựng đất nước.
+              </p>
+
+              <div
+                className="relative p-8 rounded-2xl bg-white shadow-sm border"
+                style={{ borderColor: "#e2e8f0" }}
+              >
                 <div
-                  className="flex items-center justify-center mb-6"
-                  style={{ width: "80px", height: "80px" }}
+                  className="absolute -top-4 -left-2 text-6xl opacity-20"
+                  style={{ color: "#2563EB", fontFamily: "serif" }}
                 >
-                  <card.icon
-                    size={48}
-                    style={{ color: card.iconColor }}
-                    strokeWidth={2}
-                  />
+                  "
                 </div>
-
-                {/* Title */}
-                <h3
-                  className="font-bold mb-4"
-                  style={{
-                    fontSize: "24px",
-                    lineHeight: "36px",
-                    color: "#1e3a8a",
-                  }}
-                >
-                  {card.title}
-                </h3>
-
-                {/* Description */}
                 <p
-                  className="leading-relaxed"
+                  className="italic mb-6 relative z-10"
                   style={{
-                    fontSize: "16px",
-                    lineHeight: "26px",
-                    color: "#64748b",
+                    fontSize: "18px",
+                    lineHeight: "30px",
+                    color: "#334155",
                   }}
                 >
-                  {card.description}
+                  Nhân dịp kỷ niệm 25 năm thành lập, thay mặt Ban chủ nhiệm Khoa, xin gửi lời tri ân sâu sắc đến các thế hệ giảng viên, sinh viên và đối tác. Chúc mừng sự kiện trọng đại này của chúng ta. Hãy cùng nhau viết tiếp nên những trang sử mới đầy tự hào của FIT-HCMUTE!
                 </p>
-              </motion.div>
-            ))}
+                <div className="flex items-center gap-4">
+                  <div
+                    className="w-12 h-1 rounded-full"
+                    style={{ backgroundColor: "#2563EB" }}
+                  />
+                  <div>
+                    <p className="font-bold text-lg" style={{ color: "#1e3a8a" }}>
+                      Trưởng Khoa
+                    </p>
+                    <p style={{ color: "#64748b", fontSize: "14px" }}>
+                      Khoa Công nghệ Thông tin
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -279,15 +186,14 @@ export default function Home() {
               Kết nối và chia sẻ
             </h2>
             <p
-              className="mb-8 max-w-3xl mx-auto"
+              className="mb-8 max-w-5xl mx-auto"
               style={{
                 fontSize: "20px",
                 lineHeight: "28px",
                 color: "#64748b",
               }}
             >
-              Hãy cùng tạo nên những kỷ niệm đẹp trong dịp kỷ niệm
-              25 năm thành lập FIT-HCMUTE
+              Hãy cùng tạo nên những kỷ niệm đẹp trong dịp kỷ niệm 25 năm thành lập FIT-HCMUTE
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link
