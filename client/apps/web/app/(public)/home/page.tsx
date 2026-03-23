@@ -150,7 +150,7 @@ export default function Home() {
                       Trưởng Khoa
                     </p>
                     <p style={{ color: "#64748b", fontSize: "14px" }}>
-                      Khoa Công nghệ Thông tin
+                      TS. Lê Văn Vinh
                     </p>
                   </div>
                 </div>
