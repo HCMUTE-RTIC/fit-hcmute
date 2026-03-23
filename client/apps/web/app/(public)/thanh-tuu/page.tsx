@@ -668,7 +668,7 @@ export default function Achievements() {
                 className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border-4 border-white"
               >
                 <Image
-                  src="/thanh-tuu/thanh-tuu/6. HỆ THẠC SĨ ĐẠT KIỂM ĐỊNH CHẤT LƯỢNG.jpg"
+                  src="/thanh-tuu/thanh-tuu/kiem-dinh.jpg"
                   alt="Hệ Thạc Sĩ Đạt Kiểm Định"
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
@@ -685,7 +685,7 @@ export default function Achievements() {
                 className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border-4 border-white sm:mt-12"
               >
                 <Image
-                  src="/thanh-tuu/thanh-tuu/Bản sao của 470210687_1004949328333965_3121029532383090489_n.jpg"
+                  src="/thanh-tuu/thanh-tuu/chung-nhan.jpg"
                   alt="Chứng nhận chất lượng"
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
