@@ -188,6 +188,7 @@ export default function Achievements() {
                 src="/thanh-tuu/nghien-cuu-khoa-hoc/FB_IMG_1772637601718.jpg"
                 alt="Nghiên cứu khoa học"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover hover:scale-105 transition-transform duration-700"
               />
             </motion.div>
@@ -198,19 +199,29 @@ export default function Achievements() {
                 {
                   icon: BookOpen,
                   title: "Đề tài & Dự án",
-                 
-                  description: "Đạt 2 đề tài Nafosted, 1 đề tài cấp Bộ, 24 đề tài cấp cơ sở và 24 đề tài NCKH sinh viên",
+                  description: "Hàng chục đề tài NCKH các cấp được thực hiện xuất sắc (2021 - 2026)",
+                  stats: [
+                    { label: "Nafosted", value: "2", color: "text-blue-600", bg: "bg-blue-50" },
+                    { label: "Cấp Bộ", value: "1", color: "text-indigo-600", bg: "bg-indigo-50" },
+                    { label: "Cấp Cơ Sở", value: "24", color: "text-purple-600", bg: "bg-purple-50" },
+                  ]
                 },
                 {
                   icon: Globe,
                   title: "Công bố Quốc tế",
-               
-                  description: "36 bài tạp chí WoS/Scopus và hơn 60 bài hội thảo quốc tế chuyên ngành (Scopus)",
+                  description: "Các công trình được đăng tải trên kỷ yếu hội thảo, tạp chí uy tín",
+                  stats: [
+                    { label: "WoS/Scopus", value: "36", color: "text-rose-600", bg: "bg-rose-50" },
+                    { label: "Hội thảo QT", value: "60+", color: "text-orange-600", bg: "bg-orange-50" },
+                  ]
                 },
                 {
                   icon: Award,
                   title: "Sinh viên NCKH",
-                  description: "Hàng năm có hàng chục SV báo cáo và công bố kết quả trên các tạp chí, hội thảo quốc tế từ 2023",
+                  description: "Sinh viên tích cực nghiên cứu và báo cáo kết quả từ năm 2023",
+                  stats: [
+                    { label: "Đề tài SV", value: "24", color: "text-pink-600", bg: "bg-pink-50" },
+                  ]
                 },
               ].map((item, index) => (
                 <motion.div
@@ -219,29 +230,35 @@ export default function Achievements() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-shadow flex items-center gap-6"
+                  className="bg-white rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group flex flex-col gap-0 hover:gap-4 overflow-hidden cursor-default"
                   style={{ boxShadow: "var(--shadow-soft)" }}
                 >
-                  <div
-                    className="w-16 h-16 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: "var(--gradient-hero)" }}
-                  >
-                    <item.icon size={32} className="text-white" />
+                  <div className="flex items-center gap-6">
+                    <div
+                      className="w-16 h-16 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: "var(--gradient-hero)" }}
+                    >
+                      <item.icon size={32} className="text-white" />
+                    </div>
+                    <div>
+                      <h3
+                        className="font-bold mb-1"
+                        style={{ fontSize: "var(--text-h3)", color: "var(--color-primary-900)" }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3
-                      className="font-bold mb-1"
-                      style={{ fontSize: "var(--text-h3)", color: "var(--color-primary-900)" }}
-                    >
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-1">{item.description}</p>
-                    <p
-                      className="text-2xl font-bold"
-                      style={{ color: "var(--color-accent-500)" }}
-                    >
                   
-                    </p>
+                  {/* Expandable Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-0 opacity-0 group-hover:max-h-[300px] group-hover:opacity-100 transition-all duration-500 ease-in-out">
+                    {item.stats.map((stat, i) => (
+                      <div key={i} className={`rounded-xl px-4 py-3 text-center border border-white/50 transition-transform hover:scale-[1.03] ${stat.bg}`}>
+                        <div className={`text-2xl font-extrabold ${stat.color}`}>{stat.value}</div>
+                        <div className="text-[12px] font-semibold text-gray-700 leading-tight mt-1">{stat.label}</div>
+                      </div>
+                    ))}
                   </div>
                 </motion.div>
               ))}
@@ -302,6 +319,7 @@ export default function Achievements() {
                       src={`/thanh-tuu/source-doi-tac/${logo}`}
                       alt={`Partner ${index}`}
                       fill
+                      sizes="(max-width: 768px) 33vw, 25vw"
                       className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
                     />
                   </div>
@@ -446,7 +464,7 @@ export default function Achievements() {
             </div>
           </div>
 
-
+        
         </div>
       </section>
 
@@ -472,9 +490,44 @@ export default function Achievements() {
           const awards: LogoItem[] = [
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#ef4444,#b91c1c)')}><Globe size={34} color="#fff" /></div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>ICPC Lập trình<br />(2021-2026)</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#ef4444,#b91c1c)', Globe,
+                'Tổng kết giải ICPC (2021 - 2026)',
+                [
+                  { emoji: '🌏', label: 'Cấp Asia HCM: 7 giải', sub: '1 HCV, 1 HCB, 2 HCĐ, 3 KK' },
+                  { emoji: '🇻🇳', label: 'Cấp Vietnam National: 9 giải', sub: '2 Nhất, 1 Nhì, 2 Ba, 4 KK' },
+                  { emoji: '📍', label: 'Cấp Miền Nam: 5 giải', sub: '2 Nhất, 2 Ba, 1 KK' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
+                  <div style={iconBox('linear-gradient(135deg,#8b5cf6,#6d28d9)')}><Award size={34} color="#fff" /></div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>OLP Tin học<br />(2021-2026)</span>
+                </div>
+              ),
+              hoverCard: makeHoverCard(
+                'linear-gradient(135deg,#8b5cf6,#6d28d9)', Award,
+                'Tổng kết Olympic Tin học SV VN (2021 - 2026)',
+                [
+                  { emoji: '💻', label: 'Chuyên tin: 15 giải', sub: '6 Nhì, 8 Ba, 1 KK' },
+                  { emoji: '🎓', label: 'Không chuyên: 14 giải', sub: '4 Nhì, 5 Ba, 5 KK' },
+                  { emoji: '⚙️', label: 'PM nguồn mở: 3 giải', sub: '1 Ba, 2 KK' },
+                  { emoji: '🏆', label: 'Khác: 4 giải', sub: '1 Ba Siêu cúp, 1 Nhì Procon, 2 KK AI Nam, 1 KK AI VN' },
+                ]
+              ),
+            },
+            {
+              node: (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#f59e0b,#d97706)')}><Trophy size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Vietnam<br/>National 2024</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>ICPC Vietnam<br />National 2024</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -488,9 +541,9 @@ export default function Achievements() {
             },
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#3b82f6,#1d4ed8)')}><Award size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>OLP Tin học<br/>SV VN 2024</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>OLP Tin học<br />SV VN 2024</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -504,9 +557,9 @@ export default function Achievements() {
             },
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#f97316,#c2410c)')}><Star size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Vietnam<br/>National 2025</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>ICPC Vietnam<br />National 2025</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -519,9 +572,9 @@ export default function Achievements() {
             },
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#10b981,#047857)')}><Globe size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>ICPC Asia<br/>HCMC 2025</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>ICPC Asia<br />HCMC 2025</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -535,9 +588,9 @@ export default function Achievements() {
             },
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#a855f7,#7c3aed)')}><GraduationCap size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>OLP Tin học<br/>SV VN 2025</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>OLP Tin học<br />SV VN 2025</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -551,9 +604,9 @@ export default function Achievements() {
             },
             {
               node: (
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, cursor:'default', userSelect:'none' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, cursor: 'default', userSelect: 'none' }}>
                   <div style={iconBox('linear-gradient(135deg,#ec4899,#be185d)')}><Presentation size={34} color="#fff" /></div>
-                  <span style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.7)', textAlign:'center', maxWidth:110, lineHeight:1.3 }}>Sân chơi<br/>Học thuật</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: 110, lineHeight: 1.3 }}>Sân chơi<br />Học thuật</span>
                 </div>
               ),
               hoverCard: makeHoverCard(
@@ -581,6 +634,7 @@ export default function Achievements() {
             </div>
           );
         })()}
+
       </section>
 
       {/* Awards Highlight */}
@@ -617,6 +671,9 @@ export default function Achievements() {
                   src="/thanh-tuu/thanh-tuu/6. HỆ THẠC SĨ ĐẠT KIỂM ĐỊNH CHẤT LƯỢNG.jpg"
                   alt="Hệ Thạc Sĩ Đạt Kiểm Định"
                   fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  loading="eager"
+                  priority
                   className="object-cover"
                 />
               </motion.div>
@@ -631,6 +688,7 @@ export default function Achievements() {
                   src="/thanh-tuu/thanh-tuu/Bản sao của 470210687_1004949328333965_3121029532383090489_n.jpg"
                   alt="Chứng nhận chất lượng"
                   fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover"
                 />
               </motion.div>
@@ -729,6 +787,19 @@ export default function Achievements() {
           <div className="flex flex-col gap-10">
             {([
               {
+                title: 'Xuân Tình Nguyện',
+                subtitle: 'Tết yêu thương',
+                description:
+                  'Xuân Tình Nguyện là hoạt động thường niên dịp Tết Nguyên Đán, nơi sinh viên cùng nhau góp sức mang Xuân về cho những người có hoàn cảnh đặc biệt khó khăn — những bệnh nhân nằm viện, người vô gia cư và các gia đình nghèo chưa có Tết.',
+                emoji: '🌸',
+                gradient: 'linear-gradient(135deg, #ef4444, #b91c1c)',
+                accentColor: '#b91c1c',
+                images: [
+                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m1.jpg',
+                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m2.jpg',
+                ] as [string, string],
+              },
+              {
                 title: 'Mùa Hè Xanh',
                 subtitle: 'Tình nguyện hè',
                 description:
@@ -755,16 +826,16 @@ export default function Achievements() {
                 ] as [string, string],
               },
               {
-                title: 'Xuân Tình Nguyện',
-                subtitle: 'Tết yêu thương',
+                title: 'Đông Yêu Thương',
+                subtitle: 'Vì cộng đồng',
                 description:
-                  'Xuân Tình Nguyện là hoạt động thường niên dịp Tết Nguyên Đán, nơi sinh viên cùng nhau góp sức mang Xuân về cho những người có hoàn cảnh đặc biệt khó khăn — những bệnh nhân nằm viện, người vô gia cư và các gia đình nghèo chưa có Tết.',
-                emoji: '🌸',
-                gradient: 'linear-gradient(135deg, #ec4899, #be185d)',
-                accentColor: '#be185d',
+                  'Chương trình Đông Yêu Thương mang đến hơi ấm giữa những ngày se lạnh cho những người dân có hoàn cảnh khó khăn trên địa bàn các quận tại Sài Gòn. Sinh viên tình nguyện tự tay nấu những nồi cháo nóng, chuẩn bị từng phần ăn và trao tận tay, gửi gắm sự quan tâm, sẻ chia và tình người đến những mảnh đời còn nhiều vất vả.',
+                emoji: '🧣',
+                gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                accentColor: '#8b5cf6',
                 images: [
-                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m1.jpg',
-                  '/thanh-tuu/phong-trao/xuan-tinh-nguyen/m2.jpg',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m3.JPG',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m4.png',
                 ] as [string, string],
               },
             ] as PhongTraoActivity[]).map((activity, index) => (
