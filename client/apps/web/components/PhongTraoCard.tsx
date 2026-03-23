@@ -41,6 +41,7 @@ export function PhongTraoCard({
             src={activity.images[0]}
             alt={`${activity.title} 1`}
             fill
+            sizes="(max-width: 1024px) 50vw, 25vw"
             className="object-cover hover:scale-105 transition-transform duration-700"
           />
           <div
@@ -56,6 +57,7 @@ export function PhongTraoCard({
             src={activity.images[1]}
             alt={`${activity.title} 2`}
             fill
+            sizes="(max-width: 1024px) 50vw, 25vw"
             className="object-cover hover:scale-105 transition-transform duration-700"
           />
           <div
