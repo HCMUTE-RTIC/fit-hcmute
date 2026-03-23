@@ -38,6 +38,11 @@ export const historyStages: HistoryStage[] = [
                 description:
                     "Khoa Công nghệ Thông tin chính thức được thành lập theo quyết định của Hiệu trưởng, đánh dấu bước ngoặt trở thành đơn vị đào tạo chuyên môn sâu về kỹ sư và giáo viên CNTT",
             },
+            {
+                label: "Hiện tại",
+                description:
+                    "41 Giảng Viên, 2 Phó Giáo Sư, 14 Tiến Sĩ, 24 Thạc Sĩ, 1 Trợ Giảng",
+            },
         ],
     },
     {
@@ -133,6 +138,11 @@ export const historyStages: HistoryStage[] = [
                 label: "2024",
                 description:
                     "Kỷ niệm 23 năm thành lập, tiếp tục gặt hái thành tích cao tại ICPC Asia-Pacific Championship",
+            },
+            {
+                label: "2025",
+                description:
+                    "Kỷ niệm 24 năm thành lập tiếp tục góp mặt tại cuộc thi ICPC Asia-Pacific Championship. Lần đầu tiên có mặt tại vòng chung kết tại cuộc thi lập trình quốc tế NAPROCK PROCON 2026",
             },
             {
                 label: "Hướng tới 2026",

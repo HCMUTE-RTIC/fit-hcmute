@@ -15,7 +15,6 @@ export default function Navbar() {
     { name: "TRANG CHỦ", path: "/home" },
     { name: "GIỚI THIỆU", path: "/gioi-thieu" },
     { name: "HÀNH TRÌNH 25 NĂM", path: "/hanh-trinh-25-nam" },
-    { name: "TIN TỨC & SỰ KIỆN", path: "/tin-tuc" },
     { name: "THÀNH TỰU", path: "/thanh-tuu" },
     { name: "TRI ÂN & KẾT NỐI", path: "/tri-an" },
     { name: "KỶ YẾU", path: "/ky-yeu" },
@@ -24,7 +23,7 @@ export default function Navbar() {
 
   // Split navigation into left and right for centered logo layout
   const leftLinks = navLinks.slice(0, 4);
-  const rightLinks = navLinks.slice(4, 8);
+  const rightLinks = navLinks.slice(4, 7);
 
   const isActive = (path: string) => pathname === path;
 
