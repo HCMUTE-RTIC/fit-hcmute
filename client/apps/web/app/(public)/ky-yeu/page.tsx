@@ -12,16 +12,16 @@ export default function KyYeuPage() {
     <div className="min-h-[calc(100vh-96px)]">
       {/* Hero Section */}
       <section
-        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
+        className="relative min-h-[calc(100vh-96px)] flex items-start justify-center overflow-hidden"
         style={{
-          paddingTop: "var(--spacing-section)",
+          paddingTop: "40px",
           paddingBottom: "40px",
         }}
       >
         {/* Background Banner */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/ky-yeu/banner_kyyeu.jpg"
+            src="/gioi-thieu/CNTT_1.jpg"
             alt="Banner Kỷ yếu 25 năm"
             className="w-full h-full object-cover"
           />
@@ -36,19 +36,20 @@ export default function KyYeuPage() {
             className="text-center max-w-4xl mx-auto"
           >
             <BookOpen
-              size={64}
-              className="mx-auto mb-6 text-white"
+              size={48}
+              className="mx-auto mb-3 text-white"
             />
             <h1
-              className="font-extrabold mb-6 text-white"
+              className="font-extrabold mb-2 text-white"
               style={{
-                fontSize: "clamp(40px, 6vw, var(--text-h2))",
+                fontSize: "clamp(32px, 5vw, 42px)",
+                lineHeight: "1.2",
               }}
             >
               KỶ YẾU 25 NĂM
             </h1>
             <p
-              className="text-xl leading-relaxed text-gray-200"
+              className="text-lg leading-normal text-gray-200"
             >
               Cùng ôn lại những trang ký ức đẹp nhất trong hành trình 25 năm phát triển của FIT-HCMUTE
             </p>
