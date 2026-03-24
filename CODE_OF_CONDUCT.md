@@ -5,7 +5,7 @@
 
 ## Lời Ngỏ Của Chúng Tôi
 
-Vì mục tiêu nuôi dưỡng một môi trường cởi mở và hiếu khách gắn liền với tinh thần sinh viên trường Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE), chúng tôi, là những người đóng góp (contributors) và ban quản trị dự án, cam kết mang đến sự trải nghiệm an toàn cho tất cả mọi người khi tham gia vào dự án này — một không gian không có quấy rối đối với bất kỳ ai, bất kể độ tuổi, kích thước cơ thể, khuyết tật, dân tộc, đặc điểm sinh dục, nhận dạng giới tính, cấp độ kinh nghiệm, quốc tịch, ngoại hình cá nhân, chủng tộc, tôn giáo hay khuynh hướng tính dục.
+Vì mục tiêu nuôi dưỡng một môi trường cởi mở và hiếu khách gắn liền với tinh thần sinh viên trường Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE), chúng tôi, là những người đóng góp (contributors) và ban quản trị dự án, cam kết mang đến sự trải nghiệm an toàn cho tất cả mọi người khi tham gia vào dự án này — một không gian không có quấy rối đối với bất kỳ ai, bất kể độ tuổi, kích thước cơ thể, khuyết tật, dân tộc, đặc điểm giới tính, nhận dạng giới tính, cấp độ kinh nghiệm, quốc tịch, ngoại hình cá nhân, chủng tộc, tôn giáo hay khuynh hướng tính dục.
 
 ## Tiêu Chuẩn Hành Vi
 
