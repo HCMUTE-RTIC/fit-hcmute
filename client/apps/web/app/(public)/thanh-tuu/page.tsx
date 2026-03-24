@@ -829,8 +829,8 @@ export default function Achievements() {
                 gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
                 accentColor: '#8b5cf6',
                 images: [
-                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m3.JPG',
-                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m4.png',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/dyt-1.png',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/dyt-2.jpg',
                 ] as [string, string],
               },
             ] as PhongTraoActivity[]).map((activity, index) => (
