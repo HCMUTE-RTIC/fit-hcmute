@@ -113,7 +113,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-gray-100 text-center" style={{ color: 'var(--color-text-gray)' }}>
-          <p>© 2026 Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ thuật TP.HCM</p>
+          <p>© 2026 Khoa Công nghệ Thông tin - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
           <p className="mt-2">
             <span style={{ color: 'var(--color-accent-500)' }}>❤</span> Kỷ niệm 25 năm thành lập (2001 - 2026)
           </p>

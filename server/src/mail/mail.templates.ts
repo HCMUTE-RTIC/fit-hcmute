@@ -41,7 +41,7 @@ export function thankYouEmailHtml(
               <p style="color:#334155;font-size:16px;line-height:1.7;margin:0 0 20px 0;">
                 Cảm ơn bạn đã gửi thông tin qua biểu mẫu <strong>"${formTitle}"</strong>.
                 Chúng tôi rất trân trọng sự đồng hành của bạn cùng <strong>25 năm</strong> xây dựng và phát triển
-                Khoa Công Nghệ Thông Tin – Trường Đại học Sư phạm Kỹ thuật TP.HCM.
+                Khoa Công Nghệ Thông Tin – Trường Đại học Công Nghệ Kỹ thuật TP.HCM.
               </p>
 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -65,7 +65,7 @@ export function thankYouEmailHtml(
           <tr>
             <td style="background-color:#F8FAFC;padding:24px 40px;border-top:1px solid #E2E8F0;">
               <p style="color:#94A3B8;font-size:12px;margin:0;text-align:center;line-height:1.6;">
-                Khoa Công Nghệ Thông Tin – Trường ĐH Sư phạm Kỹ thuật TP.HCM<br/>
+                Khoa Công Nghệ Thông Tin – Trường ĐH Công Nghệ Kỹ thuật TP.HCM<br/>
                 01 Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP.HCM<br/>
                 <a href="https://fit.hcmute.edu.vn" style="color:#2563EB;text-decoration:none;">fit.hcmute.edu.vn</a>
               </p>

@@ -134,7 +134,7 @@ export default function Home() {
                     </div>
                     <div className="text-left">
                       <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ thầy</h3>
-                      <p className="text-blue-100 text-sm">Trưởng Khoa Công nghệ Thông tin</p>
+                      <p className="text-blue-100 text-sm">Trưởng Khoa Công nghệ Thông tin - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                     </div>
                   </button>
 
@@ -151,7 +151,7 @@ export default function Home() {
                       </div>
                       <div className="px-3 py-2.5 text-center bg-gradient-to-r from-[#1e3a8a] to-[#2563EB]">
                         <p className="text-white font-bold text-sm leading-tight">TS. Lê Văn Vinh</p>
-                        <p className="text-blue-200 text-[11px] mt-0.5">Trưởng Khoa CNTT</p>
+                        <p className="text-blue-200 text-[11px] mt-0.5">Trưởng Khoa CNTT - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                       </div>
                     </div>
                     {/* Arrow pointing down */}
@@ -194,7 +194,7 @@ export default function Home() {
                         {/* --- PHẦN 1: LỜI MỞ ĐẦU (TS. LÊ VĂN VINH) --- */}
                         <div className="text-center mb-8 pb-6 border-b border-[#e8e0cc]">
                           <h4 className="text-2xl font-bold tracking-wider text-[#2D271D]">LỜI MỞ ĐẦU</h4>
-                          <p className="text-sm text-[#8c7f66] mt-2 italic font-sans">Kỷ yếu Kỷ niệm 25 năm thành lập Khoa CNTT</p>
+                          <p className="text-sm text-[#8c7f66] mt-2 italic font-sans">Kỷ yếu Kỷ niệm 25 năm thành lập Khoa CNTT - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                         </div>
 
                         <p className="font-bold text-[#2D271D] mb-4">
@@ -202,7 +202,7 @@ export default function Home() {
                         </p>
 
                         <p className="mb-4">
-                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường ĐH Sư phạm Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ thầy cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
+                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ thầy cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
                         </p>
 
                         <p className="mb-4">
@@ -224,7 +224,7 @@ export default function Home() {
                         <div className="mt-8 mb-12 text-right">
                           <p className="font-bold text-lg mb-1" style={{ color: "#2D271D" }}>Trân trọng,</p>
                           <p className="font-bold text-xl font-sans tracking-wide text-[#1e3a8a]">TS. Lê Văn Vinh</p>
-                          <p className="text-[#8c7f66] uppercase text-[11px] font-sans tracking-widest mt-1">Trưởng khoa Công nghệ Thông tin</p>
+                          <p className="text-[#8c7f66] uppercase text-[11px] font-sans tracking-widest mt-1">Trưởng khoa Công nghệ Thông tin - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                         </div>
 
                         {/* --- DẢI PHÂN CÁCH --- */}
@@ -254,6 +254,7 @@ export default function Home() {
                         <div className="mt-10 text-right">
                           <p className="font-bold text-lg mb-1" style={{ color: "#2D271D" }}>Trân trọng,</p>
                           <p className="font-bold text-xl font-sans tracking-wide text-[#1e3a8a]">PGS.TS. Lê Hiếu Giang</p>
+                          <p className="text-[#8c7f66] uppercase text-[11px] font-sans tracking-widest mt-1">Hiệu trưởng Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                         </div>
 
                       </div>

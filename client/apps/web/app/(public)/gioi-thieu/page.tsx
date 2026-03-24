@@ -124,8 +124,8 @@ export default function GioiThieu() {
                 color: "#e2e8f0",
               }}
             >
-              Được thành lập năm 2001, Khoa Công nghệ Thông tin - Trường Đại học Công nghệ Kỹ
-              thuật TP.HCM là một trong những đơn vị đào tạo công nghệ thông tin hàng đầu tại Việt
+              Được thành lập năm 2001, Khoa Công nghệ Thông tin - Trường ĐH Công Nghệ Kỹ
+              thuật Tp. Hồ Chí Minh là một trong những đơn vị đào tạo công nghệ thông tin hàng đầu tại Việt
               Nam, với sứ mệnh đào tạo nguồn nhân lực chất lượng cao và phát triển nghiên cứu khoa
               học ứng dụng.
             </p>
