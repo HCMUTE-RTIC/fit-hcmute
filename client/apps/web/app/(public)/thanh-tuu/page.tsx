@@ -94,27 +94,27 @@ export default function Achievements() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: Award,
-                number: "120+",
-                label: "Giải thưởng & Chứng nhận",
+                icon: TrendingUp,
+                number: "Top 3",
+                label: "Điểm chuẩn THPTQG đầu vào của trường",
                 color: "var(--color-primary-600)",
               },
               {
-                icon: BookOpen,
-                number: "500+",
-                label: "Công trình nghiên cứu",
+                icon: Award,
+                number: "57",
+                label: "Giải thưởng sinh viên trong nước và quốc tế (2021 - 2025)",
                 color: "var(--color-accent-500)",
               },
               {
-                icon: Globe,
-                number: "25+",
-                label: "Đối tác quốc tế",
+                icon: BookOpen,
+                number: "147",
+                label: "Công trình NCKH đạt chuẩn trong nước & quốc tế (2021 - 2025)",
                 color: "var(--color-primary-600)",
               },
               {
-                icon: TrendingUp,
-                number: "95%",
-                label: "Sinh viên có việc làm",
+                icon: Building2,
+                number: "20+",
+                label: "Doanh nghiệp hợp tác",
                 color: "var(--color-accent-500)",
               },
             ].map((item, index) => (
@@ -250,7 +250,7 @@ export default function Achievements() {
                       <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
                     </div>
                   </div>
-                  
+
                   {/* Expandable Stats */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-0 opacity-0 group-hover:max-h-[300px] group-hover:opacity-100 transition-all duration-500 ease-in-out">
                     {item.stats.map((stat, i) => (
@@ -281,7 +281,7 @@ export default function Achievements() {
               className="font-bold mb-4"
               style={{ fontSize: "var(--text-h2)", color: "var(--color-primary-900)" }}
             >
-              HỢP TÁC QUỐC TẾ
+              DOANH NGHIỆP HỢP TÁC
             </h2>
             <p className="text-xl" style={{ color: "var(--color-text-gray)" }}>
               Đối tác với các trường đại học và tổ chức hàng đầu thế giới
@@ -464,7 +464,7 @@ export default function Achievements() {
             </div>
           </div>
 
-        
+
         </div>
       </section>
 
@@ -698,24 +698,19 @@ export default function Achievements() {
             <div className="flex flex-col gap-5">
               {[
                 {
-                  year: "2024",
-                  award: "Đạt chuẩn kiểm định chất lượng AUN-QA",
-                  org: "ASEAN University Network",
-                },
-                {
-                  year: "2023",
-                  award: "Kiểm định chất lượng nội bộ MOET",
+                  year: "2025",
+                  award: "Ngành CNTT, Kỹ thuật Dữ liệu và hệ Thạc sĩ Khoa học máy tính đạt kiểm định MOET",
                   org: "Bộ Giáo dục và Đào tạo",
                 },
                 {
-                  year: "2022",
-                  award: "Top 3 Trường đào tạo CNTT xuất sắc khu vực phía Nam",
-                  org: "Các tổ chức đánh giá giáo dục ĐH",
+                  year: "2022 - 2023",
+                  award: "Bằng khen của Bộ trưởng Bộ GD&ĐT danh hiệu Tập thể lao động xuất sắc",
+                  org: "Bộ Giáo dục và Đào tạo",
                 },
                 {
-                  year: "2021",
-                  award: "Bằng khen của Bộ Giáo dục và Đào tạo về thành tích xuất sắc",
-                  org: "Bộ GD&ĐT",
+                  year: "2019",
+                  award: "Ngành CNTT vinh dự đạt chuẩn kiểm định quốc tế AUN-QA",
+                  org: "ASEAN University Network",
                 },
               ].map((item, index) => (
                 <motion.div
