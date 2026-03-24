@@ -385,7 +385,7 @@ export default function Achievements() {
                     </div>
                     <div className="relative z-10">
                       <p className="text-[15px] leading-relaxed mb-4 text-gray-600">
-                        Khoa CNTT tiếp đón các đoàn công tác ĐH quốc tế, tạo cầu nối xin học bổng toàn phần đào tạo Sau đại học tại Úc, Hàn Quốc, Đài Loan...
+                        Khoa CNTT tiếp đón các đoàn công tác Đại Học quốc tế, tạo cầu nối xin học bổng toàn phần đào tạo Sau đại học tại Úc, Hàn Quốc, Đài Loan...
                       </p>
                       <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
                         <p className="text-[14px] font-medium" style={{ color: "var(--color-primary-600)" }}>
@@ -614,7 +614,7 @@ export default function Achievements() {
                 'Sân Chơi Học Thuật Hằng Năm',
                 [
                   { emoji: '🏆', label: 'Mastering IT, Hackathon, SV với An toàn thông tin' },
-                  { emoji: '🎓', label: 'Thu hút hàng trăm lượt SV & đội dự thi', sub: 'Từ các trường ĐH trên địa bàn TP. HCM' },
+                  { emoji: '🎓', label: 'Thu hút hàng trăm lượt SV & đội dự thi', sub: 'Từ các trường Đại Học trên địa bàn TP. HCM' },
                 ]
               ),
             },
