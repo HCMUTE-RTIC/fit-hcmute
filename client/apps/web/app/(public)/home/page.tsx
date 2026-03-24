@@ -27,23 +27,17 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-96px)]">
       {/* ─── Hero Section ─────────────────────────────────────────── */}
-      <section
-        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
-        style={{ backgroundColor: "#f0f9ff" }}
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src={imgImageHcmuteCampus}
-            alt="HCMUTE Campus"
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* No Overlay to keep original image brightness */}
-        </div>
-
-
+      <section className="relative w-full h-[calc(100vh-96px)] bg-[#fdfbf7] overflow-hidden flex flex-col items-center justify-center">
+        {/* Banner Image - Locked inside viewport height, never crops */}
+        <Image
+          src={imgImageHcmuteCampus}
+          alt="HCMUTE Campus"
+          fill
+          className="object-cover"
+          priority
+          quality={100}
+          unoptimized
+        />
 
         {/* Scroll Indicator */}
         <motion.div
@@ -55,9 +49,9 @@ export default function Home() {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="w-8 h-12 rounded-full border-2 border-white/50 flex items-start justify-center p-2"
+            className="w-8 h-12 rounded-full border-2 border-gray-400/50 flex items-start justify-center p-2"
           >
-            <div className="w-1.5 h-3 bg-white/70 rounded-full" />
+            <div className="w-1.5 h-3 bg-gray-500/70 rounded-full" />
           </motion.div>
         </motion.div>
       </section>
@@ -87,7 +81,7 @@ export default function Home() {
               }}
             >
               <Image
-                src="/gioi-thieu/truong-khoa.jpg"
+                src="/gioi-thieu/CNTT_1.jpg"
                 alt="Trưởng Khoa CNTT"
                 fill
                 className="object-cover object-top hover:scale-105 transition-transform duration-700"
@@ -108,37 +102,66 @@ export default function Home() {
                   color: "#1e3a8a",
                 }}
               >
-                Kỷ niệm 25 năm thành lập FIT-HCMUTE
+                25 năm Kết nối tri thức, Vững bước tương lai
               </h2>
               <p
-                className="mb-8"
+                className="mb-8 font-bold italic"
                 style={{
-                  fontSize: "18px",
+                  fontSize: "22px",
                   lineHeight: "28px",
-                  color: "#475569",
+                  color: "#1e3a8a",
                 }}
               >
-                Năm 2026 đánh dấu cột mốc ¼ thế kỷ hình thành và phát triển của Khoa Công nghệ Thông tin (2001 - 2026). Một chặng đường đầy tự hào với những thế hệ kỹ sư công nghệ tài năng, nhiệt huyết đã và đang góp phần xây dựng đất nước.
+                TS. Lê Văn Vinh
               </p>
 
               <div className="w-full mt-8">
-                {/* Trigger Button */}
-                <button
-                  onClick={() => setShowLetter(true)}
-                  className="w-full bg-gradient-to-r from-[#1e3a8a] to-[#2563EB] p-6 rounded-2xl flex items-center gap-4 shadow-xl border border-blue-400/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-blue-500/40 cursor-pointer"
-                >
-                  <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
-                    <Mail size={28} className="text-white" />
+                {/* Trigger Button with Hover Card */}
+                <div className="relative group/dean">
+                  <button
+                    onClick={() => setShowLetter(true)}
+                    className="w-full bg-gradient-to-r from-[#1e3a8a] to-[#2563EB] p-6 rounded-2xl flex items-center gap-4 shadow-xl border border-blue-400/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-blue-500/40 cursor-pointer relative z-10"
+                  >
+                    <div className="w-14 h-14 rounded-full border-2 border-white/30 overflow-hidden shrink-0">
+                      <div 
+                        className="w-full h-full"
+                        style={{
+                          backgroundImage: "url('/gioi-thieu/truong-khoa.jpg')",
+                          backgroundSize: "300%",
+                          backgroundPosition: "50% 13.5%",
+                        }}
+                      />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ thầy</h3>
+                      <p className="text-blue-100 text-sm">Trưởng Khoa Công nghệ Thông tin</p>
+                    </div>
+                  </button>
+
+                  {/* Hover Card - Upper body portrait */}
+                  <div className="absolute -top-[220px] left-4 w-44 opacity-0 invisible group-hover/dean:opacity-100 group-hover/dean:visible transition-all duration-300 ease-out transform translate-y-4 group-hover/dean:translate-y-0 z-20 pointer-events-none">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
+                      <div className="relative w-full aspect-[3/4]">
+                        <Image
+                          src="/gioi-thieu/truong-khoa.jpg"
+                          alt="TS. Lê Văn Vinh"
+                          fill
+                          className="object-cover object-top"
+                        />
+                      </div>
+                      <div className="px-3 py-2.5 text-center bg-gradient-to-r from-[#1e3a8a] to-[#2563EB]">
+                        <p className="text-white font-bold text-sm leading-tight">TS. Lê Văn Vinh</p>
+                        <p className="text-blue-200 text-[11px] mt-0.5">Trưởng Khoa CNTT</p>
+                      </div>
+                    </div>
+                    {/* Arrow pointing down */}
+                    <div className="absolute -bottom-2 left-8 w-4 h-4 bg-[#2563EB] rotate-45 rounded-sm"></div>
                   </div>
-                  <div className="text-left">
-                    <h3 className="text-xl font-bold text-white mb-1">Lời chúc của thầy</h3>
-                    <p className="text-blue-100 text-sm">Trưởng Khoa CNTT - TS. Lê Văn Vinh</p>
-                  </div>
-                </button>
+                </div>
 
                 {/* Modal Overlay */}
                 {showLetter && (
-                  <div 
+                  <div
                     className="fixed inset-0 z-[9999] flex items-center justify-center pt-24 pb-4 px-4 sm:pt-28 sm:pb-8 sm:px-8"
                     onClick={() => setShowLetter(false)}
                   >
@@ -167,7 +190,8 @@ export default function Home() {
                       <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-[#d4cbaf] opacity-40 rounded-br-xl pointer-events-none"></div>
 
                       <div className="max-w-none text-[#443C2A]" style={{ fontFamily: "serif", fontSize: "17px", lineHeight: "1.8", letterSpacing: "0.01em" }}>
-                        
+
+                        {/* --- PHẦN 1: LỜI MỞ ĐẦU (TS. LÊ VĂN VINH) --- */}
                         <div className="text-center mb-8 pb-6 border-b border-[#e8e0cc]">
                           <h4 className="text-2xl font-bold tracking-wider text-[#2D271D]">LỜI MỞ ĐẦU</h4>
                           <p className="text-sm text-[#8c7f66] mt-2 italic font-sans">Kỷ yếu Kỷ niệm 25 năm thành lập Khoa CNTT</p>
@@ -176,45 +200,60 @@ export default function Home() {
                         <p className="font-bold text-[#2D271D] mb-4">
                           Kính chào quý thầy cô, quý doanh nghiệp, các thế hệ người học cùng toàn thể các bạn sinh viên, học viên thân mến,
                         </p>
-                        
+
                         <p className="mb-4">
-                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường ĐH Công nghệ Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ thầy cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
+                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường ĐH Sư phạm Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ thầy cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
                         </p>
-                        
+
                         <p className="mb-4">
                           Trải qua 25 năm xây dựng và trưởng thành, Khoa Công nghệ Thông tin không ngừng lớn mạnh cả về quy mô lẫn chất lượng đào tạo và nghiên cứu. Được thành lập từ năm 2001 trên cơ sở phát triển từ trung tâm Tin học, dù có nhiều khó khăn ban đầu, Khoa đã từng bước khẳng định vị thế là một trong những đơn vị đào tạo và nghiên cứu uy tín trong lĩnh vực Công nghệ Thông tin, đóng góp tích cực vào việc phát triển nguồn nhân lực chất lượng cao cho xã hội. Những thành tựu đạt được hôm nay là kết quả của sự nỗ lực bền bỉ, tinh thần đổi mới sáng tạo, sự đoàn kết và gắn bó của nhiều thế hệ.
                         </p>
-                        
+
                         <p className="mb-4">
                           Kỷ yếu kỷ niệm 25 năm được biên soạn như một dấu ấn nhằm lưu giữ những ký ức, thành tựu và câu chuyện đáng tự hào của Khoa. Hy vọng ấn phẩm này sẽ trở thành nhịp cầu kết nối các thế hệ, khơi dậy niềm tự hào và ý thức trách nhiệm trong mỗi cá nhân, từ đó tiếp tục phát huy và gìn giữ những giá trị tốt đẹp của Khoa.
                         </p>
-                        
+
                         <p className="mb-4">
                           Nhân dịp này, Khoa Công nghệ Thông tin xin trân trọng gửi lời cảm ơn sâu sắc tới quý thầy cô, cán bộ, sinh viên, học viên, cựu người học, quý doanh nghiệp đối tác và bạn bè đã luôn đồng hành, ủng hộ và đóng góp cho sự phát triển của Khoa trong suốt thời gian qua.
                         </p>
-                        
+
                         <p className="mb-4">
-                          Hướng tới tương lai, Khoa Công nghệ Thông tin, Trường ĐH Công nghệ Kỹ thuật Tp. Hồ Chí Minh sẽ tiếp tục phát huy những thành quả đã đạt được, không ngừng đổi mới, nâng cao chất lượng đào tạo và nghiên cứu, góp phần đáp ứng những yêu cầu ngày càng cao của xã hội trong thời đại chuyển đổi số và trí tuệ nhân tạo.
+                          Hướng tới tương lai, Khoa Công nghệ Thông tin sẽ tiếp tục phát huy những thành quả đã đạt được, không ngừng đổi mới, nâng cao chất lượng đào tạo và nghiên cứu, góp phần đáp ứng những yêu cầu ngày càng cao của xã hội trong thời đại chuyển đổi số và trí tuệ nhân tạo.
                         </p>
 
-                        <div className="flex items-center justify-center my-10 space-x-4 opacity-40">
-                          <div className="h-[1px] bg-[#443C2A] w-12"></div>
-                          <span className="text-xl">♦</span>
-                          <div className="h-[1px] bg-[#443C2A] w-12"></div>
+                        <div className="mt-8 mb-12 text-right">
+                          <p className="font-bold text-lg mb-1" style={{ color: "#2D271D" }}>Trân trọng,</p>
+                          <p className="font-bold text-xl font-sans tracking-wide text-[#1e3a8a]">TS. Lê Văn Vinh</p>
+                          <p className="text-[#8c7f66] uppercase text-[11px] font-sans tracking-widest mt-1">Trưởng khoa Công nghệ Thông tin</p>
                         </div>
 
-                        <p className="mb-4">
-                          Nhân dịp kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, tôi trân trọng gửi tới các thế hệ cán bộ, giảng viên, sinh viên, học viên của Khoa lời chúc mừng nồng nhiệt và tốt đẹp nhất. Trải qua một chặng đường phát triển đầy nỗ lực, Khoa đã từng bước khẳng định uy tín và vị thế với nhiều thành tựu nổi bật trong đào tạo, nghiên cứu và đóng góp thiết thực cho sự phát triển chung của nhà trường và xã hội.
+                        {/* --- DẢI PHÂN CÁCH --- */}
+                        <div className="flex items-center justify-center my-12 space-x-6 opacity-40">
+                          <div className="h-[1px] bg-[#443C2A] w-20"></div>
+                          <span className="text-xl">♦</span>
+                          <div className="h-[1px] bg-[#443C2A] w-20"></div>
+                        </div>
+
+                        {/* --- PHẦN 2: THƯ CHÚC MỪNG (PGS.TS. LÊ HIẾU GIANG) --- */}
+                        <div className="text-center mb-10">
+                          <h4 className="text-2xl font-bold tracking-wider text-[#2D271D]">LỜI CHÚC TỪ THẦY HIỆU TRƯỞNG</h4>
+                        </div>
+
+                        <p className="mb-6 italic text-[#2D271D]">
+                          Nhân dịp kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, tôi trân trọng gửi tới các thế hệ cán bộ, giảng viên, sinh viên, học viên của Khoa lời chúc mừng nồng nhiệt và tốt đẹp nhất.
                         </p>
-                        
+
+                        <p className="mb-6">
+                          Trải qua một chặng đường phát triển đầy nỗ lực, Khoa đã từng bước khẳng định uy tín và vị thế với nhiều thành tựu nổi bật trong đào tạo, nghiên cứu và đóng góp thiết thực cho sự phát triển chung của nhà trường và xã hội. Những kết quả ấy là minh chứng cho tinh thần đoàn kết, sáng tạo và cống hiến của toàn thể các thế hệ cán bộ viên chức, người học của Khoa.
+                        </p>
+
                         <p className="mb-8">
-                          Những kết quả ấy là minh chứng cho tinh thần đoàn kết, sáng tạo và cống hiến của toàn thể các thế hệ cán bộ viên chức, người học của Khoa. Tôi tin tưởng rằng, với nền tảng vững chắc và khát vọng vươn lên, Khoa Công nghệ Thông tin sẽ tiếp tục đổi mới, phát triển mạnh mẽ và gặt hái thêm nhiều thành công rực rỡ trong tương lai. Chúc Khoa Công nghệ Thông tin ngày càng lớn mạnh và phát triển bền vững.
+                          Tôi tin tưởng rằng, với nền tảng vững chắc và khát vọng vươn lên, Khoa Công nghệ Thông tin sẽ tiếp tục đổi mới, phát triển mạnh mẽ và gặt hái thêm nhiều thành công rực rỡ trong tương lai. Chúc Khoa Công nghệ Thông tin ngày càng lớn mạnh và phát triển bền vững.
                         </p>
 
                         <div className="mt-10 text-right">
                           <p className="font-bold text-lg mb-1" style={{ color: "#2D271D" }}>Trân trọng,</p>
-                          <p className="font-bold text-xl font-sans tracking-wide" style={{ color: "#1e3a8a" }}>Trưởng Khoa</p>
-                          <p className="text-[#8c7f66] uppercase text-sm font-sans tracking-widest mt-1">TS. Lê Văn Vinh</p>
+                          <p className="font-bold text-xl font-sans tracking-wide text-[#1e3a8a]">PGS.TS. Lê Hiếu Giang</p>
                         </div>
 
                       </div>

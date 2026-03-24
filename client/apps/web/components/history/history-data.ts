@@ -85,19 +85,19 @@ export const historyStages: HistoryStage[] = [
                 description: "Kỷ niệm 10 năm thành lập Khoa",
             },
             {
-                label: "AUN-QA",
+                label: "2017",
                 description:
-                    "Ngành Công nghệ thông tin trở thành một trong những ngành đầu tiên của trường hoàn thành đánh giá ngoài theo tiêu chuẩn mạng lưới các trường đại học Đông Nam Á",
+                    "Mở đào tạo kỹ sư ngành Kỹ thuật dữ liệu và Thạc sĩ ngành Khoa học máy tính",
+            },
+            {
+                label: "2019",
+                description:
+                    "Ngành CNTT vinh dự đạt chuẩn quốc tế AUN-QA",
             },
             {
                 label: "Mở rộng chương trình",
                 description:
                     "Phát triển hệ đào tạo Chất lượng cao bằng tiếng Việt và tiếng Anh",
-            },
-            {
-                label: "Thạc sĩ",
-                description:
-                    "Mở chương trình Thạc sĩ Khoa học máy tính để đào tạo nguồn nhân lực trình độ cao",
             },
             {
                 label: "Cơ sở vật chất",
@@ -131,23 +131,24 @@ export const historyStages: HistoryStage[] = [
                     "Đăng cai tổ chức thành công kỳ thi Olympic Tin học Sinh viên Việt Nam lần thứ 31 và ICPC Asia Ho Chi Minh City",
             },
             {
-                label: "2023",
-                description: "Kỷ niệm 22 năm thành lập khoa",
+                label: "2022",
+                description:
+                    "Mở đào tạo kỹ sư ngành An toàn thông tin",
             },
             {
-                label: "2024",
+                label: "2022 – 2023",
                 description:
-                    "Kỷ niệm 23 năm thành lập, tiếp tục gặt hái thành tích cao tại ICPC Asia-Pacific Championship",
+                    "Bằng khen của Bộ trưởng Bộ GD&ĐT danh hiệu Tập thể lao động xuất sắc",
             },
             {
                 label: "2025",
                 description:
-                    "Kỷ niệm 24 năm thành lập tiếp tục góp mặt tại cuộc thi ICPC Asia-Pacific Championship. Lần đầu tiên có mặt tại vòng chung kết tại cuộc thi lập trình quốc tế NAPROCK PROCON 2026",
+                    "Ngành CNTT, Kỹ thuật Dữ liệu và hệ Thạc sĩ Khoa học máy tính đồng thời đạt kiểm định MOET",
             },
             {
-                label: "Hướng tới 2026",
+                label: "2026",
                 description:
-                    "Hoàn thiện hệ sinh thái đào tạo với các ngành mới như An toàn thông tin và Kỹ thuật dữ liệu; đẩy mạnh AI và Chuyển đổi số; hệ thống máy móc hiện có hơn 460 máy tính kết nối server mạnh mẽ phục vụ đào tạo kỹ sư chất lượng cao",
+                    "Mở đào tạo tiến sĩ ngành Khoa học máy tính",
             },
         ],
     },

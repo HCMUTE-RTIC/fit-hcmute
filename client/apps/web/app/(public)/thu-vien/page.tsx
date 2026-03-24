@@ -189,16 +189,16 @@ export default function Gallery() {
     <div className={`min-h-[calc(100vh-96px)] ${openingFolderId ? 'cursor-wait' : ''}`}>
       {/* ─── Section 1: Hero ──────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
+        className="relative min-h-[calc(100vh-96px)] flex items-start justify-center overflow-hidden"
         style={{
-          paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
+          paddingTop: "40px",
+          paddingBottom: "40px",
         }}
       >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/thu-vien/2.jpg"
+            src="/thu-vien/cong-nghe-thong-tin-aun-qa_549.jpg"
             alt="Thư viện hình ảnh Khoa CNTT"
             fill
             className="object-cover"
@@ -212,18 +212,18 @@ export default function Gallery() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center flex flex-col items-center gap-6"
+            className="text-center flex flex-col items-center gap-3"
           >
             {/* Camera icon */}
             <div>
-              <Camera size={64} color="#ffffff" strokeWidth={1.5} />
+              <Camera size={48} color="#ffffff" strokeWidth={1.5} className="mb-2" />
             </div>
 
             <h1
               className="font-extrabold"
               style={{
-                fontSize: "clamp(32px, 5vw, 48px)",
-                lineHeight: "72px",
+                fontSize: "clamp(32px, 5vw, 42px)",
+                lineHeight: "1.2",
                 color: "#ffffff",
               }}
             >
@@ -231,8 +231,8 @@ export default function Gallery() {
             </h1>
             <p
               style={{
-                fontSize: 20,
-                lineHeight: "32.5px",
+                fontSize: 18,
+                lineHeight: "1.5",
                 color: "#e2e8f0",
               }}
             >
