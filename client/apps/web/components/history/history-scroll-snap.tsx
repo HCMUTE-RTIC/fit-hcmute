@@ -38,7 +38,7 @@ export default function HistoryScrollSnap() {
             {/* Scroll container */}
             <div ref={containerRef} className="history-snap-container">
                 {historyStages.map((stage, i) => (
-                    <div key={stage.id} className="history-snap-slide">
+                    <div id={`history-snap-slide-${i}`} key={stage.id} className="history-snap-slide">
                         {/* ── Left: Image ── */}
                         <div className="history-snap-img-col">
                             <div className="history-snap-img-card">
@@ -103,17 +103,27 @@ export default function HistoryScrollSnap() {
 
             {/* Progress dots */}
             <nav
-                className="history-snap-dots"
+                className="history-snap-dots !gap-3 md:!gap-4 !right-4 md:!right-6 w-[20px] items-center"
                 aria-label="Điều hướng giai đoạn"
             >
                 {historyStages.map((stage, i) => (
                     <button
                         key={i}
                         onClick={() => scrollToIdx(i)}
-                        className={`history-snap-dot${i === activeIdx ? " history-snap-dot--active" : ""}`}
-                        aria-label={`${stage.period}`}
-                        title={stage.period}
-                    />
+                        className="group relative flex justify-center items-center w-full py-1 focus:outline-none"
+                        aria-label={`Đi tới giai đoạn ${stage.period}`}
+                    >
+                        <span 
+                            className={`absolute right-full mr-3 md:mr-4 whitespace-nowrap text-xs md:text-sm font-bold transition-all duration-300 px-3 py-1 rounded-full border shadow-sm pointer-events-none
+                                ${i === activeIdx 
+                                    ? 'bg-white/95 backdrop-blur-md border-[var(--color-primary-600)]/20 text-[var(--color-primary-600)] opacity-100 translate-x-0' 
+                                    : 'bg-white/80 border-transparent text-slate-500 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0'
+                                }`}
+                        >
+                            {stage.period}
+                        </span>
+                        <div className={`history-snap-dot transition-all duration-300 flex-shrink-0 ${i === activeIdx ? " history-snap-dot--active scale-110 shadow-md" : "hover:scale-125"}`} />
+                    </button>
                 ))}
             </nav>
 

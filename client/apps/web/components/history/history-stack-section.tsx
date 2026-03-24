@@ -38,7 +38,7 @@ export default function HistoryStackSection() {
             </div>
 
             {/* Section header */}
-            <div className="relative z-10 max-w-[1280px] mx-auto px-6 pt-16 md:pt-24">
+            <div className="relative z-10 max-w-[1280px] mx-auto px-6 pt-24 md:pt-32 pb-16 md:pb-24">
                 <div className="text-center max-w-4xl mx-auto">
                     {/* Eyebrow badge */}
                     <span
@@ -71,45 +71,36 @@ export default function HistoryStackSection() {
 
                     {/* Description */}
                     <p
-                        className="text-base md:text-lg leading-relaxed mb-8"
+                        className="text-base md:text-lg leading-relaxed mb-12"
                         style={{ color: "var(--color-text-gray)" }}
                     >
                         Từ những bước khởi đầu đầy nhiệt huyết, Khoa Công nghệ Thông tin
                         không ngừng lớn mạnh, trở thành cái nôi đào tạo nguồn nhân lực chất
                         lượng cao cho ngành CNTT <span className="whitespace-nowrap">Việt Nam</span>.
                     </p>
-
-                    {/* Hero stat bar */}
-                    <div className="history-stat-bar">
-                        <div className="history-stat-bar__item">
-                            <span className="history-stat-bar__value">4</span>
-                            <span className="history-stat-bar__label">Giai đoạn</span>
-                        </div>
-                        <span className="history-stat-bar__sep" aria-hidden="true" />
-                        <div className="history-stat-bar__item">
-                            <span className="history-stat-bar__value">25</span>
-                            <span className="history-stat-bar__label">Năm phát triển</span>
-                        </div>
-                        <span className="history-stat-bar__sep" aria-hidden="true" />
-                        <div className="history-stat-bar__item">
-                            <span className="history-stat-bar__value">2001 – 2026</span>
-                            <span className="history-stat-bar__label">Hành trình</span>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Stage timeline nav */}
                 <div className="history-timeline-nav" aria-label="Các giai đoạn lịch sử">
                     {STAGE_PILLS.map((pill, i) => (
                         <div key={pill.stageId} className="history-timeline-nav__item">
-                            <div className="history-timeline-nav__pill">
+                            <button
+                                type="button"
+                                className="history-timeline-nav__pill cursor-pointer hover:scale-105 transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                                onClick={() => {
+                                    const el = document.getElementById(`history-snap-slide-${i}`);
+                                    if (el) {
+                                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    }
+                                }}
+                            >
                                 <span className="history-timeline-nav__num">
                                     {String(pill.stageId).padStart(2, "0")}
                                 </span>
                                 <span className="history-timeline-nav__period">
                                     {pill.label}
                                 </span>
-                            </div>
+                            </button>
                             {i < STAGE_PILLS.length - 1 && (
                                 <div
                                     className="history-timeline-nav__connector"
