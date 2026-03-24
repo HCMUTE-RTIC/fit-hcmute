@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://25nam.fit.hcmute.edu.vn'),
   title: {
-    default: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Công Nghệ Kỹ thuật TP.HCM',
+    default: 'Kỷ niệm 25 năm Khoa CNTT - Đại Học Công Nghệ Kỹ thuật TP.HCM',
     template: '%s | FIT-HCMUTE 25 năm'
   },
   description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     locale: 'vi_VN',
     url: 'https://25nam.fit.hcmute.edu.vn',
     siteName: 'Kỷ niệm 25 năm Khoa CNTT - FIT HCMUTE',
-    title: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Công Nghệ Kỹ thuật TP.HCM',
+    title: 'Kỷ niệm 25 năm Khoa CNTT - Đại Học Công Nghệ Kỹ thuật TP.HCM',
     description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
     images: [
       {
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Công Nghệ Kỹ thuật TP.HCM',
+    title: 'Kỷ niệm 25 năm Khoa CNTT - Đại Học Công Nghệ Kỹ thuật TP.HCM',
     description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     images: ['https://25nam.fit.hcmute.edu.vn/twitter-image'],
   },
@@ -104,7 +104,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'Khoa Công nghệ Thông tin - FIT HCMUTE',
   url: 'https://25nam.fit.hcmute.edu.vn',
-  description: 'Website kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+  description: 'Website kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Đại Học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
   inLanguage: 'vi',
   publisher: {
     '@type': 'EducationalOrganization',
@@ -116,7 +116,7 @@ const websiteSchema = {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
-  name: 'Khoa Công nghệ Thông tin - Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+  name: 'Khoa Công nghệ Thông tin - Đại Học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
   alternateName: 'FIT HCMUTE',
   url: 'https://fit.hcmute.edu.vn',
   logo: {
@@ -137,7 +137,7 @@ const organizationSchema = {
   foundingDate: '2000',
   parentOrganization: {
     '@type': 'CollegeOrUniversity',
-    name: 'Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
+    name: 'Đại Học Công Nghệ Kỹ thuật TP. Hồ Chí Minh',
     alternateName: 'HCMUTE',
     url: 'https://hcmute.edu.vn',
   },

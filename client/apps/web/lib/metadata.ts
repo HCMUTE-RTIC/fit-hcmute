@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 const siteConfig = {
-  name: 'Kỷ niệm 25 năm Khoa CNTT - ĐH Công Nghệ Kỹ thuật TP.HCM',
+  name: 'Kỷ niệm 25 năm Khoa CNTT - Đại Học Công Nghệ Kỹ thuật TP.HCM',
   shortName: 'FIT-HCMUTE 25 năm',
-  description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại học Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
+  description: 'Trang web kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin (2001–2026), Đại Học Công Nghệ Kỹ thuật TP. Hồ Chí Minh. Hành trình phát triển, thành tựu và tri ân.',
   url: 'https://25nam.fit.hcmute.edu.vn',
   defaultOgImage: 'https://25nam.fit.hcmute.edu.vn/opengraph-image',
 };
