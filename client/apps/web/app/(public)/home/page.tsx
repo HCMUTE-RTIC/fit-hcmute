@@ -39,6 +39,8 @@ export default function Home() {
             fill
             className="object-cover"
             priority
+            quality={100}
+            unoptimized
           />
           {/* No Overlay to keep original image brightness */}
         </div>
