@@ -27,15 +27,28 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-96px)]">
       {/* ─── Hero Section ─────────────────────────────────────────── */}
-      <section className="relative w-full h-[calc(100vh-96px)] bg-[#fdfbf7] overflow-hidden flex flex-col items-center justify-center">
-        {/* Banner Image - Locked inside viewport height, never crops */}
+      {/* Mobile: full image visible, scales naturally */}
+      <section className="relative w-full bg-[#fdfbf7] lg:hidden">
+        <Image
+          src={imgImageHcmuteCampus}
+          alt="HCMUTE Campus"
+          width={1920}
+          height={1080}
+          className="w-full h-auto"
+          priority
+          unoptimized
+        />
+      </section>
+
+      {/* Desktop: immersive full-viewport hero */}
+      <section className="relative w-full h-[calc(100vh-96px)] bg-[#fdfbf7] overflow-hidden hidden lg:flex flex-col items-center justify-center">
         <Image
           src={imgImageHcmuteCampus}
           alt="HCMUTE Campus"
           fill
           className="object-cover"
+          sizes="100vw"
           priority
-          quality={100}
           unoptimized
         />
 
@@ -85,6 +98,8 @@ export default function Home() {
                 alt="Trưởng Khoa CNTT"
                 fill
                 className="object-cover object-top hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
               />
             </motion.div>
 
@@ -147,6 +162,7 @@ export default function Home() {
                           alt="TS. Lê Văn Vinh"
                           fill
                           className="object-cover object-top"
+                          sizes="176px"
                         />
                       </div>
                       <div className="px-3 py-2.5 text-center bg-gradient-to-r from-[#1e3a8a] to-[#2563EB]">
@@ -234,29 +250,7 @@ export default function Home() {
                           <div className="h-[1px] bg-[#443C2A] w-20"></div>
                         </div>
 
-                        {/* --- PHẦN 2: THƯ CHÚC MỪNG (PGS.TS. LÊ HIẾU GIANG) --- */}
-                        <div className="text-center mb-10">
-                          <h4 className="text-2xl font-bold tracking-wider text-[#2D271D]">LỜI CHÚC TỪ THẦY HIỆU TRƯỞNG</h4>
-                        </div>
-
-                        <p className="mb-6 italic text-[#2D271D]">
-                          Nhân dịp kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, tôi trân trọng gửi tới các thế hệ cán bộ, giảng viên, sinh viên, học viên của Khoa lời chúc mừng nồng nhiệt và tốt đẹp nhất.
-                        </p>
-
-                        <p className="mb-6">
-                          Trải qua một chặng đường phát triển đầy nỗ lực, Khoa đã từng bước khẳng định uy tín và vị thế với nhiều thành tựu nổi bật trong đào tạo, nghiên cứu và đóng góp thiết thực cho sự phát triển chung của nhà trường và xã hội. Những kết quả ấy là minh chứng cho tinh thần đoàn kết, sáng tạo và cống hiến của toàn thể các thế hệ cán bộ viên chức, người học của Khoa.
-                        </p>
-
-                        <p className="mb-8">
-                          Tôi tin tưởng rằng, với nền tảng vững chắc và khát vọng vươn lên, Khoa Công nghệ Thông tin sẽ tiếp tục đổi mới, phát triển mạnh mẽ và gặt hái thêm nhiều thành công rực rỡ trong tương lai. Chúc Khoa Công nghệ Thông tin ngày càng lớn mạnh và phát triển bền vững.
-                        </p>
-
-                        <div className="mt-10 text-right">
-                          <p className="font-bold text-lg mb-1" style={{ color: "#2D271D" }}>Trân trọng,</p>
-                          <p className="font-bold text-xl font-sans tracking-wide text-[#1e3a8a]">PGS.TS. Lê Hiếu Giang</p>
-                          <p className="text-[#8c7f66] uppercase text-[11px] font-sans tracking-widest mt-1">Hiệu trưởng Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
-                        </div>
-
+                      
                       </div>
                     </div>
                   </div>
@@ -300,7 +294,7 @@ export default function Home() {
                 color: "#64748b",
               }}
             >
-              Hãy cùng tạo nên những kỷ niệm đẹp trong dịp kỷ niệm 25 năm thành lập FIT-HCMUTE
+              Hãy cùng tạo nên những kỷ niệm đẹp trong dịp kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link
