@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 
 export interface PhongTraoActivity {
   title: string;
@@ -21,6 +22,7 @@ export function PhongTraoCard({
   index: number;
 }) {
   const isEven = index % 2 === 0;
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
     <motion.div
@@ -33,43 +35,45 @@ export function PhongTraoCard({
     >
       {/* Images side */}
       <div
-        className={`relative grid grid-cols-2 gap-0 h-[420px] ${isEven ? "lg:order-1" : "lg:order-2"}`}
+        className={`relative h-[420px] ${isEven ? "lg:order-1" : "lg:order-2"}`}
       >
-        {/* Image 1 */}
-        <div className="relative overflow-hidden">
-          <Image
-            src={activity.images[0]}
-            alt={`${activity.title} 1`}
-            fill
-            sizes="(max-width: 1024px) 50vw, 25vw"
-            className="object-cover hover:scale-105 transition-transform duration-700"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.45) 100%)`,
-            }}
-          />
-        </div>
-        {/* Image 2 */}
-        <div className="relative overflow-hidden">
-          <Image
-            src={activity.images[1]}
-            alt={`${activity.title} 2`}
-            fill
-            sizes="(max-width: 1024px) 50vw, 25vw"
-            className="object-cover hover:scale-105 transition-transform duration-700"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.45) 100%)`,
-            }}
-          />
-        </div>
+        {activity.images.map((src, i) => {
+          const isHovered = hoveredIdx === i;
+          const otherHovered = hoveredIdx !== null && hoveredIdx !== i;
+
+          return (
+            <div
+              key={i}
+              className="absolute top-0 h-full overflow-hidden"
+              style={{
+                left: isHovered ? 0 : `${i * 50}%`,
+                width: isHovered ? '100%' : '50%',
+                zIndex: isHovered ? 20 : otherHovered ? 1 : 2,
+                transition: 'left 0.5s cubic-bezier(.4,0,.2,1), width 0.5s cubic-bezier(.4,0,.2,1), z-index 0s',
+              }}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+            >
+              <Image
+                src={src}
+                alt={`${activity.title} ${i + 1}`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.45) 100%)`,
+                }}
+              />
+            </div>
+          );
+        })}
+
         {/* Gradient overlay badge */}
         <div
-          className="absolute bottom-0 left-0 right-0 px-6 py-4"
+          className="absolute bottom-0 left-0 right-0 px-6 py-4 z-30 pointer-events-none"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)" }}
         >
           <span className="text-white font-bold text-lg drop-shadow">
@@ -80,9 +84,8 @@ export function PhongTraoCard({
 
       {/* Content side */}
       <div
-        className={`flex flex-col justify-center px-8 py-10 bg-white ${
-          isEven ? "lg:order-2" : "lg:order-1"
-        }`}
+        className={`flex flex-col justify-center px-8 py-10 bg-white ${isEven ? "lg:order-2" : "lg:order-1"
+          }`}
       >
         {/* Top accent bar */}
         <div
@@ -105,8 +108,6 @@ export function PhongTraoCard({
         <p className="text-base leading-relaxed mb-6" style={{ color: "var(--color-text-gray)" }}>
           {activity.description}
         </p>
-
-
       </div>
     </motion.div>
   );

@@ -803,8 +803,8 @@ export default function Achievements() {
                 gradient: 'linear-gradient(135deg, #22c55e, #16a34a)',
                 accentColor: '#16a34a',
                 images: [
-                  '/thanh-tuu/phong-trao/mua-he-xanh/m1.JPG',
-                  '/thanh-tuu/phong-trao/mua-he-xanh/m2.JPG',
+                  '/thanh-tuu/phong-trao/mua-he-xanh/mhx-1.jpg',
+                  '/thanh-tuu/phong-trao/mua-he-xanh/mhx-2.jpg',
                 ] as [string, string],
               },
               {
@@ -816,8 +816,8 @@ export default function Achievements() {
                 gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
                 accentColor: '#d97706',
                 images: [
-                  '/thanh-tuu/phong-trao/trung-thu/m1.JPG',
-                  '/thanh-tuu/phong-trao/trung-thu/m2.JPG',
+                  '/thanh-tuu/phong-trao/trung-thu/trung-thu-1.png',
+                  '/thanh-tuu/phong-trao/trung-thu/trung-thu-2.png',
                 ] as [string, string],
               },
               {
@@ -829,8 +829,8 @@ export default function Achievements() {
                 gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
                 accentColor: '#8b5cf6',
                 images: [
-                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m3.JPG',
-                  '/thanh-tuu/phong-trao/dong-yeu-thuong/m4.png',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/dyt-1.png',
+                  '/thanh-tuu/phong-trao/dong-yeu-thuong/dyt-2.jpg',
                 ] as [string, string],
               },
             ] as PhongTraoActivity[]).map((activity, index) => (
