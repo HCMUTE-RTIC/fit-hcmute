@@ -119,15 +119,8 @@ export default function Home() {
               >
                 25 năm Kết nối tri thức, Vững bước tương lai
               </h2>
-              <p
-                className="mb-8 font-bold italic"
-                style={{
-                  fontSize: "22px",
-                  lineHeight: "28px",
-                  color: "#1e3a8a",
-                }}
-              >
-                TS. Lê Văn Vinh
+              <p className="mb-8 font-medium text-gray-600 max-w-lg">
+                Hành trình 25 năm của Khoa Công nghệ Thông tin là minh chứng cho sự nỗ lực không ngừng nghỉ trong việc đào tạo những thế hệ kỹ sư giỏi chuyên môn, giàu nhiệt huyết.
               </p>
 
               <div className="w-full mt-8">
@@ -147,9 +140,10 @@ export default function Home() {
                         }}
                       />
                     </div>
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ thầy</h3>
-                      <p className="text-blue-100 text-sm">Trưởng Khoa Công nghệ Thông tin - Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
+                    <div className="text-left flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ Thầy</h3>
+                      <p className="text-lg font-bold text-white/90 mb-0.5">TS. Lê Văn Vinh</p>
+                      <p className="text-blue-100 text-xs">Trưởng Khoa Công nghệ Thông tin - Trường ĐH Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                     </div>
                   </button>
 
@@ -214,11 +208,11 @@ export default function Home() {
                         </div>
 
                         <p className="font-bold text-[#2D271D] mb-4">
-                          Kính chào quý thầy cô, quý doanh nghiệp, các thế hệ người học cùng toàn thể các bạn sinh viên, học viên thân mến,
+                          Kính chào quý Thầy Cô, quý doanh nghiệp, các thế hệ người học cùng toàn thể các bạn sinh viên, học viên thân mến,
                         </p>
 
                         <p className="mb-4">
-                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ thầy cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
+                          Năm 2026 đánh dấu một cột mốc đặc biệt – kỷ niệm 25 năm thành lập Khoa Công nghệ Thông tin, Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh. Đây không chỉ là dịp để nhìn lại chặng đường đã qua, mà còn là thời khắc để tri ân những đóng góp quý báu của các thế hệ Thầy Cô, cán bộ, sinh viên, học viên và các doanh nghiệp đã đồng hành cùng sự phát triển của Khoa.
                         </p>
 
                         <p className="mb-4">
@@ -230,7 +224,7 @@ export default function Home() {
                         </p>
 
                         <p className="mb-4">
-                          Nhân dịp này, Khoa Công nghệ Thông tin xin trân trọng gửi lời cảm ơn sâu sắc tới quý thầy cô, cán bộ, sinh viên, học viên, cựu người học, quý doanh nghiệp đối tác và bạn bè đã luôn đồng hành, ủng hộ và đóng góp cho sự phát triển của Khoa trong suốt thời gian qua.
+                          Nhân dịp này, Khoa Công nghệ Thông tin xin trân trọng gửi lời cảm ơn sâu sắc tới quý Thầy Cô, cán bộ, sinh viên, học viên, cựu người học, quý doanh nghiệp đối tác và bạn bè đã luôn đồng hành, ủng hộ và đóng góp cho sự phát triển của Khoa trong suốt thời gian qua.
                         </p>
 
                         <p className="mb-4">
