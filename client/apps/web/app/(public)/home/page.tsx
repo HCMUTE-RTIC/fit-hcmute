@@ -119,17 +119,6 @@ export default function Home() {
               >
                 25 năm Kết nối tri thức, Vững bước tương lai
               </h2>
-              <p
-                className="mb-8 font-bold italic"
-                style={{
-                  fontSize: "22px",
-                  lineHeight: "28px",
-                  color: "#1e3a8a",
-                }}
-              >
-                TS. Lê Văn Vinh
-              </p>
-
               <div className="w-full mt-8">
                 {/* Trigger Button with Hover Card */}
                 <div className="relative group/dean">
@@ -148,8 +137,9 @@ export default function Home() {
                       />
                     </div>
                     <div className="text-left">
-                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ thầy</h3>
-                      <p className="text-blue-100 text-sm">Trưởng Khoa Công nghệ Thông tin - Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
+                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ Thầy</h3>
+                      <p className="text-white/95 font-semibold text-base leading-tight mb-1">TS. Lê Văn Vinh</p>
+                      <p className="text-blue-100 text-xs sm:text-sm">Trưởng Khoa Công nghệ Thông tin - Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
                     </div>
                   </button>
 

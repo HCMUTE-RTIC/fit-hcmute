@@ -51,7 +51,7 @@ export const historyStages: HistoryStage[] = [
         period: "2002 – 2010",
         summary:
             "Mở rộng quy mô đào tạo, tăng cường chất lượng học thuật và bắt đầu ghi dấu ấn tại các sân chơi chuyên môn",
-        image: "/thu-vien/CuuSV24-1.jpg",
+        image: "/hanh-trinh-25-nam/giai-doan-2.jpg",
         gradient: "linear-gradient(135deg, #7E22CE 0%, #A855F7 100%)",
         milestones: [
             {
@@ -77,7 +77,7 @@ export const historyStages: HistoryStage[] = [
         period: "2011 – 2020",
         summary:
             "Chuẩn hóa chất lượng đào tạo, mở rộng chương trình và đầu tư mạnh cho cơ sở vật chất",
-        image: "/hanh-trinh-25-nam/lab.png",
+        image: "/hanh-trinh-25-nam/giai-doan-3.jpg",
         gradient: "linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)",
         milestones: [
             {
@@ -112,7 +112,7 @@ export const historyStages: HistoryStage[] = [
         period: "2021 – Nay",
         summary:
             "Đẩy mạnh đổi mới sáng tạo, tái cấu trúc bộ máy và khẳng định vị thế bằng các thành tích nổi bật",
-        image: "/thu-vien/thuvienkiniem2.jpg",
+        image: "/hanh-trinh-25-nam/giai-doan-4.jpg",
         gradient: "linear-gradient(135deg, #B91C1C 0%, #F59E0B 100%)",
         milestones: [
             {
