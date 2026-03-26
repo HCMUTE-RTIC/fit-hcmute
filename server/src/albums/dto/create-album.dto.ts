@@ -8,6 +8,10 @@ export class CreateAlbumDto {
 
   @IsOptional()
   @IsString()
+  slug?: string;
+
+  @IsOptional()
+  @IsString()
   description?: string;
 
   @IsArray()

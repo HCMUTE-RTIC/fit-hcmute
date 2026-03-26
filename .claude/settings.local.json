@@ -28,24 +28,8 @@
       "Bash(findstr \":3002\\\\|:3000\\\\|:3001\")",
       "WebFetch(domain:umami.is)",
       "Bash(head -20 \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/home/page.tsx\")",
-      "Bash(git pull:*)",
-      "Bash(git -C d:/RTIC/fit-hcmute log --oneline -5 --name-only)",
-      "Bash(find /d/RTIC/fit-hcmute/client/apps/web -type f -name *tri-an* -o -name *loi-chuc* -o -name *wish* -o -name *congratulation*)",
-      "Bash(xargs grep:*)",
-      "Bash(pnpm exec:*)",
-      "Bash(mkdir -p \"d:/RTIC/fit-hcmute/server/prisma/migrations/20260314000000_add_submission_status\")",
-      "Bash(\"d:/RTIC/fit-hcmute/server/prisma/migrations/20260314000000_add_submission_status/migration.sql\":*)",
-      "Bash(node \"d:/RTIC/fit-hcmute/update-forms-service.js\")",
-      "Bash(node \"d:/RTIC/fit-hcmute/patch-home.js\")",
-      "Bash(node \"d:/RTIC/fit-hcmute/patch-trian.js\")",
-      "Bash(node \"d:/RTIC/fit-hcmute/patch-sidebar.js\")",
-      "Bash(node \"d:/RTIC/fit-hcmute/patch-seedjs.js\")",
-      "Bash(rm \"d:/RTIC/fit-hcmute/patch-seedjs.js\")",
-      "Read(//c/Users/ADMIN/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.0.1/.claude/skills/ui-ux-pro-max/**)",
-      "Bash(python scripts/search.py \"university anniversary alumni testimonial celebration elegant premium\" --design-system -p \"FIT HCMUTE 25 Years\")",
-      "Bash(python \"C:/Users/ADMIN/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.0.1/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"university anniversary alumni testimonial celebration elegant premium\" --design-system -p \"FIT HCMUTE 25 Years\")",
-      "Bash(python \"C:/Users/ADMIN/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.0.1/src/ui-ux-pro-max/scripts/search.py\" \"university anniversary alumni testimonial celebration elegant premium\" --design-system -p \"FIT HCMUTE 25 Years\")",
-      "Bash(python \"C:/Users/ADMIN/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.0.1/src/ui-ux-pro-max/scripts/search.py\" \"testimonial card glassmorphism gradient\" --domain style)"
+      "Bash(pnpm install:*)",
+      "Bash(pnpm run:*)"
     ]
   }
 }

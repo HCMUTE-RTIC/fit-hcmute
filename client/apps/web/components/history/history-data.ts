@@ -20,7 +20,7 @@ export const historyStages: HistoryStage[] = [
         period: "1990 – 2001",
         summary:
             "Từ Trung tâm Tin học ban đầu đến khi Khoa Công nghệ Thông tin chính thức được thành lập",
-        image: "/trang-chu-home/banner_trangchu.jpg",
+        image: "/hanh-trinh-25-nam/ttth_logo.jpg",
         gradient: "linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)",
         milestones: [
             {
@@ -37,6 +37,11 @@ export const historyStages: HistoryStage[] = [
                 label: "01/04/2001",
                 description:
                     "Khoa Công nghệ Thông tin chính thức được thành lập theo quyết định của Hiệu trưởng, đánh dấu bước ngoặt trở thành đơn vị đào tạo chuyên môn sâu về kỹ sư và giáo viên CNTT",
+            },
+            {
+                label: "Hiện tại",
+                description:
+                    "41 Giảng Viên, 2 Phó Giáo Sư, 14 Tiến Sĩ, 24 Thạc Sĩ, 1 Trợ Giảng",
             },
         ],
     },
@@ -72,7 +77,7 @@ export const historyStages: HistoryStage[] = [
         period: "2011 – 2020",
         summary:
             "Chuẩn hóa chất lượng đào tạo, mở rộng chương trình và đầu tư mạnh cho cơ sở vật chất",
-        image: "/thu-vien/csv23-1.jpg",
+        image: "/hanh-trinh-25-nam/lab.png",
         gradient: "linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)",
         milestones: [
             {
@@ -80,19 +85,19 @@ export const historyStages: HistoryStage[] = [
                 description: "Kỷ niệm 10 năm thành lập Khoa",
             },
             {
-                label: "AUN-QA",
+                label: "2017",
                 description:
-                    "Ngành Công nghệ thông tin trở thành một trong những ngành đầu tiên của trường hoàn thành đánh giá ngoài theo tiêu chuẩn mạng lưới các trường đại học Đông Nam Á",
+                    "Mở đào tạo kỹ sư ngành Kỹ thuật dữ liệu và Thạc sĩ ngành Khoa học máy tính",
+            },
+            {
+                label: "2019",
+                description:
+                    "Ngành CNTT vinh dự đạt chuẩn quốc tế AUN-QA",
             },
             {
                 label: "Mở rộng chương trình",
                 description:
                     "Phát triển hệ đào tạo Chất lượng cao bằng tiếng Việt và tiếng Anh",
-            },
-            {
-                label: "Thạc sĩ",
-                description:
-                    "Mở chương trình Thạc sĩ Khoa học máy tính để đào tạo nguồn nhân lực trình độ cao",
             },
             {
                 label: "Cơ sở vật chất",
@@ -126,18 +131,24 @@ export const historyStages: HistoryStage[] = [
                     "Đăng cai tổ chức thành công kỳ thi Olympic Tin học Sinh viên Việt Nam lần thứ 31 và ICPC Asia Ho Chi Minh City",
             },
             {
-                label: "2023",
-                description: "Kỷ niệm 22 năm thành lập khoa",
+                label: "2022",
+                description:
+                    "Mở đào tạo kỹ sư ngành An toàn thông tin",
             },
             {
-                label: "2024",
+                label: "2022 – 2023",
                 description:
-                    "Kỷ niệm 23 năm thành lập, tiếp tục gặt hái thành tích cao tại ICPC Asia-Pacific Championship",
+                    "Bằng khen của Bộ trưởng Bộ GD&ĐT danh hiệu Tập thể lao động xuất sắc",
             },
             {
-                label: "Hướng tới 2026",
+                label: "2025",
                 description:
-                    "Hoàn thiện hệ sinh thái đào tạo với các ngành mới như An toàn thông tin và Kỹ thuật dữ liệu; đẩy mạnh AI và Chuyển đổi số; hệ thống máy móc hiện có hơn 460 máy tính kết nối server mạnh mẽ phục vụ đào tạo kỹ sư chất lượng cao",
+                    "Ngành CNTT, Kỹ thuật Dữ liệu và hệ Thạc sĩ Khoa học máy tính đồng thời đạt kiểm định MOET",
+            },
+            {
+                label: "2026",
+                description:
+                    "Mở đào tạo tiến sĩ ngành Khoa học máy tính",
             },
         ],
     },
