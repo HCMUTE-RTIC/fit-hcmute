@@ -1,5 +1,5 @@
 # Giai đoạn chạy production (Runner)
-FROM node:23-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN apk add --no-cache openssl ca-certificates
 RUN npm install -g pnpm@10
 
 # Context của build này là thư mục server/
-# Nên COPY . . sẽ copy toàn bộ nội dung trong server/ 
+# Nên COPY . . sẽ copy toàn bộ nội dung trong server/
 # (Bao gồm cả thư mục dist/ đã được Github Actions build sẵn)
 COPY . .
 
