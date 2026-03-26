@@ -29,7 +29,10 @@
       "WebFetch(domain:umami.is)",
       "Bash(head -20 \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/home/page.tsx\")",
       "Bash(pnpm install:*)",
-      "Bash(pnpm run:*)"
+      "Bash(pnpm run:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "mcp__plugin_playwright_playwright__browser_click"
     ]
   }
 }

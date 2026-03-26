@@ -1,5 +1,5 @@
 /**
- * HTML Template cho email cảm ơn khi user submit form.
+ * HTML Template cho email cảm ơn khi user gửi lời chúc.
  * Branded theo FIT HCMUTE 25 năm.
  */
 export function thankYouEmailHtml(
@@ -13,61 +13,69 @@ export function thankYouEmailHtml(
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cảm ơn bạn - Khoa CNTT HCMUTE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
-<body style="margin:0;padding:0;background-color:#F0F9FF;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F0F9FF;padding:40px 0;">
+<body style="margin:0;padding:0;background-color:#f1f5f9;font-family:'Inter','Segoe UI',Roboto,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:40px 0;">
     <tr>
       <td align="center">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.05);">
-          
-          <!-- Header -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+
+          <!-- Banner -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 50%,#7E22CE 100%);padding:32px 40px;text-align:center;">
-              <h1 style="color:#FFFFFF;font-size:24px;margin:0 0 8px 0;font-weight:700;">
-                🎓 Khoa Công Nghệ Thông Tin
-              </h1>
-              <p style="color:rgba(255,255,255,0.9);font-size:14px;margin:0;letter-spacing:1px;">
-                KỶ NIỆM 25 NĂM THÀNH LẬP (2000 – 2025)
-              </p>
+            <td style="padding:0;line-height:0;">
+              <img
+                src="https://25nam.fit.hcmute.edu.vn/trang-chu-home/banner_trangchu.jpg"
+                alt="Banner kỷ niệm 25 năm Khoa CNTT HCMUTE"
+                width="600"
+                style="width:100%;height:auto;display:block;border:0;"
+              />
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
-            <td style="padding:40px;">
-              <h2 style="color:#1E3A8A;font-size:22px;margin:0 0 16px 0;">
-                Xin chào <span style="color:#2563EB;">${recipientName}</span>! 👋
+            <td style="padding:40px 36px 32px 36px;">
+              <h2 style="color:#0f172a;font-size:22px;margin:0 0 20px 0;font-weight:700;font-family:'Inter','Segoe UI',sans-serif;">
+                Xin chào ${recipientName},
               </h2>
-              <p style="color:#334155;font-size:16px;line-height:1.7;margin:0 0 20px 0;">
-                Cảm ơn bạn đã gửi thông tin qua biểu mẫu <strong>"${formTitle}"</strong>.
-                Chúng tôi rất trân trọng sự đồng hành của bạn cùng <strong>25 năm</strong> xây dựng và phát triển
-                Khoa Công Nghệ Thông Tin – Trường Đại Học Công Nghệ Kỹ thuật TP.HCM.
+              <p style="color:#475569;font-size:15px;line-height:1.75;margin:0 0 24px 0;font-family:'Inter','Segoe UI',sans-serif;">
+                Cảm ơn bạn đã gửi lời chúc đến Khoa Công Nghệ Thông Tin nhân dịp kỷ niệm <strong style="color:#0f172a;">25 năm</strong> thành lập.
+                Mỗi lời chúc đều là nguồn động viên quý giá để chúng tôi tiếp tục phát triển và đồng hành cùng các thế hệ sinh viên.
               </p>
 
+              <!-- Highlight box -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background:linear-gradient(135deg,#1D4ED8,#7E22CE);border-radius:12px;padding:24px;text-align:center;">
-                    <p style="color:#FFFFFF;font-size:18px;font-weight:600;margin:0;line-height:1.5;">
-                      ✨ Cảm ơn Bạn đã đồng hành cùng 25 Năm Khoa! ✨
+                  <td style="background-color:#f8fafc;border-left:4px solid #1E3A8A;border-radius:0 8px 8px 0;padding:20px 24px;">
+                    <p style="color:#1e293b;font-size:16px;font-weight:600;margin:0;line-height:1.6;font-family:'Inter','Segoe UI',sans-serif;">
+                      Cảm ơn bạn đã đồng hành cùng 25 năm Khoa CNTT!
                     </p>
                   </td>
                 </tr>
               </table>
 
-              <p style="color:#64748B;font-size:14px;line-height:1.6;margin:24px 0 0 0;">
+              <p style="color:#94a3b8;font-size:13px;line-height:1.6;margin:24px 0 0 0;font-family:'Inter','Segoe UI',sans-serif;">
+                Lời chúc của bạn sẽ được hiển thị trên trang web kỷ niệm sau khi được duyệt.
                 Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ chúng tôi qua email hoặc fanpage của Khoa.
-                Chúc bạn luôn mạnh khỏe và thành công!
               </p>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 36px;">
+              <div style="height:1px;background-color:#e2e8f0;"></div>
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:#F8FAFC;padding:24px 40px;border-top:1px solid #E2E8F0;">
-              <p style="color:#94A3B8;font-size:12px;margin:0;text-align:center;line-height:1.6;">
-                Khoa Công Nghệ Thông Tin – Trường Đại Học Công Nghệ Kỹ thuật TP.HCM<br/>
+            <td style="padding:24px 36px 28px 36px;">
+              <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;line-height:1.7;font-family:'Inter','Segoe UI',sans-serif;">
+                Khoa Công Nghệ Thông Tin – Trường Đại Học Công Nghệ Kỹ Thuật TP.HCM<br/>
                 01 Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP.HCM<br/>
-                <a href="https://fit.hcmute.edu.vn" style="color:#2563EB;text-decoration:none;">fit.hcmute.edu.vn</a>
+                <a href="https://fit.hcmute.edu.vn" style="color:#1E3A8A;text-decoration:none;font-weight:600;">fit.hcmute.edu.vn</a>
               </p>
             </td>
           </tr>

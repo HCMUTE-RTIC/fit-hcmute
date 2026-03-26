@@ -12,7 +12,6 @@ export default function Alumni() {
     email: "",
     graduationYear: "",
     message: "",
-    attendEvent: "Không",
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -28,7 +27,6 @@ export default function Alumni() {
         full_name: formData.fullName,
         email: formData.email,
         ...(formData.graduationYear ? { graduation_year: formData.graduationYear } : {}),
-        attend_event: formData.attendEvent,
         message: formData.message,
       });
       setSubmitted(true);
@@ -83,7 +81,7 @@ export default function Alumni() {
               TRI ÂN & KẾT NỐI
             </h1>
             <p className="text-xl leading-relaxed text-gray-200 mb-10">
-              Tri ân người đi trước, kết nối thế hệ mai sau. Hãy để lại lời chúc hoặc đăng ký tham dự để cùng viết tiếp hành trình rực rỡ này
+              Tri ân người đi trước, kết nối thế hệ mai sau. Hãy gửi lời chúc tốt đẹp nhân dịp kỷ niệm 25 năm thành lập Khoa CNTT
             </p>
             <button
               onClick={() => {
@@ -110,15 +108,28 @@ export default function Alumni() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl p-8 md:p-12"
+            className="bg-white rounded-2xl overflow-hidden"
             style={{ boxShadow: "var(--shadow-soft)" }}
           >
-            <h2
-              className="font-bold text-center mb-8"
-              style={{ fontSize: "32px", color: "var(--color-primary-600)" }}
-            >
-              GỬI LỜI CHÚC & ĐĂNG KÝ THAM DỰ
-            </h2>
+            {/* Banner */}
+            <div className="relative w-full h-48 md:h-64">
+              <img
+                src="/trang-chu-home/banner_trangchu.jpg"
+                alt="Banner kỷ niệm 25 năm Khoa CNTT"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <h2
+                  className="font-bold text-white text-center"
+                  style={{ fontSize: "32px", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+                >
+                  GỬI LỜI CHÚC
+                </h2>
+              </div>
+            </div>
+
+            <div className="p-8 md:p-12">
 
             {submitted ? (
               <motion.div
@@ -226,32 +237,6 @@ export default function Alumni() {
                   />
                 </div>
 
-                {/* Attend Event */}
-                <div>
-                  <label
-                    htmlFor="attendEvent"
-                    className="flex items-center space-x-2 mb-2 font-semibold"
-                    style={{ color: "var(--color-primary-900)" }}
-                  >
-                    <Calendar size={18} />
-                    <span>Bạn có tham dự sự kiện không? *</span>
-                  </label>
-                  <select
-                    id="attendEvent"
-                    name="attendEvent"
-                    value={formData.attendEvent}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
-                    style={{ borderColor: "#E2E8F0", color: "#1e293b" }}
-                    onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
-                    onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
-                  >
-                    <option value="Không">Không</option>
-                    <option value="Có">Có</option>
-                  </select>
-                </div>
-
                 {/* Message */}
                 <div>
                   <label
@@ -301,6 +286,7 @@ export default function Alumni() {
                 </button>
               </form>
             )}
+            </div>
           </motion.div>
         </div>
       </section>
