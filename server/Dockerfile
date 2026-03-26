@@ -1,5 +1,5 @@
 # Giai đoạn chạy production (Runner)
-FROM node:24-alpine
+FROM node:23-alpine
 
 WORKDIR /app
 
