@@ -6,24 +6,41 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedLogo from "./AnimatedLogo";
+import { SettingsService } from "@/services/settings.service";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const [kyYeuEnabled, setKyYeuEnabled] = useState(true);
 
-  const navLinks = [
+  useEffect(() => {
+    SettingsService.getAll().then((config) => {
+      if (config["ky_yeu_enabled"] === "false") {
+        setKyYeuEnabled(false);
+      }
+    });
+  }, []);
+
+  const allLinks = [
     { name: "TRANG CHỦ", path: "/home" },
     { name: "GIỚI THIỆU", path: "/gioi-thieu" },
     { name: "HÀNH TRÌNH 25 NĂM", path: "/hanh-trinh-25-nam" },
     { name: "THÀNH TỰU", path: "/thanh-tuu" },
-    { name: "TRI ÂN & KẾT NỐI", path: "/tri-an" },
+    { name: "TRI ÂN", path: "/tri-an" },
+    { name: "CHIA SẺ KỶ NIỆM", path: "/chia-se-ky-niem" },
     { name: "KỶ YẾU", path: "/ky-yeu" },
     { name: "THƯ VIỆN KỶ NIỆM", path: "/thu-vien" },
   ];
 
+  const navLinks = allLinks.filter((link) => {
+    if (link.path === "/ky-yeu" && !kyYeuEnabled) return false;
+    return true;
+  });
+
   // Split navigation into left and right for centered logo layout
-  const leftLinks = navLinks.slice(0, 4);
-  const rightLinks = navLinks.slice(4, 7);
+  const mid = Math.ceil(navLinks.length / 2);
+  const leftLinks = navLinks.slice(0, mid);
+  const rightLinks = navLinks.slice(mid);
 
   const isActive = (path: string) => pathname === path;
 

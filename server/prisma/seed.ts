@@ -107,6 +107,31 @@ async function main() {
   });
 
   console.log(`✅ Dummy Articles created`);
+
+  // 4. Seed loi-chuc form (idempotent)
+  const existingForm = await prisma.formDefinition.findUnique({ where: { slug: 'loi-chuc' } });
+  if (!existingForm) {
+    const loiChucForm = await prisma.formDefinition.create({
+      data: {
+        title: 'Gửi lời chúc & Đăng ký tham dự',
+        slug: 'loi-chuc',
+        description: 'Form gửi lời chúc mừng kỷ niệm 25 năm thành lập Khoa CNTT',
+        active: true,
+        fields: {
+          create: [
+            { name: 'full_name',       label: 'Họ và tên',                         type: 'TEXT',     required: true,  order: 0 },
+            { name: 'email',           label: 'Email',                             type: 'EMAIL',    required: true,  order: 1 },
+            { name: 'graduation_year', label: 'Khóa/Năm tốt nghiệp',              type: 'TEXT',     required: false, order: 2 },
+            { name: 'attend_event',    label: 'Bạn có tham dự sự kiện không?',     type: 'SELECT',   required: true,  options: ['Không', 'Có'], order: 3 },
+            { name: 'message',         label: 'Lời chúc mừng / Chia sẻ kỷ niệm', type: 'TEXTAREA', required: true,  order: 4 },
+          ],
+        },
+      },
+    });
+    console.log(`✅ loi-chuc form created: ${loiChucForm.id}`);
+  } else {
+    console.log(`✅ loi-chuc form already exists: ${existingForm.id}`);
+  }
 }
 
 main()

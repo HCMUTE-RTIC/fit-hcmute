@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronDown,
   Users,
+  Heart,
 } from "lucide-react";
 import { getAuthToken, removeAuthToken } from "../../lib/auth";
 import { jwtDecode } from "jwt-decode";
@@ -63,6 +64,7 @@ export function Sidebar({
       ],
     },
     { name: "Form Đăng ký", href: "/admin/forms", icon: LayoutTemplate },
+    { name: "Lời Chúc", href: "/admin/loi-chuc", icon: Heart },
     { name: "Quản lý Tài khoản", href: "/admin/users", icon: Users, hidden: true },
     { name: "Nhật ký hệ thống", href: "/admin/logs", icon: Activity, hidden: true }, // Default hidden
     { name: "Cấu hình", href: "/admin/settings", icon: Settings },

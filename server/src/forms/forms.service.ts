@@ -4,6 +4,7 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
+import { SubmissionStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateFormDefinitionDto,
@@ -13,6 +14,7 @@ import { generateSlug } from '../common/utils/slug.util';
 import { validateFieldType } from '../common/utils/validation.util';
 import { SubmitFormDto } from 'src/forms/dto/submit-form.dto';
 import { MailService } from '../mail/mail.service';
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class FormsService {
@@ -21,6 +23,7 @@ export class FormsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly mediaService: MediaService,
   ) {}
 
   private async generateUniqueSlug(title: string): Promise<string> {
@@ -138,6 +141,32 @@ export class FormsService {
     });
   }
 
+  async updateSubmissionStatus(submissionId: string, status: SubmissionStatus) {
+    const submission = await this.prisma.formSubmission.findUnique({
+      where: { id: submissionId },
+    });
+    if (!submission) throw new NotFoundException('Submission not found');
+
+    return this.prisma.formSubmission.update({
+      where: { id: submissionId },
+      data: { status },
+    });
+  }
+
+  async getApprovedSubmissions(slug: string) {
+    const form = await this.prisma.formDefinition.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+    if (!form) throw new NotFoundException('Form not found');
+
+    return this.prisma.formSubmission.findMany({
+      where: { formId: form.id, status: SubmissionStatus.APPROVED },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, data: true, createdAt: true },
+    });
+  }
+
   async submit(slug: string, dto: SubmitFormDto) {
     const formDef = await this.prisma.formDefinition.findUnique({
       where: { slug },
@@ -181,6 +210,55 @@ export class FormsService {
     });
 
     // === PUSH JOB GỬI EMAIL CẢM ƠN (Fire-and-forget) ===
+    this.queueThankYouEmail(cleanData, formDef.title);
+
+    return submission;
+  }
+
+  async submitWithMedia(slug: string, dto: SubmitFormDto, image?: Express.Multer.File) {
+    const formDef = await this.prisma.formDefinition.findUnique({
+      where: { slug },
+      include: { fields: { orderBy: { order: 'asc' } } },
+    });
+
+    if (!formDef) throw new NotFoundException('Form definition not found');
+
+    const submissionData = dto.data;
+    const cleanData: Record<string, any> = {};
+
+    for (const field of formDef.fields) {
+      const userValue = submissionData[field.name];
+
+      if (field.type === 'FILE') continue; // handled separately
+
+      if (field.required && (userValue === undefined || userValue === null || userValue === '')) {
+        throw new BadRequestException(`Trường "${field.label}" là bắt buộc`);
+      }
+
+      if (!field.required && (userValue === undefined || userValue === null || userValue === '')) {
+        continue;
+      }
+
+      if (userValue !== undefined) {
+        validateFieldType(field.label, field.type, userValue, field.options);
+        cleanData[field.name] = userValue;
+      }
+    }
+
+    // Upload image nếu có
+    if (image) {
+      const imageUrl = await this.mediaService.uploadPublicFile(image);
+      cleanData['image_url'] = imageUrl;
+    }
+
+    const submission = await this.prisma.formSubmission.create({
+      data: {
+        formId: formDef.id,
+        eventId: formDef.eventId,
+        data: cleanData,
+      },
+    });
+
     this.queueThankYouEmail(cleanData, formDef.title);
 
     return submission;

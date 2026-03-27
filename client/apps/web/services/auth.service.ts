@@ -22,11 +22,19 @@ export const AuthService = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify({
+        email: params.email.trim().toLowerCase(),
+        password: params.password,
+      }),
     });
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
+      if (res.status === 429 && errorData.retryAfterSeconds) {
+        throw new Error(
+          `Too many login attempts. Try again in ${errorData.retryAfterSeconds} seconds.`,
+        );
+      }
       throw new Error(errorData.message || "Login failed");
     }
 

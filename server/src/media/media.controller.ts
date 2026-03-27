@@ -1,44 +1,104 @@
-import { Controller, Post, UseInterceptors, UploadedFile, UploadedFiles, UseGuards, Req, Body, BadRequestException } from '@nestjs/common';
-import { MediaService } from './media.service';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Req,
+  UploadedFile,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  assertSafeUploadFile,
+  isAllowedUploadMimeType,
+  MAX_BATCH_UPLOAD_COUNT,
+  MAX_PRIVATE_UPLOAD_BYTES,
+} from '../common/utils/file-security.util';
+import { MediaService } from './media.service';
 
 @Controller('media')
 export class MediaController {
-    constructor(private readonly mediaService: MediaService) { }
+  constructor(private readonly mediaService: MediaService) {}
 
-    @UseGuards(JwtAuthGuard)
-    @Post('upload')
-    @UseInterceptors(FileInterceptor('file')) // Cài đặt bắt param `file` từ form-data
-    async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: any, @Body('albumId') albumId?: string) {
-        if (!file) throw new BadRequestException('Bắt buộc đính kèm fle.');
-
-        // Lấy ID người dùng từ payload JWT Token
-        const userId = req.user.id;
-        const media = await this.mediaService.uploadSingleFile(file, userId, albumId);
-
-        return {
-            success: true,
-            message: 'Tải file lên thành công',
-            data: media,
-            errorCode: null,
-        };
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: MAX_PRIVATE_UPLOAD_BYTES },
+      fileFilter: (_req, file, cb) => {
+        if (!isAllowedUploadMimeType(file.mimetype, 'private-media')) {
+          cb(new BadRequestException('Unsupported file type.'), false);
+          return;
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
+    @Body('albumId') albumId?: string,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Missing upload file.');
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Post('upload-batch')
-    @UseInterceptors(FilesInterceptor('files', 20)) // Cài bắt mảng đa `files`, giới hạn 20 file 1 lần
-    async uploadBatchFiles(@UploadedFiles() files: Express.Multer.File[], @Req() req: any, @Body('albumId') albumId?: string) {
-        if (!files || files.length === 0) throw new BadRequestException('Bắt buộc đính kèm các file cần tải lên.');
+    assertSafeUploadFile(file, 'private-media');
 
-        const userId = req.user.id;
-        const medias = await this.mediaService.uploadBatchFiles(files, userId, albumId);
+    const userId = req.user.id;
+    const media = await this.mediaService.uploadSingleFile(file, userId, albumId);
 
-        return {
-            success: true,
-            message: `Tải thành công chùm ${files.length} file`,
-            data: medias,
-            errorCode: null,
-        };
+    return {
+      success: true,
+      message: 'File uploaded successfully.',
+      data: media,
+      errorCode: null,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('upload-batch')
+  @UseInterceptors(
+    FilesInterceptor('files', MAX_BATCH_UPLOAD_COUNT, {
+      limits: {
+        fileSize: MAX_PRIVATE_UPLOAD_BYTES,
+        files: MAX_BATCH_UPLOAD_COUNT,
+      },
+      fileFilter: (_req, file, cb) => {
+        if (!isAllowedUploadMimeType(file.mimetype, 'private-media')) {
+          cb(new BadRequestException('Unsupported file type.'), false);
+          return;
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  async uploadBatchFiles(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Req() req: any,
+    @Body('albumId') albumId?: string,
+  ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('Missing upload files.');
     }
+
+    files.forEach((file) => assertSafeUploadFile(file, 'private-media'));
+
+    const userId = req.user.id;
+    const medias = await this.mediaService.uploadBatchFiles(
+      files,
+      userId,
+      albumId,
+    );
+
+    return {
+      success: true,
+      message: `Uploaded ${files.length} file(s) successfully.`,
+      data: medias,
+      errorCode: null,
+    };
+  }
 }
