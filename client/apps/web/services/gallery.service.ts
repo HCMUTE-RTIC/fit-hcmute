@@ -114,6 +114,21 @@ export const GalleryService = {
   },
 
   /**
+   * Delete a media file
+   */
+  async deleteMedia(id: string): Promise<boolean> {
+    const token = getAuthToken();
+    const res = await fetch(`${API_URL}/api/media/${id}`, {
+      method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) throw new Error("Failed to delete media");
+    return true;
+  },
+
+  /**
    * Batch Upload Media to an Album — uses XHR for real progress tracking
    */
   async uploadBatchMedia(

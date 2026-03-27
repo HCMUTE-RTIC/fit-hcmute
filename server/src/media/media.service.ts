@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import * as crypto from 'crypto';
 import * as Minio from 'minio';
 import { PrismaService } from '../prisma/prisma.service';
@@ -100,6 +104,21 @@ export class MediaService {
     return minioPublicUrl
       ? `${minioPublicUrl}/${this.bucketName}/${key}`
       : `/media_storage/${this.bucketName}/${key}`;
+  }
+
+  async deleteFile(id: string) {
+    const media = await this.prisma.media.findUnique({ where: { id } });
+    if (!media) {
+      throw new NotFoundException('Media not found.');
+    }
+
+    try {
+      await this.minioClient.removeObject(this.bucketName, media.key);
+    } catch (error: any) {
+      console.error('MinIO delete failed:', error);
+    }
+
+    await this.prisma.media.delete({ where: { id } });
   }
 
   async uploadBatchFiles(

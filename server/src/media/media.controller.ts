@@ -2,6 +2,8 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
+  Param,
   Post,
   Req,
   UploadedFile,
@@ -17,11 +19,22 @@ import {
   MAX_BATCH_UPLOAD_COUNT,
   MAX_PRIVATE_UPLOAD_BYTES,
 } from '../common/utils/file-security.util';
+import { Role } from '@prisma/client';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
 import { MediaService } from './media.service';
 
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN, Role.EDITOR)
+  async deleteFile(@Param('id') id: string) {
+    await this.mediaService.deleteFile(id);
+    return { success: true, message: 'File deleted successfully.' };
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('upload')
