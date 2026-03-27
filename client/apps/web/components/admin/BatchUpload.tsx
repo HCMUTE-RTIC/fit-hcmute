@@ -116,6 +116,17 @@ export default function BatchUpload({
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
   };
 
+  const handleDeleteMedia = async (mediaId: string) => {
+    if (!confirm("Bạn có chắc muốn xóa ảnh này?")) return;
+    try {
+      await GalleryService.deleteMedia(mediaId);
+      setUploadedMedia((prev) => prev.filter((m) => m.id !== mediaId));
+    } catch (error) {
+      console.error("Failed to delete media", error);
+      alert("Không thể xóa ảnh. Vui lòng thử lại.");
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Drag & Drop Zone */}
@@ -253,7 +264,10 @@ export default function BatchUpload({
                   </div>
                 )}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <button className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 shadow-md transform scale-50 group-hover:scale-100 transition duration-300">
+                  <button
+                    onClick={() => handleDeleteMedia(media.id)}
+                    className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 shadow-md transform scale-50 group-hover:scale-100 transition duration-300"
+                  >
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
