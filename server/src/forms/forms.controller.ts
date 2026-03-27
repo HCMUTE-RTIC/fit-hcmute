@@ -7,9 +7,13 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Role } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -26,6 +30,27 @@ export class FormsController {
   @HttpCode(HttpStatus.CREATED)
   submit(@Param('slug') slug: string, @Body() dto: SubmitFormDto) {
     return this.formsService.submit(slug, dto);
+  }
+
+  @Post(':slug/submit-with-media')
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('image', {
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (_req, file, cb) => {
+      if (!file.mimetype.startsWith('image/')) {
+        cb(new BadRequestException('Chỉ chấp nhận file ảnh'), false);
+        return;
+      }
+      cb(null, true);
+    },
+  }))
+  submitWithMedia(
+    @Param('slug') slug: string,
+    @UploadedFile() image: Express.Multer.File,
+    @Body('data') dataJson: string,
+  ) {
+    const data = JSON.parse(dataJson);
+    return this.formsService.submitWithMedia(slug, { data }, image);
   }
 
   @Post()

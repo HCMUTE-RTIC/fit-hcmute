@@ -37,7 +37,7 @@ export function thankYouEmailHtml(
           <tr>
             <td style="padding:40px 36px 32px 36px;">
               <h2 style="color:#0f172a;font-size:22px;margin:0 0 20px 0;font-weight:700;font-family:'Inter','Segoe UI',sans-serif;">
-                Xin chào ${recipientName},
+                Xin chào anh/chị ${recipientName},
               </h2>
               <p style="color:#475569;font-size:15px;line-height:1.75;margin:0 0 24px 0;font-family:'Inter','Segoe UI',sans-serif;">
                 Cảm ơn bạn đã gửi lời chúc đến Khoa Công Nghệ Thông Tin nhân dịp kỷ niệm <strong style="color:#0f172a;">25 năm</strong> thành lập.
@@ -55,10 +55,6 @@ export function thankYouEmailHtml(
                 </tr>
               </table>
 
-              <p style="color:#94a3b8;font-size:13px;line-height:1.6;margin:24px 0 0 0;font-family:'Inter','Segoe UI',sans-serif;">
-                Lời chúc của bạn sẽ được hiển thị trên trang web kỷ niệm sau khi được duyệt.
-                Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ chúng tôi qua email hoặc fanpage của Khoa.
-              </p>
             </td>
           </tr>
 
@@ -72,10 +68,13 @@ export function thankYouEmailHtml(
           <!-- Footer -->
           <tr>
             <td style="padding:24px 36px 28px 36px;">
-              <p style="color:#94a3b8;font-size:12px;margin:0;text-align:center;line-height:1.7;font-family:'Inter','Segoe UI',sans-serif;">
+              <p style="color:#94a3b8;font-size:12px;margin:0 0 8px 0;text-align:center;line-height:1.7;font-family:'Inter','Segoe UI',sans-serif;">
                 Khoa Công Nghệ Thông Tin – Trường Đại Học Công Nghệ Kỹ Thuật TP.HCM<br/>
-                01 Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP.HCM<br/>
+                01 Võ Văn Ngân, phường Thủ Đức, TP.HCM<br/>
                 <a href="https://fit.hcmute.edu.vn" style="color:#1E3A8A;text-decoration:none;font-weight:600;">fit.hcmute.edu.vn</a>
+              </p>
+              <p style="color:#b0b8c4;font-size:11px;margin:0;text-align:center;line-height:1.6;font-family:'Inter','Segoe UI',sans-serif;">
+                Được phát triển bởi <a href="https://hcmutertic.com/" style="color:#1E3A8A;text-decoration:none;">HCM UTE Research on Technology and Innovation Club</a>
               </p>
             </td>
           </tr>

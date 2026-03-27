@@ -16,7 +16,7 @@ export default function Navbar() {
     { name: "GIỚI THIỆU", path: "/gioi-thieu" },
     { name: "HÀNH TRÌNH 25 NĂM", path: "/hanh-trinh-25-nam" },
     { name: "THÀNH TỰU", path: "/thanh-tuu" },
-    { name: "TRI ÂN & KẾT NỐI", path: "/tri-an" },
+    { name: "TRI ÂN", path: "/tri-an" },
     { name: "KỶ YẾU", path: "/ky-yeu" },
     { name: "THƯ VIỆN KỶ NIỆM", path: "/thu-vien" },
   ];

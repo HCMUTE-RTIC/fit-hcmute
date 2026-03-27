@@ -67,6 +67,29 @@ export class MediaService {
         }
     }
 
+    /**
+     * Upload công khai (không cần user) — dành cho form submission có ảnh.
+     * Chỉ lưu lên MinIO, trả về URL, KHÔNG tạo record trong bảng Media.
+     */
+    async uploadPublicFile(file: Express.Multer.File): Promise<string> {
+        const extension = file.originalname.split('.').pop();
+        const uuidStr = crypto.randomUUID();
+        const key = `public/${Date.now()}_${uuidStr.split('-')[0]}.${extension}`;
+
+        await this.minioClient.putObject(
+            this.bucketName,
+            key,
+            file.buffer,
+            file.size,
+            { 'Content-Type': file.mimetype },
+        );
+
+        const minioPublicUrl = process.env.MINIO_PUBLIC_URL;
+        return minioPublicUrl
+            ? `${minioPublicUrl}/${this.bucketName}/${key}`
+            : `/media_storage/${this.bucketName}/${key}`;
+    }
+
     async uploadBatchFiles(files: Express.Multer.File[], userId: string, albumId?: string) {
         const uploadedRecords: any[] = [];
         // Upload files theo luồng tuần tự để đảm bảo DB Consistency (Có thể dùng Promise.all để tối ưu tốc độ nếu cần thiết)

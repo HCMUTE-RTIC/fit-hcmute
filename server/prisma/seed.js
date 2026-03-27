@@ -83,6 +83,30 @@ async function main() {
     console.log('loi-chuc form already exists: ' + existingForm.id);
   }
 
+  // Seed chia-se-ky-niem form (idempotent)
+  const existingMemoryForm = await prisma.formDefinition.findUnique({ where: { slug: 'chia-se-ky-niem' } });
+  if (!existingMemoryForm) {
+    const memoryForm = await prisma.formDefinition.create({
+      data: {
+        title: 'Chia sẻ kỷ niệm',
+        slug: 'chia-se-ky-niem',
+        description: 'Form chia sẻ kỷ niệm kèm ảnh cho trang kỷ yếu 25 năm Khoa CNTT',
+        active: true,
+        fields: {
+          create: [
+            { name: 'full_name', label: 'Họ và tên',            type: 'TEXT',     required: true,  order: 0 },
+            { name: 'email',     label: 'Email',                type: 'EMAIL',    required: true,  order: 1 },
+            { name: 'caption',   label: 'Lời bình / Kỷ niệm',  type: 'TEXTAREA', required: true,  order: 2 },
+            { name: 'image',     label: 'Ảnh kỷ niệm',         type: 'FILE',     required: true,  order: 3 },
+          ],
+        },
+      },
+    });
+    console.log('chia-se-ky-niem form created: ' + memoryForm.id);
+  } else {
+    console.log('chia-se-ky-niem form already exists: ' + existingMemoryForm.id);
+  }
+
 }
 
 main()

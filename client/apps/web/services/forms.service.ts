@@ -208,6 +208,25 @@ export const FormsService = {
     return res.json();
   },
 
+  submitWithMedia: async (
+    slug: string,
+    data: Record<string, unknown>,
+    image: File,
+  ): Promise<void> => {
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(data));
+    formData.append('image', image);
+
+    const res = await fetch(`${API_URL}/api/forms/${slug}/submit-with-media`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Gửi form thất bại');
+    }
+  },
+
   getPublicSubmissions: async (slug: string): Promise<PublicWish[]> => {
     try {
       const res = await fetch(

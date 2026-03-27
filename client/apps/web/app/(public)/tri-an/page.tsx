@@ -78,7 +78,7 @@ export default function Alumni() {
                 fontSize: "clamp(40px, 6vw, var(--text-h2))",
               }}
             >
-              TRI ÂN & KẾT NỐI
+              TRI ÂN
             </h1>
             <p className="text-xl leading-relaxed text-gray-200 mb-10">
               Tri ân người đi trước, kết nối thế hệ mai sau. Hãy gửi lời chúc tốt đẹp nhân dịp kỷ niệm 25 năm thành lập Khoa CNTT
@@ -124,7 +124,7 @@ export default function Alumni() {
                   className="font-bold text-white text-center"
                   style={{ fontSize: "32px", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
                 >
-                  GỬI LỜI CHÚC
+                  
                 </h2>
               </div>
             </div>
