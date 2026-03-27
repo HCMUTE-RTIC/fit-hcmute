@@ -15,6 +15,7 @@ import { FormsModule } from 'src/forms/forms.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { BullModule } from '@nestjs/bullmq';
 import { MailModule } from './mail/mail.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { MailModule } from './mail/mail.module';
     FormsModule,
     AuditLogsModule,
     MailModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [

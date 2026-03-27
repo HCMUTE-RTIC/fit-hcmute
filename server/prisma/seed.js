@@ -83,6 +83,20 @@ async function main() {
     console.log('loi-chuc form already exists: ' + existingForm.id);
   }
 
+  // Seed site config defaults (idempotent)
+  const configDefaults = [
+    { key: 'ky_yeu_enabled', value: 'true' },
+    { key: 'ky_yeu_pdf_url', value: '' },
+  ];
+  for (const cfg of configDefaults) {
+    await prisma.siteConfig.upsert({
+      where: { key: cfg.key },
+      update: {},
+      create: cfg,
+    });
+  }
+  console.log('Site config seeded');
+
   // Seed chia-se-ky-niem form (idempotent)
   const existingMemoryForm = await prisma.formDefinition.findUnique({ where: { slug: 'chia-se-ky-niem' } });
   if (!existingMemoryForm) {

@@ -33,7 +33,8 @@
       "mcp__plugin_playwright_playwright__browser_navigate",
       "mcp__plugin_playwright_playwright__browser_fill_form",
       "mcp__plugin_playwright_playwright__browser_click",
-      "Bash(pnpm exec:*)"
+      "Bash(pnpm exec:*)",
+      "Bash(ls \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/\")"
     ]
   }
 }

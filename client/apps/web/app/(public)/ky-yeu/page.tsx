@@ -1,24 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Camera } from "lucide-react";
-import { MemoryFormModal } from "@/components/ky-yeu/memory-form-modal";
-import { MemoriesGallery } from "@/components/ky-yeu/memories-gallery";
+import { BookOpen } from "lucide-react";
+import PDFViewer from "@/components/shared/PDFViewer";
+import { SettingsService } from "@/services/settings.service";
+import { useRouter } from "next/navigation";
 
 export default function KyYeuPage() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const router = useRouter();
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    SettingsService.getAll().then((config) => {
+      if (config["ky_yeu_enabled"] === "false") {
+        setDisabled(true);
+        setLoading(false);
+        return;
+      }
+
+      const url = config["ky_yeu_pdf_url"];
+      if (url) {
+        // Resolve relative URL
+        if (url.startsWith("http")) {
+          setPdfUrl(url);
+        } else {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+          setPdfUrl(`${apiUrl}${url}`);
+        }
+      } else {
+        // Fallback to static file
+        setPdfUrl("/ky-yeu-25-nam.pdf");
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[calc(100vh-96px)] flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (disabled) {
+    return (
+      <div className="min-h-[calc(100vh-96px)] flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <BookOpen size={48} className="mx-auto mb-4 text-slate-300" />
+          <h2 className="text-xl font-bold text-slate-700 mb-2">Trang kỷ yếu chưa sẵn sàng</h2>
+          <p className="text-sm text-slate-500">Kỷ yếu 25 năm đang được chuẩn bị. Vui lòng quay lại sau.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-96px)]">
       {/* Hero Section */}
       <section
-        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
-        style={{
-          paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
-        }}
+        className="relative min-h-[calc(100vh-96px)] flex items-start justify-center overflow-hidden"
+        style={{ paddingTop: "40px", paddingBottom: "40px" }}
       >
         <div className="absolute inset-0 z-0">
           <img
@@ -38,38 +83,39 @@ export default function KyYeuPage() {
           >
             <BookOpen size={48} className="mx-auto mb-3 text-white" />
             <h1
-              className="font-extrabold mb-4 text-white"
-              style={{
-                fontSize: "clamp(32px, 5vw, 42px)",
-                lineHeight: "1.2",
-              }}
+              className="font-extrabold mb-2 text-white"
+              style={{ fontSize: "clamp(32px, 5vw, 42px)", lineHeight: "1.2" }}
             >
               KỶ YẾU 25 NĂM
             </h1>
-            <p className="text-lg leading-relaxed text-gray-200 mb-8">
+            <p className="text-lg leading-normal text-gray-200">
               Cùng ôn lại những trang ký ức đẹp nhất trong hành trình 25 năm phát triển của FIT-HCMUTE
             </p>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold hover:opacity-90 transition-all text-base"
-              style={{ backgroundColor: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.25)" }}
-            >
-              <Camera size={20} />
-              <span>Chia sẻ kỷ niệm của bạn</span>
-            </button>
           </motion.div>
         </div>
       </section>
 
-      {/* Memories Gallery */}
-      <MemoriesGallery refreshKey={refreshKey} />
-
-      {/* Modal */}
-      <MemoryFormModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={() => setRefreshKey((k) => k + 1)}
-      />
+      {/* PDF Viewer Section */}
+      {pdfUrl && (
+        <section className="pb-12 bg-white">
+          <div className="max-w-[1400px] mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="rounded-2xl overflow-hidden"
+              style={{
+                backgroundColor: "white",
+                boxShadow: "var(--shadow-soft)",
+                height: "calc(100vh - 200px)",
+                minHeight: "600px",
+              }}
+            >
+              <PDFViewer pdfUrl={pdfUrl} title="Kỷ yếu 25 năm CNTT HCMUTE" />
+            </motion.div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
