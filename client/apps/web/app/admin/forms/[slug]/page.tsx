@@ -9,9 +9,11 @@ import {
   type FormDefinition,
   type FormSubmission,
   type FieldType,
+  type SubmissionStatus,
 } from '@/services/forms.service';
 
 type Tab = 'info' | 'submissions';
+type StatusFilter = 'ALL' | SubmissionStatus;
 
 interface EditableField {
   id?: string;
@@ -36,6 +38,18 @@ function toSnakeCase(str: string): string {
     .replace(/\s+/g, '_');
 }
 
+const STATUS_LABELS: Record<SubmissionStatus, string> = {
+  PENDING: 'Chờ duyệt',
+  APPROVED: 'Đã duyệt',
+  REJECTED: 'Từ chối',
+};
+
+const STATUS_STYLES: Record<SubmissionStatus, string> = {
+  PENDING: 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300',
+  APPROVED: 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300',
+  REJECTED: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300',
+};
+
 export default function FormDetailsPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -54,6 +68,8 @@ export default function FormDetailsPage() {
 
   const [submissions, setSubmissions] = useState<FormSubmission[]>([]);
   const [subLoading, setSubLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL');
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchForm();
@@ -107,6 +123,21 @@ export default function FormDetailsPage() {
     setTab(t);
     if (t === 'submissions' && submissions.length === 0) {
       fetchSubmissions();
+    }
+  };
+
+  const handleStatusUpdate = async (submissionId: string, status: SubmissionStatus) => {
+    setUpdatingId(submissionId);
+    try {
+      const updated = await FormsService.updateSubmissionStatus(submissionId, status);
+      setSubmissions((prev) =>
+        prev.map((s) => (s.id === submissionId ? { ...s, status: updated.status } : s))
+      );
+      toast.success(status === 'APPROVED' ? 'Đã duyệt lời chúc!' : 'Đã từ chối lời chúc.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Không thể cập nhật trạng thái');
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -183,10 +214,11 @@ export default function FormDetailsPage() {
   const exportCSV = () => {
     if (!form || submissions.length === 0) return;
     const cols = form.fields.slice().sort((a, b) => a.order - b.order).map((f) => ({ name: f.name, label: f.label }));
-    const headers = ['#', ...cols.map((f) => f.label), 'Thời gian gửi'];
-    const rows = submissions.map((sub, idx) => [
+    const headers = ['#', ...cols.map((f) => f.label), 'Trạng thái', 'Thời gian gửi'];
+    const rows = filteredSubmissions.map((sub, idx) => [
       String(idx + 1),
       ...cols.map((f) => sub.data[f.name] ?? ''),
+      STATUS_LABELS[sub.status] ?? sub.status,
       new Date(sub.createdAt).toLocaleString('vi-VN'),
     ]);
     const csv = [headers, ...rows]
@@ -200,6 +232,13 @@ export default function FormDetailsPage() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const filteredSubmissions = statusFilter === 'ALL'
+    ? submissions
+    : submissions.filter((s) => s.status === statusFilter);
+
+  const countByStatus = (s: StatusFilter) =>
+    s === 'ALL' ? submissions.length : submissions.filter((x) => x.status === s).length;
 
   if (loading) {
     return (
@@ -467,15 +506,37 @@ export default function FormDetailsPage() {
             </div>
           </div>
 
+          {/* Status filter tabs */}
+          {submissions.length > 0 && (
+            <div className="px-6 pt-4 pb-0 flex gap-2 flex-wrap">
+              {(['ALL', 'PENDING', 'APPROVED', 'REJECTED'] as StatusFilter[]).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setStatusFilter(f)}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${
+                    statusFilter === f
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600 hover:border-blue-400'
+                  }`}
+                >
+                  {f === 'ALL' ? 'Tất cả' : STATUS_LABELS[f as SubmissionStatus]}
+                  {' '}({countByStatus(f)})
+                </button>
+              ))}
+            </div>
+          )}
+
           {subLoading ? (
             <div className="p-12 text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
               <p className="text-slate-500 dark:text-slate-400">Đang tải...</p>
             </div>
-          ) : submissions.length === 0 ? (
-            <div className="p-12 text-center text-slate-500 dark:text-slate-400">Chưa có ai gửi form này.</div>
+          ) : filteredSubmissions.length === 0 ? (
+            <div className="p-12 text-center text-slate-500 dark:text-slate-400">
+              {submissions.length === 0 ? 'Chưa có ai gửi form này.' : 'Không có submission nào trong bộ lọc này.'}
+            </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto mt-4">
               <table className="w-full text-sm">
                 <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
                   <tr>
@@ -485,11 +546,13 @@ export default function FormDetailsPage() {
                         {f.label}
                       </th>
                     ))}
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap">Trạng thái</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap">Thời gian</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap">Hành động</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {submissions.map((sub, idx) => (
+                  {filteredSubmissions.map((sub, idx) => (
                     <tr key={sub.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                       <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{idx + 1}</td>
                       {fieldNames.map((f) => (
@@ -497,8 +560,51 @@ export default function FormDetailsPage() {
                           {sub.data[f.name] ?? <span className="text-slate-400 italic">—</span>}
                         </td>
                       ))}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${STATUS_STYLES[sub.status]}`}>
+                          {STATUS_LABELS[sub.status]}
+                        </span>
+                      </td>
                       <td className="px-4 py-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">
                         {new Date(sub.createdAt).toLocaleString('vi-VN')}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        {sub.status === 'PENDING' && (
+                          <div className="flex gap-1.5">
+                            <button
+                              onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
+                              disabled={updatingId === sub.id}
+                              className="px-2.5 py-1 text-xs bg-green-600 hover:bg-green-700 text-white rounded font-medium disabled:opacity-50 transition-colors"
+                            >
+                              ✓ Duyệt
+                            </button>
+                            <button
+                              onClick={() => handleStatusUpdate(sub.id, 'REJECTED')}
+                              disabled={updatingId === sub.id}
+                              className="px-2.5 py-1 text-xs bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded font-medium disabled:opacity-50 transition-colors"
+                            >
+                              ✕ Từ chối
+                            </button>
+                          </div>
+                        )}
+                        {sub.status === 'APPROVED' && (
+                          <button
+                            onClick={() => handleStatusUpdate(sub.id, 'REJECTED')}
+                            disabled={updatingId === sub.id}
+                            className="px-2.5 py-1 text-xs text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded font-medium disabled:opacity-50 transition-colors"
+                          >
+                            Thu hồi
+                          </button>
+                        )}
+                        {sub.status === 'REJECTED' && (
+                          <button
+                            onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
+                            disabled={updatingId === sub.id}
+                            className="px-2.5 py-1 text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded font-medium disabled:opacity-50 transition-colors"
+                          >
+                            Duyệt lại
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}

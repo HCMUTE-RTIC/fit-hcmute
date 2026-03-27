@@ -10,7 +10,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { FieldType } from '@prisma/client';
+import { FieldType, SubmissionStatus } from '@prisma/client';
 
 export class CreateFormFieldDto {
   @IsNotEmpty()
@@ -75,4 +75,9 @@ export class UpdateFormDefinitionDto {
   @ValidateNested({ each: true })
   @Type(() => CreateFormFieldDto)
   fields?: CreateFormFieldDto[];
+}
+
+export class UpdateSubmissionStatusDto {
+  @IsEnum(SubmissionStatus)
+  status!: SubmissionStatus;
 }

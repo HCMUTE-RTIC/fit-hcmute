@@ -74,6 +74,7 @@ export default function LoginPage() {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@hcmute.edu.vn"
@@ -94,6 +95,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   type="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
