@@ -14,7 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey:
-        configService.get<string>('JWT_SECRET') || 'fit_hcmute_secret_2025',
+        configService.get<string>('JWT_SECRET') ||
+        'fit_hcmute_dev_only_secret_change_me',
+      issuer: configService.get<string>('JWT_ISSUER', 'fit-hcmute-api'),
+      audience: configService.get<string>('JWT_AUDIENCE', 'fit-hcmute-admin'),
     });
   }
 
