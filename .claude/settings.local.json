@@ -34,7 +34,13 @@
       "mcp__plugin_playwright_playwright__browser_fill_form",
       "mcp__plugin_playwright_playwright__browser_click",
       "Bash(pnpm exec:*)",
-      "Bash(ls \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/\")"
+      "Bash(ls \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/\")",
+      "Read(//c/Users/ADMIN/.claude/plugins/marketplaces/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"education anniversary celebration countdown splash landing\" --design-system -p \"FIT HCMUTE 25 Years\")",
+      "Read(//c/Users/ADMIN/.claude/plugins/marketplaces/ui-ux-pro-max-skill/**)",
+      "Bash(python src/ui-ux-pro-max/scripts/search.py \"education anniversary celebration countdown splash\" --design-system -p \"FIT HCMUTE 25 Years\")",
+      "Bash(pnpm typecheck:*)",
+      "Bash(python src/ui-ux-pro-max/scripts/search.py \"countdown celebration event landing hero\" --domain landing -n 5)"
     ]
   }
 }
