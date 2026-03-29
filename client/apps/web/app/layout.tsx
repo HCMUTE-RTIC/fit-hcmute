@@ -1,4 +1,3 @@
-import { Inter, Geist_Mono } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
@@ -6,17 +5,6 @@ import "@workspace/ui/globals.css";
 import "../styles/theme.css";
 import { Providers } from "@/components/providers";
 import { JsonLd } from "@/components/seo/json-ld";
-
-const fontSans = Inter({
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--font-sans",
-});
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -156,7 +144,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning className="m-0 p-0">
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased m-0 p-0`}
+        className="font-sans antialiased m-0 p-0"
       >
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />

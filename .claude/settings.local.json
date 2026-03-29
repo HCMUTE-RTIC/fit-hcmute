@@ -34,7 +34,28 @@
       "mcp__plugin_playwright_playwright__browser_fill_form",
       "mcp__plugin_playwright_playwright__browser_click",
       "Bash(pnpm exec:*)",
-      "Bash(ls \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/\")"
+      "Bash(ls \"d:/RTIC/fit-hcmute/client/apps/web/app/\\(public\\)/\")",
+      "Read(//c/Users/ADMIN/.claude/plugins/marketplaces/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"education anniversary celebration countdown splash landing\" --design-system -p \"FIT HCMUTE 25 Years\")",
+      "Read(//c/Users/ADMIN/.claude/plugins/marketplaces/ui-ux-pro-max-skill/**)",
+      "Bash(python src/ui-ux-pro-max/scripts/search.py \"education anniversary celebration countdown splash\" --design-system -p \"FIT HCMUTE 25 Years\")",
+      "Bash(pnpm typecheck:*)",
+      "Bash(python src/ui-ux-pro-max/scripts/search.py \"countdown celebration event landing hero\" --domain landing -n 5)",
+      "WebFetch(domain:reactbits.dev)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm search:*)",
+      "mcp__reactbits__list_components",
+      "mcp__reactbits__get_component",
+      "mcp__reactbits__search_components",
+      "mcp__reactbits__get_component_demo",
+      "mcp__reactbits__get_component_metadata",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *tri-an*)",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *chia-se*)",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *loi-chuc*)",
+      "Bash(find /d/RTIC/fit-hcmute/server -name *seed* -type f)",
+      "Bash(find /d/RTIC/fit-hcmute -path */prisma/* -name *.ts -type f)",
+      "Bash(pnpm build:*)"
     ]
   }
 }
