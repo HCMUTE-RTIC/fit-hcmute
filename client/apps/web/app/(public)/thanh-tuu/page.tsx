@@ -341,13 +341,19 @@ export default function Achievements() {
                 "fujinet-logo.png",
                 "hvn_logo.png",
                 "logo-csc.png",
-                "logo-dek.png",
+                "envada.png",
                 "logo-elca.png",
                 "logo-global-cybersoft.png",
                 "logo-lacviet.png",
                 "logo-lampart.png",
                 "logo-tma.png",
                 "logo_gameloft_black.png",
+                "Hitachi-Shield-Mark-Red-White-Background-200x200-removebg-preview.png",
+                "OSD-Logo1-Black.png",
+                "VNG_Corp._logo.svg.png",
+                "aws.png",
+                "fpt_software_new-02_.1m.jpg",
+                "saritasa_logo_vertical@3x.png",
               ].map((logo, i) => (
                 <motion.div
                   key={i}
