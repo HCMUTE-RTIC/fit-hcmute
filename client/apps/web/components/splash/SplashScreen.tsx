@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// DEV: đặt event 1 phút sau để test, PROD: 2026-04-04
-const EVENT_DATE = new Date(Date.now() + 60 * 1000);
+const EVENT_DATE = new Date("2026-04-04T08:00:00+07:00");
 
 function getTimeLeft() {
   const now = new Date();

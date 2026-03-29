@@ -98,7 +98,7 @@ function Lightbox({
           />
         )}
         <div className="mt-5 text-center max-w-xl">
-          <p className="text-white/90 text-base leading-relaxed mb-3">
+          <p className="text-white/90 text-base leading-relaxed mb-3 break-words">
             &ldquo;{caption}&rdquo;
           </p>
           <p className="text-white/50 text-sm font-medium">{name}</p>
@@ -145,7 +145,7 @@ function MemoryCard({
 
       {/* Content */}
       <div className="px-5 py-4">
-        <p className="text-[13px] leading-relaxed line-clamp-2 mb-4" style={{ color: "#64748b" }}>
+        <p className="text-[13px] leading-relaxed line-clamp-2 mb-4 break-words" style={{ color: "#64748b" }}>
           &ldquo;{caption}&rdquo;
         </p>
 

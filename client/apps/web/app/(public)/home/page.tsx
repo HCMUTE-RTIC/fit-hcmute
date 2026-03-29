@@ -110,50 +110,40 @@ export default function Home() {
                 25 năm Kết nối tri thức, Vững bước tương lai
               </h2>
               <div className="w-full mt-8">
-                {/* Trigger Button with Hover Card */}
-                <div className="relative group/dean">
-                  <button
-                    onClick={() => setShowLetter(true)}
-                    className="w-full bg-gradient-to-r from-[#1e3a8a] to-[#2563EB] p-6 rounded-2xl flex items-center gap-4 shadow-xl border border-blue-400/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-blue-500/40 cursor-pointer relative z-10"
-                  >
-                    <div className="w-14 h-14 rounded-full border-2 border-white/30 overflow-hidden shrink-0">
-                      <div 
-                        className="w-full h-full"
-                        style={{
-                          backgroundImage: "url('/gioi-thieu/truong-khoa.jpg')",
-                          backgroundSize: "300%",
-                          backgroundPosition: "50% 13.5%",
-                        }}
+                {/* Dean Card */}
+                <button
+                  onClick={() => setShowLetter(true)}
+                  className="w-full rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
+                  style={{ border: "1px solid #e2e8f0" }}
+                >
+                  <div className="flex items-stretch bg-white">
+                    {/* Photo */}
+                    <div className="relative w-28 sm:w-36 shrink-0">
+                      <Image
+                        src="/gioi-thieu/truong-khoa.jpg"
+                        alt="TS. Lê Văn Vinh"
+                        fill
+                        className="object-cover object-top"
+                        sizes="144px"
                       />
                     </div>
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-white mb-1">Lời chúc từ Thầy</h3>
-                      <p className="text-white/95 font-semibold text-base leading-tight mb-1">TS. Lê Văn Vinh</p>
-                      <p className="text-blue-100 text-xs sm:text-sm">Trưởng Khoa Công nghệ Thông tin - Trường Đại Học Công Nghệ Kỹ thuật Tp. Hồ Chí Minh</p>
+                    {/* Info */}
+                    <div className="flex-1 p-5 sm:p-6 flex flex-col justify-center">
+                      <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: "#2563eb" }}>
+                        Lời mở đầu
+                      </p>
+                      <h3 className="text-lg sm:text-xl font-bold mb-1" style={{ color: "#1e293b" }}>
+                        TS. Lê Văn Vinh
+                      </h3>
+                      <p className="text-sm leading-snug" style={{ color: "#64748b" }}>
+                        Trưởng Khoa Công nghệ Thông tin
+                      </p>
+                      <p className="text-xs mt-3 font-medium" style={{ color: "#2563eb" }}>
+                        Đọc lời mở đầu &rarr;
+                      </p>
                     </div>
-                  </button>
-
-                  {/* Hover Card - Upper body portrait */}
-                  <div className="absolute -top-[220px] left-4 w-44 opacity-0 invisible group-hover/dean:opacity-100 group-hover/dean:visible transition-all duration-300 ease-out transform translate-y-4 group-hover/dean:translate-y-0 z-20 pointer-events-none">
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-                      <div className="relative w-full aspect-[3/4]">
-                        <Image
-                          src="/gioi-thieu/truong-khoa.jpg"
-                          alt="TS. Lê Văn Vinh"
-                          fill
-                          className="object-cover object-top"
-                          sizes="176px"
-                        />
-                      </div>
-                      <div className="px-3 py-2.5 text-center bg-gradient-to-r from-[#1e3a8a] to-[#2563EB]">
-                        <p className="text-white font-bold text-sm leading-tight">TS. Lê Văn Vinh</p>
-                    
-                      </div>
-                    </div>
-                    {/* Arrow pointing down */}
-                    <div className="absolute -bottom-2 left-8 w-4 h-4 bg-[#2563EB] rotate-45 rounded-sm"></div>
                   </div>
-                </div>
+                </button>
 
                 {/* Modal Overlay */}
                 {showLetter && (

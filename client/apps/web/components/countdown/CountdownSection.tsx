@@ -8,8 +8,7 @@ import { PartyPopper } from "lucide-react";
 import Counter from "@/components/reactbits/Counter";
 import "@/components/reactbits/Counter.css";
 
-// DEV: đặt event 1 phút sau để test, PROD: 2026-04-04
-const EVENT_DATE = new Date(Date.now() + 60 * 1000);
+const EVENT_DATE = new Date("2026-04-04T08:00:00+07:00");
 
 function getTimeLeft() {
   const diff = EVENT_DATE.getTime() - Date.now();

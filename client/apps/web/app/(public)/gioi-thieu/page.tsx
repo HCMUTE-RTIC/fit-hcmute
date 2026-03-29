@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,37 +9,17 @@ import {
   Globe,
   Lightbulb,
   Award,
+  GraduationCap,
+  Target,
+  Heart,
 } from "lucide-react";
-
-// ─── Highlights ────────────────────────────────────────────────────────────────
-const highlights = [
-  {
-    Icon: BookOpen,
-    title: "Chương trình đào tạo",
-    desc: "Cập nhật liên tục theo xu hướng công nghệ mới.",
-  },
-  {
-    Icon: Users,
-    title: "Đội ngũ giảng viên",
-    desc: "Giàu kinh nghiệm, nhiều tiến sĩ, thạc sĩ được đào tạo tại nước ngoài.",
-  },
-  {
-    Icon: Globe,
-    title: "Hợp tác quốc tế",
-    desc: "Liên kết với các trường đại học và doanh nghiệp hàng đầu Việt Nam và khu vực.",
-  },
-  {
-    Icon: Lightbulb,
-    title: "Nghiên cứu & Đổi mới",
-    desc: "Nhiều đề tài nghiên cứu ứng dụng, sáng kiến công nghệ được công nhận.",
-  },
-];
 
 // ─── Training Programs ─────────────────────────────────────────────────────────
 const programs = [
   {
     level: "Đại học",
-    description: "Chương trình đào tạo đại học với các ngành công nghệ thông tin hiện đại.",
+    description:
+      "Chương trình đào tạo đại học với các ngành công nghệ thông tin hiện đại.",
     items: [
       {
         name: "Ngành Công nghệ Thông tin",
@@ -61,7 +41,8 @@ const programs = [
   },
   {
     level: "Sau đại học",
-    description: "Chương trình đào tạo sau đại học với định hướng nghiên cứu chuyên sâu.",
+    description:
+      "Chương trình đào tạo sau đại học với định hướng nghiên cứu chuyên sâu.",
     items: [
       {
         name: "Thạc sĩ Khoa học Máy tính",
@@ -75,136 +56,305 @@ const programs = [
   },
 ];
 
+// ─── Stats ──────────────────────────────────────────────────────────────────────
+const stats = [
+  { value: "25", label: "Năm thành lập", suffix: "+" },
+  { value: "5000", label: "Sinh viên & Cựu SV", suffix: "+" },
+  { value: "60", label: "Giảng viên", suffix: "+" },
+  { value: "3", label: "Chương trình ĐH", suffix: "" },
+];
+
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function GioiThieu() {
   return (
-    <div className="min-h-[calc(100vh-96px)]">
-      {/* ─── Section 1: Hero ─────────────────────────────────────────────── */}
-      <section
-        className="relative min-h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden"
-        style={{
-          paddingTop: "var(--spacing-section)",
-          paddingBottom: "var(--spacing-section)",
-        }}
-      >
-        {/* Background Image */}
+    <div>
+      {/* ═══════════════════════════════════════════════════════════════════════
+          HERO — Full-width photo + overlay text
+      ═══════════════════════════════════════════════════════════════════════ */}
+      <section className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src="/thu-vien/CuuSV24-1.jpg"
-            alt="Giới thiệu Khoa CNTT"
+            alt="Khoa Công nghệ Thông tin HCMUTE"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.15) 100%)",
+            }}
+          />
         </div>
 
-        <div className="max-w-[1280px] mx-auto px-6 w-full relative z-10">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 w-full pb-16">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center"
           >
+            <p
+              className="text-sm font-semibold tracking-[0.25em] uppercase mb-4"
+              style={{ color: "rgba(147,197,253,0.9)" }}
+            >
+              Trường Đại học Công Nghệ Kỹ thuật TP.HCM
+            </p>
             <h1
-              className="font-extrabold mb-6"
+              className="font-extrabold leading-tight mb-4"
               style={{
-                fontSize: "clamp(32px, 5vw, 48px)",
-                lineHeight: "72px",
-                color: "#ffffff",
+                fontSize: "clamp(32px, 5vw, 56px)",
+                color: "white",
               }}
             >
-              KHOA CÔNG NGHỆ THÔNG TIN
+              Khoa Công nghệ Thông tin
             </h1>
             <p
-              className="max-w-3xl mx-auto leading-relaxed"
-              style={{
-                fontSize: "18px",
-                lineHeight: "29.25px",
-                color: "#e2e8f0",
-              }}
+              className="max-w-2xl leading-relaxed"
+              style={{ fontSize: 18, color: "rgba(255,255,255,0.8)" }}
             >
-              Được thành lập năm 2001, Khoa Công nghệ Thông tin - Trường Đại Học Công Nghệ Kỹ
-              thuật Tp. Hồ Chí Minh là một trong những đơn vị đào tạo công nghệ thông tin hàng đầu tại Việt
-              Nam, với sứ mệnh đào tạo nguồn nhân lực chất lượng cao và phát triển nghiên cứu khoa
-              học ứng dụng.
+              Thành lập năm 2001 — 25 năm đào tạo nguồn nhân lực CNTT chất
+              lượng cao, phát triển nghiên cứu khoa học ứng dụng và hội nhập
+              quốc tế.
             </p>
           </motion.div>
         </div>
       </section>
 
+      {/* ═══════════════════════════════════════════════════════════════════════
+          STATS BAR
+      ═══════════════════════════════════════════════════════════════════════ */}
+      <section style={{ backgroundColor: "#1e3a8a" }}>
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            {stats.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="text-center py-10"
+                style={{
+                  borderRight:
+                    i < stats.length - 1
+                      ? "1px solid rgba(255,255,255,0.1)"
+                      : "none",
+                }}
+              >
+                <p
+                  className="font-extrabold mb-1"
+                  style={{ fontSize: "clamp(28px, 4vw, 40px)", color: "white" }}
+                >
+                  {s.value}
+                  {s.suffix && (
+                    <span style={{ color: "rgba(147,197,253,0.8)" }}>
+                      {s.suffix}
+                    </span>
+                  )}
+                </p>
+                <p
+                  className="text-sm font-medium"
+                  style={{ color: "rgba(255,255,255,0.6)" }}
+                >
+                  {s.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ─── Section 3: Lý Tưởng ────────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════════
+          SỨ MỆNH & TẦM NHÌN — 2 col with image
+      ═══════════════════════════════════════════════════════════════════════ */}
       <section
-        className="bg-white relative overflow-hidden"
+        className="bg-white"
         style={{
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        {/* Blueprint Grid Background - Subtle for the background */}
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(30, 58, 138, 0.1) 0.13966%, rgba(0,0,0,0) 0.13966%),
-              linear-gradient(90deg, rgba(30, 58, 138, 0.1) 0%, rgba(0,0,0,0) 0%)
-            `,
-          }}
-        />
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden"
+              style={{
+                boxShadow: "0 20px 50px -12px rgba(0,0,0,0.15)",
+              }}
+            >
+              <Image
+                src="/gioi-thieu/CNTT_1.jpg"
+                alt="Khoa Công nghệ Thông tin"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </motion.div>
 
-        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-          {/* Heading */}
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+            >
+              <p
+                className="text-sm font-semibold tracking-[0.2em] uppercase mb-3"
+                style={{ color: "#2563eb" }}
+              >
+                Về chúng tôi
+              </p>
+              <h2
+                className="font-bold leading-tight mb-6"
+                style={{
+                  fontSize: "clamp(28px, 3.5vw, 40px)",
+                  color: "#1e293b",
+                }}
+              >
+                Sứ mệnh & Tầm nhìn
+              </h2>
+
+              <div className="space-y-6">
+                <div
+                  className="rounded-2xl p-6"
+                  style={{
+                    backgroundColor: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: "#dbeafe" }}
+                    >
+                      <Target size={20} style={{ color: "#2563eb" }} />
+                    </div>
+                    <h3
+                      className="font-bold"
+                      style={{ fontSize: 18, color: "#1e293b" }}
+                    >
+                      Sứ mệnh
+                    </h3>
+                  </div>
+                  <p
+                    className="leading-relaxed"
+                    style={{ fontSize: 15, color: "#475569", lineHeight: 1.7 }}
+                  >
+                    Đào tạo nguồn nhân lực công nghệ thông tin chất lượng cao,
+                    có năng lực chuyên môn vững vàng, tư duy sáng tạo và khả
+                    năng thích ứng với sự phát triển không ngừng của công nghệ.
+                  </p>
+                </div>
+
+                <div
+                  className="rounded-2xl p-6"
+                  style={{
+                    backgroundColor: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: "#dbeafe" }}
+                    >
+                      <Globe size={20} style={{ color: "#2563eb" }} />
+                    </div>
+                    <h3
+                      className="font-bold"
+                      style={{ fontSize: 18, color: "#1e293b" }}
+                    >
+                      Tầm nhìn
+                    </h3>
+                  </div>
+                  <p
+                    className="leading-relaxed"
+                    style={{ fontSize: 15, color: "#475569", lineHeight: 1.7 }}
+                  >
+                    Trở thành đơn vị đào tạo và nghiên cứu CNTT hàng đầu khu
+                    vực, hội nhập quốc tế, đóng góp tích cực vào sự phát triển
+                    công nghệ và chuyển đổi số quốc gia.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          GIÁ TRỊ CỐT LÕI — 3 cards
+      ═══════════════════════════════════════════════════════════════════════ */}
+      <section
+        style={{
+          backgroundColor: "#f8fafc",
+          paddingTop: "var(--spacing-section)",
+          paddingBottom: "var(--spacing-section)",
+        }}
+      >
+        <div className="max-w-[1280px] mx-auto px-6">
           <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
           >
+            <p
+              className="text-sm font-semibold tracking-[0.2em] uppercase mb-3"
+              style={{ color: "#2563eb" }}
+            >
+              Triết lý giáo dục
+            </p>
             <h2
               className="font-bold leading-tight mb-4"
               style={{
-                fontSize: "clamp(32px, 5vw, 48px)",
-                color: "#1e3a8a",
+                fontSize: "clamp(28px, 3.5vw, 40px)",
+                color: "#1e293b",
               }}
             >
-              LÝ TƯỞNG
+              Giá trị cốt lõi
             </h2>
-            <p
-              className="max-w-2xl mx-auto"
-              style={{ fontSize: "18px", color: "#64748b" }}
-            >
-              Ba giá trị cốt lõi định hình nên thế hệ kỹ sư FIT-HCMUTE.
+            <p className="max-w-xl mx-auto" style={{ fontSize: 16, color: "#64748b" }}>
+              Ba giá trị nền tảng định hình nên thế hệ kỹ sư FIT-HCMUTE
             </p>
           </motion.div>
 
-          {/* Three Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
-                icon: Award,
+                icon: Heart,
                 title: "Nhân bản",
                 subtitle: "Lấy con người làm trung tâm",
                 description:
-                  "Nhân bản được hiểu là đặt con người và giá trị con người lên hàng đầu trong giáo dục. Không chỉ đào tạo tri thức, HCMUTE hướng đến hình thành nhân cách toàn diện: đạo đức, trách nhiệm xã hội và ý thức công dân. Sinh viên không chỉ là người học mà còn là người có trách nhiệm với bản thân và cộng đồng. Giáo dục vì thế là sự kết hợp giữa dạy chữ và dạy người, giữa phát triển trí tuệ và nuôi dưỡng lòng nhân ái, tinh thần sẻ chia.",
-                iconColor: "#DC2626",
+                  "Đặt con người và giá trị con người lên hàng đầu. Không chỉ đào tạo tri thức mà còn hình thành nhân cách toàn diện: đạo đức, trách nhiệm xã hội và ý thức công dân.",
+                accent: "#dc2626",
+                bg: "#fef2f2",
               },
               {
                 icon: Lightbulb,
                 title: "Sáng tạo",
-                subtitle: "Động lực của học tập và nghiên cứu",
+                subtitle: "Động lực của đổi mới",
                 description:
-                  "Sáng tạo được hiểu là khả năng đổi mới, tìm tòi và tạo ra giá trị mới. Đây là yếu tố cốt lõi giúp sinh viên thích ứng với môi trường cạnh tranh và phát triển. HCMUTE thúc đẩy sáng tạo thông qua học đi đôi với hành, học theo dự án, nghiên cứu khoa học và khởi nghiệp. Sinh viên được khuyến khích biến ý tưởng thành sản phẩm thực tế, từ đó hình thành tư duy đổi mới, tinh thần dám nghĩ dám làm và khả năng giải quyết vấn đề.",
-                iconColor: "#2563EB",
+                  "Thúc đẩy tư duy đổi mới thông qua học đi đôi với hành, nghiên cứu khoa học và khởi nghiệp. Sinh viên được khuyến khích biến ý tưởng thành sản phẩm thực tế.",
+                accent: "#2563eb",
+                bg: "#eff6ff",
               },
               {
                 icon: Globe,
                 title: "Hội nhập",
-                subtitle: "Mở rộng ra thế giới",
+                subtitle: "Vươn tầm quốc tế",
                 description:
-                  "Hội nhập được hiểu là khả năng thích ứng và tham gia vào môi trường toàn cầu. Nhà trường định hướng đào tạo theo chuẩn quốc tế, tăng cường hợp tác với các tổ chức, doanh nghiệp và trường đại học nước ngoài. Sinh viên được trang bị ngoại ngữ, kỹ năng mềm và trải nghiệm đa văn hóa để làm việc trong môi trường quốc tế. Hội nhập không chỉ là cơ hội học tập mà còn là khả năng đưa tri thức và sáng tạo Việt Nam ra thế giới.",
-                iconColor: "#1E3A8A",
+                  "Đào tạo theo chuẩn quốc tế, tăng cường hợp tác với các trường đại học và doanh nghiệp toàn cầu. Trang bị ngoại ngữ, kỹ năng mềm và trải nghiệm đa văn hóa.",
+                accent: "#1e3a8a",
+                bg: "#eef2ff",
               },
             ].map((card, index) => (
               <motion.div
@@ -212,63 +362,43 @@ export default function GioiThieu() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="flex flex-col h-full"
+                transition={{ duration: 0.6, delay: index * 0.12 }}
+                className="bg-white rounded-2xl p-8 flex flex-col"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.9)",
-                  borderRadius: "24px",
                   border: "1px solid #e2e8f0",
-                  padding: "40px",
-                  boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)",
+                  boxShadow: "0 4px 20px -4px rgba(0,0,0,0.04)",
                 }}
               >
                 {/* Icon */}
                 <div
-                  className="flex items-center justify-center mb-8 rounded-2xl"
-                  style={{ 
-                    width: "72px", 
-                    height: "72px",
-                    backgroundColor: `${card.iconColor}10` 
-                  }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
+                  style={{ backgroundColor: card.bg }}
                 >
                   <card.icon
-                    size={36}
-                    style={{ color: card.iconColor }}
-                    strokeWidth={2.5}
+                    size={28}
+                    style={{ color: card.accent }}
+                    strokeWidth={2}
                   />
                 </div>
 
-                {/* Title Group */}
-                <div className="mb-6">
-                  <h3
-                    className="font-bold mb-1"
-                    style={{
-                      fontSize: "26px",
-                      color: "#1e3a8a",
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                  <p 
-                    className="font-semibold italic"
-                    style={{ 
-                      fontSize: "15px", 
-                      color: card.iconColor,
-                      opacity: 0.9
-                    }}
-                  >
-                    — {card.subtitle}
-                  </p>
-                </div>
+                {/* Title */}
+                <h3
+                  className="font-bold mb-1"
+                  style={{ fontSize: 22, color: "#1e293b" }}
+                >
+                  {card.title}
+                </h3>
+                <p
+                  className="text-sm font-medium mb-4"
+                  style={{ color: card.accent }}
+                >
+                  {card.subtitle}
+                </p>
 
                 {/* Description */}
                 <p
-                  className="leading-relaxed text-justify"
-                  style={{
-                    fontSize: "15.5px",
-                    lineHeight: "1.7",
-                    color: "#475569",
-                  }}
+                  className="leading-relaxed flex-1"
+                  style={{ fontSize: 15, lineHeight: 1.7, color: "#64748b" }}
                 >
                   {card.description}
                 </p>
@@ -278,76 +408,105 @@ export default function GioiThieu() {
         </div>
       </section>
 
-      {/* ─── Section 4: Điểm Nổi Bật ────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════════
+          ĐIỂM NỔI BẬT — Horizontal cards
+      ═══════════════════════════════════════════════════════════════════════ */}
       <section
+        className="bg-white"
         style={{
-          backgroundColor: "#f0f9ff",
           paddingTop: "var(--spacing-section)",
           paddingBottom: "var(--spacing-section)",
         }}
       >
         <div className="max-w-[1280px] mx-auto px-6">
-          {/* Header */}
           <motion.div
+            className="text-center mb-14"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-center mb-16"
           >
-            <h2
-              className="font-bold mb-4"
-              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: "72px", color: "#1e3a8a" }}
+            <p
+              className="text-sm font-semibold tracking-[0.2em] uppercase mb-3"
+              style={{ color: "#2563eb" }}
             >
-              ĐIỂM NỔI BẬT
-            </h2>
-            <p style={{ fontSize: 20, color: "#64748b" }}>
-              Những yếu tố tạo nên sức mạnh của Khoa CNTT.
+              Tại sao chọn FIT
             </p>
+            <h2
+              className="font-bold leading-tight mb-4"
+              style={{
+                fontSize: "clamp(28px, 3.5vw, 40px)",
+                color: "#1e293b",
+              }}
+            >
+              Điểm nổi bật
+            </h2>
           </motion.div>
 
-          {/* 4 Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {highlights.map((h, idx) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              {
+                icon: BookOpen,
+                title: "Chương trình đào tạo",
+                desc: "Cập nhật liên tục theo xu hướng công nghệ mới nhất, đạt chuẩn AUN-QA.",
+              },
+              {
+                icon: Users,
+                title: "Đội ngũ giảng viên",
+                desc: "Giàu kinh nghiệm, nhiều tiến sĩ được đào tạo tại các trường đại học hàng đầu thế giới.",
+              },
+              {
+                icon: Globe,
+                title: "Hợp tác quốc tế",
+                desc: "Liên kết với các trường đại học và doanh nghiệp công nghệ hàng đầu trong và ngoài nước.",
+              },
+              {
+                icon: Award,
+                title: "Nghiên cứu & Đổi mới",
+                desc: "Nhiều đề tài nghiên cứu ứng dụng, sáng kiến công nghệ được công nhận trong và ngoài nước.",
+              },
+            ].map((h, i) => (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 24 }}
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-shadow flex flex-col items-center"
-                style={{ boxShadow: "0px 4px 20px 0px rgba(0,0,0,0.05)" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex gap-5 p-6 rounded-2xl"
+                style={{
+                  backgroundColor: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                }}
               >
-                {/* Icon circle */}
                 <div
-                  className="flex items-center justify-center rounded-full mb-6"
-                  style={{
-                    width: 64,
-                    height: 64,
-                    backgroundColor: "#f0f9ff",
-                  }}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: "#dbeafe" }}
                 >
-                  <h.Icon size={32} style={{ color: "#2563eb" }} />
+                  <h.icon size={24} style={{ color: "#2563eb" }} />
                 </div>
-                <h3
-                  className="font-bold mb-3"
-                  style={{ fontSize: 18, color: "#1e3a8a" }}
-                >
-                  {h.title}
-                </h3>
-                <p
-                  className="leading-relaxed"
-                  style={{ fontSize: 16, color: "#64748b" }}
-                >
-                  {h.desc}
-                </p>
+                <div>
+                  <h3
+                    className="font-bold mb-1"
+                    style={{ fontSize: 16, color: "#1e293b" }}
+                  >
+                    {h.title}
+                  </h3>
+                  <p
+                    className="leading-relaxed"
+                    style={{ fontSize: 14, color: "#64748b", lineHeight: 1.6 }}
+                  >
+                    {h.desc}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Section 5: Chương Trình Đào Tạo ───────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════════
+          CHƯƠNG TRÌNH ĐÀO TẠO — Dark section with bg image
+      ═══════════════════════════════════════════════════════════════════════ */}
       <section
         className="relative overflow-hidden"
         style={{
@@ -355,7 +514,6 @@ export default function GioiThieu() {
           paddingBottom: "var(--spacing-section)",
         }}
       >
-        {/* Background Image - Full Width */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/thu-vien/2.jpg"
@@ -363,111 +521,198 @@ export default function GioiThieu() {
             fill
             className="object-cover"
           />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(15,23,42,0.92) 0%, rgba(30,58,138,0.88) 100%)",
+            }}
+          />
         </div>
 
-        {/* Gradient Overlay */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.75) 100%)",
-          }}
-        />
-
         <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-center mb-16"
+            className="text-center mb-14"
           >
-            <h2
-              className="font-bold mb-4 text-white"
-              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: "72px" }}
+            <p
+              className="text-sm font-semibold tracking-[0.2em] uppercase mb-3"
+              style={{ color: "rgba(147,197,253,0.8)" }}
             >
-              CHƯƠNG TRÌNH ĐÀO TẠO
+              Đào tạo
+            </p>
+            <h2
+              className="font-bold mb-4"
+              style={{
+                fontSize: "clamp(28px, 3.5vw, 40px)",
+                color: "white",
+              }}
+            >
+              Chương trình đào tạo
             </h2>
-            <p className="text-white/80" style={{ fontSize: 20 }}>
-              Khám phá các chương trình đào tạo kỹ sư chất lượng cao của FIT-HCMUTE.
+            <p
+              className="max-w-xl mx-auto"
+              style={{ fontSize: 16, color: "rgba(255,255,255,0.65)" }}
+            >
+              Khám phá các chương trình đào tạo kỹ sư chất lượng cao.
             </p>
           </motion.div>
 
-          {/* 2 Program Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {programs.map((prog, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 32 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: idx * 0.15 }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                className="rounded-2xl p-8"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
               >
-                <div
-                  className="rounded-3xl p-8 h-full"
+                {/* Badge */}
+                <div className="flex items-center gap-2 mb-5">
+                  <GraduationCap
+                    size={20}
+                    style={{ color: "rgba(147,197,253,0.9)" }}
+                  />
+                  <span
+                    className="text-xs font-semibold tracking-widest uppercase"
+                    style={{ color: "rgba(147,197,253,0.9)" }}
+                  >
+                    Chương trình
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="font-bold text-white mb-2"
+                  style={{ fontSize: 28 }}
+                >
+                  {prog.level}
+                </h3>
+                <p
+                  className="mb-6"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                    boxShadow: "0px 4px 24px 0px rgba(0,0,0,0.3)",
+                    fontSize: 15,
+                    color: "rgba(255,255,255,0.6)",
+                    lineHeight: 1.6,
                   }}
                 >
-                  {/* Level Badge */}
-                  <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
-                    style={{
-                      backgroundColor: "rgba(37, 99, 235, 0.9)",
-                      backdropFilter: "blur(10px)",
-                    }}
-                  >
-                    <BookOpen size={20} color="white" />
-                    <span className="font-bold text-white" style={{ fontSize: 14 }}>
-                      CHƯƠNG TRÌNH
-                    </span>
-                  </div>
+                  {prog.description}
+                </p>
 
-                  {/* Title */}
-                  <h3
-                    className="font-bold text-white mb-3"
-                    style={{ fontSize: 36, lineHeight: "1.2" }}
-                  >
-                    {prog.level}
-                  </h3>
-
-                  {/* Description */}
-                  <p
-                    className="text-white/90 mb-6"
-                    style={{ fontSize: 16, lineHeight: "1.6" }}
-                  >
-                    {prog.description}
-                  </p>
-
-                  {/* Items List - Clickable */}
-                  <ul className="space-y-3">
-                    {prog.items.map((item, i) => (
-                      <li key={i}>
-                        <Link
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 text-white/90 hover:text-white group transition-all duration-300 hover:translate-x-2"
+                {/* Links */}
+                <ul className="space-y-3">
+                  {prog.items.map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 group transition-all duration-200"
+                        style={{ color: "rgba(255,255,255,0.8)" }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.color = "white")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.color =
+                            "rgba(255,255,255,0.8)")
+                        }
+                      >
+                        <ArrowRight
+                          size={14}
+                          className="shrink-0"
+                          style={{ color: "rgba(147,197,253,0.7)" }}
+                        />
+                        <span
+                          className="font-medium"
+                          style={{ fontSize: 15 }}
                         >
-                          <ArrowRight size={16} className="flex-shrink-0 text-blue-400 group-hover:text-blue-300" />
-                          <span
-                            className="transition-all"
-                            style={{ fontSize: 15, fontWeight: 500 }}
-                          >
-                            {item.name}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                          {item.name}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          CTA — Liên hệ
+      ═══════════════════════════════════════════════════════════════════════ */}
+      <section
+        className="bg-white"
+        style={{
+          paddingTop: "var(--spacing-section)",
+          paddingBottom: "var(--spacing-section)",
+        }}
+      >
+        <div className="max-w-[1280px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center rounded-3xl py-16 px-8"
+            style={{
+              backgroundColor: "#f0f9ff",
+              border: "1px solid #dbeafe",
+            }}
+          >
+            <h2
+              className="font-bold mb-4"
+              style={{
+                fontSize: "clamp(24px, 3vw, 36px)",
+                color: "#1e293b",
+              }}
+            >
+              Tìm hiểu thêm về Khoa CNTT
+            </h2>
+            <p
+              className="max-w-xl mx-auto mb-8"
+              style={{ fontSize: 16, color: "#64748b" }}
+            >
+              Khám phá hành trình 25 năm phát triển, những thành tựu nổi bật và
+              các hoạt động đào tạo của Khoa.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/hanh-trinh-25-nam"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
+                style={{
+                  backgroundColor: "#2563eb",
+                  fontSize: 15,
+                  boxShadow: "0 4px 14px -3px rgba(37,99,235,0.4)",
+                }}
+              >
+                Hành trình 25 năm
+                <ArrowRight size={16} />
+              </Link>
+              <Link
+                href="/thanh-tuu"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5"
+                style={{
+                  backgroundColor: "white",
+                  color: "#1e293b",
+                  fontSize: 15,
+                  border: "1px solid #e2e8f0",
+                  boxShadow: "0 2px 8px -2px rgba(0,0,0,0.06)",
+                }}
+              >
+                Thành tựu
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>
