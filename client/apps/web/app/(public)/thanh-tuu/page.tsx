@@ -354,7 +354,7 @@ export default function Achievements() {
                 "aws.png",
                 "fpt_software_new-02_.1m.jpg",
                 "saritasa_logo_vertical@3x.png",
-              ].map((logo, index) => (
+              ].map((logo, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0 }}
