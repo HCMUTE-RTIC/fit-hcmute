@@ -1,28 +1,31 @@
 import { ImageResponse } from 'next/og';
+import fs from 'fs';
+import path from 'path';
 
-export const size = { width: 32, height: 32 };
+export const size = { width: 64, height: 64 };
 export const contentType = 'image/png';
 
-export default function Icon() {
+export default async function Icon() {
+  const logoData = fs.readFileSync(path.join(process.cwd(), 'public/logo-50-nam-4x.png'));
+  const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`;
+
   return new ImageResponse(
     (
       <div
         style={{
-          width: 32,
-          height: 32,
-          background: 'linear-gradient(135deg, #0066cc 0%, #003d7a 100%)',
-          borderRadius: 6,
+          width: 64,
+          height: 64,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
-          fontSize: 13,
-          fontWeight: 700,
-          fontFamily: 'system-ui, sans-serif',
-          letterSpacing: '-0.5px',
+          background: 'transparent',
         }}
       >
-        25
+        <img
+          src={logoBase64}
+          alt="FIT HCMUTE"
+          style={{ width: 64, height: 64, objectFit: 'contain' }}
+        />
       </div>
     ),
     { ...size }
