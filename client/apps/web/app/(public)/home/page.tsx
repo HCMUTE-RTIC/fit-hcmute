@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronUp, Lightbulb, Globe, Award, Mail } from "lucide-react";
 import { WishesWall } from "@/components/wishes/wishes-wall";
+import CountdownSection from "@/components/countdown/CountdownSection";
 import { useState, useEffect } from "react";
 
 const imgImageHcmuteCampus = "/trang-chu-home/banner_trangchu.jpg";
@@ -53,22 +54,10 @@ export default function Home() {
           unoptimized
         />
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-8 h-12 rounded-full border-2 border-gray-400/50 flex items-start justify-center p-2"
-          >
-            <div className="w-1.5 h-3 bg-gray-500/70 rounded-full" />
-          </motion.div>
-        </motion.div>
       </section>
+
+      {/* ─── Countdown Section ──────────────────────────────────────── */}
+      <CountdownSection />
 
       {/* ─── Kỷ Yếu & Lời Tri Ân Section ─────────────────────────────── */}
       <section
