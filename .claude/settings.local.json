@@ -40,7 +40,21 @@
       "Read(//c/Users/ADMIN/.claude/plugins/marketplaces/ui-ux-pro-max-skill/**)",
       "Bash(python src/ui-ux-pro-max/scripts/search.py \"education anniversary celebration countdown splash\" --design-system -p \"FIT HCMUTE 25 Years\")",
       "Bash(pnpm typecheck:*)",
-      "Bash(python src/ui-ux-pro-max/scripts/search.py \"countdown celebration event landing hero\" --domain landing -n 5)"
+      "Bash(python src/ui-ux-pro-max/scripts/search.py \"countdown celebration event landing hero\" --domain landing -n 5)",
+      "WebFetch(domain:reactbits.dev)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm search:*)",
+      "mcp__reactbits__list_components",
+      "mcp__reactbits__get_component",
+      "mcp__reactbits__search_components",
+      "mcp__reactbits__get_component_demo",
+      "mcp__reactbits__get_component_metadata",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *tri-an*)",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *chia-se*)",
+      "Bash(find /d/RTIC/fit-hcmute -type f -name *loi-chuc*)",
+      "Bash(find /d/RTIC/fit-hcmute/server -name *seed* -type f)",
+      "Bash(find /d/RTIC/fit-hcmute -path */prisma/* -name *.ts -type f)"
     ]
   }
 }

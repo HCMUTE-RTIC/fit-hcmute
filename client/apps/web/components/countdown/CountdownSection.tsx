@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { PartyPopper } from "lucide-react";
+import Counter from "@/components/reactbits/Counter";
+import "@/components/reactbits/Counter.css";
 
 // DEV: đặt event 1 phút sau để test, PROD: 2026-04-04
 const EVENT_DATE = new Date(Date.now() + 60 * 1000);
@@ -20,25 +22,33 @@ function getTimeLeft() {
   };
 }
 
-function TimeBlock({ value, label }: { value: number; label: string }) {
-  const display = String(value).padStart(2, "0");
+const COUNTER_STYLE: React.CSSProperties = {
+  borderRadius: 12,
+  backgroundColor: "rgba(255,255,255,0.06)",
+  border: "1px solid rgba(255,255,255,0.1)",
+};
+
+function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div
-        className="relative w-16 h-18 sm:w-20 sm:h-22 md:w-24 md:h-26 flex items-center justify-center rounded-xl"
-        style={{
-          backgroundColor: "rgba(255,255,255,0.08)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          backdropFilter: "blur(8px)",
-        }}
-      >
-        <span className="text-3xl sm:text-4xl md:text-5xl font-bold tabular-nums text-white">
-          {display}
-        </span>
-      </div>
+      <Counter
+        value={value}
+        fontSize={48}
+        padding={16}
+        places={[10, 1]}
+        gap={4}
+        borderRadius={12}
+        horizontalPadding={12}
+        textColor="white"
+        fontWeight="bold"
+        containerStyle={COUNTER_STYLE}
+        gradientHeight={12}
+        gradientFrom="#0c1a3a"
+        gradientTo="transparent"
+      />
       <span
-        className="text-[10px] sm:text-xs uppercase tracking-[0.15em] mt-2 font-medium"
-        style={{ color: "rgba(147,197,253,0.7)" }}
+        className="text-[10px] sm:text-xs uppercase tracking-[0.2em] mt-3 font-semibold"
+        style={{ color: "rgba(147,197,253,0.6)" }}
       >
         {label}
       </span>
@@ -48,7 +58,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 
 function Separator() {
   return (
-    <div className="flex flex-col items-center gap-1.5 pt-2">
+    <div className="flex flex-col items-center gap-2 mt-4">
       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
     </div>
@@ -134,15 +144,15 @@ export default function CountdownSection() {
               25 Năm Khoa Công Nghệ Thông Tin
             </h2>
 
-            {/* Countdown blocks */}
+            {/* Countdown with ReactBits Counter */}
             <div className="flex items-start justify-center gap-3 sm:gap-4 md:gap-5">
-              <TimeBlock value={timeLeft.days} label="Ngày" />
+              <TimeUnit value={timeLeft.days} label="Ngày" />
               <Separator />
-              <TimeBlock value={timeLeft.hours} label="Giờ" />
+              <TimeUnit value={timeLeft.hours} label="Giờ" />
               <Separator />
-              <TimeBlock value={timeLeft.minutes} label="Phút" />
+              <TimeUnit value={timeLeft.minutes} label="Phút" />
               <Separator />
-              <TimeBlock value={timeLeft.seconds} label="Giây" />
+              <TimeUnit value={timeLeft.seconds} label="Giây" />
             </div>
 
             {/* Event date text */}
