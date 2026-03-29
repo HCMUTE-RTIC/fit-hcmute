@@ -77,6 +77,7 @@ function PhotoCard({
         src={src}
         alt={alt}
         fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       {/* Hover overlay */}
@@ -126,6 +127,7 @@ function VideoCard({
         src={thumbnail}
         alt={title}
         fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       {/* Dark overlay */}
@@ -201,6 +203,7 @@ export default function Gallery() {
             src="/thu-vien/cong-nghe-thong-tin-aun-qa_549.jpg"
             alt="Thư viện hình ảnh Khoa CNTT"
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />

@@ -1,10 +1,10 @@
 # Giai đoạn chạy production (Runner)
-FROM node:23-alpine
+FROM node:22-slim
 
 WORKDIR /app
 
-# Cài đặt openssl (Yêu cầu bắt buộc của Prisma trên Alpine Linux)
-RUN apk add --no-cache openssl ca-certificates
+# Cài đặt openssl (Yêu cầu bắt buộc của Prisma)
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Cài đặt pnpm
 RUN npm install -g pnpm@10
