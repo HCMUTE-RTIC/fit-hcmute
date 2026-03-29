@@ -341,7 +341,7 @@ export default function Achievements() {
                 "fujinet-logo.png",
                 "hvn_logo.png",
                 "logo-csc.png",
-                "envada.png",
+                "logo-dek.png",
                 "logo-elca.png",
                 "logo-global-cybersoft.png",
                 "logo-lacviet.png",
