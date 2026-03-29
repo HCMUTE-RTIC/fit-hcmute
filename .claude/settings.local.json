@@ -54,7 +54,8 @@
       "Bash(find /d/RTIC/fit-hcmute -type f -name *chia-se*)",
       "Bash(find /d/RTIC/fit-hcmute -type f -name *loi-chuc*)",
       "Bash(find /d/RTIC/fit-hcmute/server -name *seed* -type f)",
-      "Bash(find /d/RTIC/fit-hcmute -path */prisma/* -name *.ts -type f)"
+      "Bash(find /d/RTIC/fit-hcmute -path */prisma/* -name *.ts -type f)",
+      "Bash(pnpm build:*)"
     ]
   }
 }

@@ -1,7 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Target } from "framer-motion";
 import { useEffect, useRef, useState, useMemo } from "react";
+
+type AnimationValue = string | number;
+type AnimationSnapshot = Record<string, AnimationValue>;
 
 interface BlurTextProps {
   text?: string;
@@ -11,25 +14,43 @@ interface BlurTextProps {
   direction?: "top" | "bottom";
   threshold?: number;
   rootMargin?: string;
-  animationFrom?: Record<string, string | number>;
-  animationTo?: Record<string, string | number>[];
+  animationFrom?: AnimationSnapshot;
+  animationTo?: AnimationSnapshot[];
   onAnimationComplete?: () => void;
   stepDuration?: number;
 }
 
 const buildKeyframes = (
-  from: Record<string, string | number>,
-  steps: Record<string, string | number>[]
-) => {
+  from: AnimationSnapshot,
+  steps: AnimationSnapshot[]
+): Target => {
   const keys = new Set([
     ...Object.keys(from),
     ...steps.flatMap((s) => Object.keys(s)),
   ]);
-  const keyframes: Record<string, (string | number | undefined)[]> = {};
-  keys.forEach((k) => {
-    keyframes[k] = [from[k], ...steps.map((s) => s[k])];
+  const keyframes: Record<string, AnimationValue[]> = {};
+
+  keys.forEach((key) => {
+    const initialValue =
+      from[key] ?? steps.find((step) => step[key] !== undefined)?.[key];
+
+    if (initialValue === undefined) {
+      return;
+    }
+
+    let previousValue = initialValue;
+    const values: AnimationValue[] = [initialValue];
+
+    steps.forEach((step) => {
+      const nextValue = step[key] ?? previousValue;
+      values.push(nextValue);
+      previousValue = nextValue;
+    });
+
+    keyframes[key] = values;
   });
-  return keyframes;
+
+  return keyframes as Target;
 };
 
 export default function BlurText({
@@ -86,6 +107,10 @@ export default function BlurText({
 
   const fromSnapshot = animationFrom ?? defaultFrom;
   const toSnapshots = animationTo ?? defaultTo;
+  const animateKeyframes = useMemo(
+    () => buildKeyframes(fromSnapshot, toSnapshots),
+    [fromSnapshot, toSnapshots]
+  );
 
   const stepCount = toSnapshots.length + 1;
   const totalDuration = stepDuration * (stepCount - 1);
@@ -100,7 +125,6 @@ export default function BlurText({
       style={{ display: "flex", flexWrap: "wrap" }}
     >
       {elements.map((segment, index) => {
-        const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
         const spanTransition = {
           duration: totalDuration,
           times,
