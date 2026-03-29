@@ -235,7 +235,7 @@ export default function SlideshowPage() {
         style={{
           position: "fixed",
           inset: 0,
-          backgroundColor: "#0a0f1e",
+          backgroundColor: "#292524",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -269,7 +269,7 @@ export default function SlideshowPage() {
         style={{
           position: "fixed",
           inset: 0,
-          backgroundColor: "#0a0f1e",
+          backgroundColor: "#292524",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -296,7 +296,7 @@ export default function SlideshowPage() {
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "#0a0f1e",
+        backgroundColor: "#292524",
         overflow: "hidden",
         userSelect: "none",
       }}
@@ -310,7 +310,7 @@ export default function SlideshowPage() {
             height: 600,
             borderRadius: "50%",
             opacity: 0.07,
-            background: "radial-gradient(circle, #2563eb 0%, transparent 70%)",
+            background: "radial-gradient(circle, #92400e 0%, transparent 70%)",
             top: "10%",
             left: "10%",
           }}
@@ -324,7 +324,7 @@ export default function SlideshowPage() {
             height: 500,
             borderRadius: "50%",
             opacity: 0.05,
-            background: "radial-gradient(circle, #8b5cf6 0%, transparent 70%)",
+            background: "radial-gradient(circle, #78350f 0%, transparent 70%)",
             bottom: "10%",
             right: "10%",
           }}
@@ -343,14 +343,31 @@ export default function SlideshowPage() {
         />
       </div>
 
-      {/* ── Controls (top right) ── */}
+      {/* ── Logo (top center) ── */}
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 50,
+        }}
+      >
+        <img
+          src="/logo-50-nam-4x.png"
+          alt="FIT HCMUTE 25 năm"
+          style={{ height: 60, width: "auto" }}
+        />
+      </div>
+
+      {/* ── Controls (top right) — hidden in fullscreen ── */}
       <div
         style={{
           position: "absolute",
           top: 16,
           right: 16,
           zIndex: 50,
-          display: "flex",
+          display: isFullscreen ? "none" : "flex",
           alignItems: "center",
           gap: 8,
         }}
@@ -473,6 +490,8 @@ export default function SlideshowPage() {
                       fontStyle: "italic",
                       lineHeight: 1.6,
                       marginBottom: 20,
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
                     }}
                   >
                     &ldquo;{slide.message}&rdquo;
@@ -586,6 +605,8 @@ export default function SlideshowPage() {
                   textShadow: "0 2px 20px rgba(0,0,0,0.3)",
                   position: "relative",
                   zIndex: 1,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
                 }}
               >
                 &ldquo;{slide.message}&rdquo;
@@ -610,7 +631,7 @@ export default function SlideshowPage() {
                 {slide.graduationYear && (
                   <p
                     style={{
-                      color: "rgba(147,197,253,0.5)",
+                      color: "rgba(217,183,130,0.6)",
                       fontSize: "clamp(13px, 1.5vw, 18px)",
                     }}
                   >
@@ -663,7 +684,7 @@ export default function SlideshowPage() {
             style={{
               height: 2,
               background:
-                "linear-gradient(to right, rgba(59,130,246,0.6), rgba(168,85,247,0.6), rgba(236,72,153,0.6))",
+                "linear-gradient(to right, rgba(217,119,6,0.5), rgba(245,158,11,0.6), rgba(252,211,77,0.5))",
             }}
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}

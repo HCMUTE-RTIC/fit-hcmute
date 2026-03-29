@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
-// DEV: đặt event 1 phút sau để test, PROD: 2026-04-04
-const EVENT_DATE = new Date(Date.now() + 60 * 1000);
+const EVENT_DATE = new Date("2026-04-04T08:00:00+07:00");
 
 function getTimeLeft() {
   const now = new Date();
@@ -61,14 +59,14 @@ export default function SplashScreen({
         animate={phase === "exit" ? { opacity: 0, scale: 1.05 } : { opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
         className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden"
-        style={{ backgroundColor: "#0c1a3a" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
         {/* Subtle background pattern */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+              "radial-gradient(circle at 1px 1px, #0c1a3a 1px, transparent 0)",
             backgroundSize: "40px 40px",
           }}
         />
@@ -78,27 +76,9 @@ export default function SplashScreen({
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)",
           }}
         />
-
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="relative z-10 mb-4"
-        >
-          <Image
-            src="/logo-50-nam-4x.png"
-            alt="Logo 25 năm Khoa CNTT"
-            width={120}
-            height={120}
-            className="w-[80px] sm:w-[100px] md:w-[120px] h-auto drop-shadow-2xl"
-            priority
-            unoptimized
-          />
-        </motion.div>
 
         {/* "Kỷ niệm" badge */}
         <motion.div
@@ -108,14 +88,14 @@ export default function SplashScreen({
           className="relative z-10 mb-4"
         >
           <div className="flex items-center gap-3">
-            <div className="h-px w-12 bg-white/20" />
+            <div className="h-px w-12 bg-gray-300" />
             <span
               className="text-xs font-semibold tracking-[0.3em] uppercase"
-              style={{ color: "rgba(147,197,253,0.8)" }}
+              style={{ color: "#2563eb" }}
             >
               Kỷ niệm
             </span>
-            <div className="h-px w-12 bg-white/20" />
+            <div className="h-px w-12 bg-gray-300" />
           </div>
         </motion.div>
 
@@ -130,8 +110,8 @@ export default function SplashScreen({
             className="font-bold leading-none select-none"
             style={{
               fontSize: "clamp(100px, 20vw, 160px)",
-              color: "white",
-              textShadow: "0 0 80px rgba(37,99,235,0.3)",
+              color: "#0c1a3a",
+              textShadow: "0 0 80px rgba(37,99,235,0.15)",
             }}
           >
             25
@@ -147,13 +127,13 @@ export default function SplashScreen({
         >
           <p
             className="text-lg sm:text-xl font-medium tracking-wide"
-            style={{ color: "rgba(255,255,255,0.9)" }}
+            style={{ color: "#1e293b" }}
           >
             Năm thành lập Khoa Công nghệ Thông tin
           </p>
           <p
             className="text-sm mt-1.5 tracking-wider"
-            style={{ color: "rgba(147,197,253,0.7)" }}
+            style={{ color: "#64748b" }}
           >
             Trường Đại Học Công Nghệ Kỹ Thuật TP.HCM
           </p>
@@ -175,13 +155,13 @@ export default function SplashScreen({
             <div key={item.label} className="text-center">
               <div
                 className="text-2xl sm:text-3xl font-bold tabular-nums"
-                style={{ color: "white" }}
+                style={{ color: "#0c1a3a" }}
               >
                 {pad(item.value)}
               </div>
               <div
                 className="text-[10px] sm:text-xs uppercase tracking-widest mt-1"
-                style={{ color: "rgba(147,197,253,0.6)" }}
+                style={{ color: "#94a3b8" }}
               >
                 {item.label}
               </div>
@@ -211,7 +191,7 @@ export default function SplashScreen({
                 cy="32"
                 r="28"
                 fill="none"
-                stroke="rgba(255,255,255,0.1)"
+                stroke="rgba(0,0,0,0.08)"
                 strokeWidth="2"
               />
               <motion.circle
@@ -219,7 +199,7 @@ export default function SplashScreen({
                 cy="32"
                 r="28"
                 fill="none"
-                stroke="rgba(147,197,253,0.6)"
+                stroke="#2563eb"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 28}
@@ -237,7 +217,8 @@ export default function SplashScreen({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.25 }}
-                className="text-2xl font-bold text-white"
+                className="text-2xl font-bold"
+                style={{ color: "#0c1a3a" }}
               >
                 {countdown}
               </motion.span>
@@ -255,12 +236,12 @@ export default function SplashScreen({
             setTimeout(onComplete, 600);
           }}
           className="absolute bottom-8 right-8 z-10 text-xs tracking-wider uppercase cursor-pointer transition-colors"
-          style={{ color: "rgba(255,255,255,0.3)" }}
+          style={{ color: "rgba(0,0,0,0.25)" }}
           onMouseEnter={(e) =>
-            (e.currentTarget.style.color = "rgba(255,255,255,0.7)")
+            (e.currentTarget.style.color = "rgba(0,0,0,0.6)")
           }
           onMouseLeave={(e) =>
-            (e.currentTarget.style.color = "rgba(255,255,255,0.3)")
+            (e.currentTarget.style.color = "rgba(0,0,0,0.25)")
           }
         >
           Bỏ qua

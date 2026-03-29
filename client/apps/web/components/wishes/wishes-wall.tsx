@@ -107,7 +107,7 @@ function WishCard({ wish, index }: { wish: PublicWish; index: number }) {
 
         {/* Message */}
         <p
-          className="flex-1 text-sm leading-relaxed line-clamp-6 text-center mb-6 relative z-10"
+          className="flex-1 text-sm leading-relaxed line-clamp-6 text-center mb-6 relative z-10 break-words overflow-hidden"
           style={{ color: "#475569" }}
         >
           {message}

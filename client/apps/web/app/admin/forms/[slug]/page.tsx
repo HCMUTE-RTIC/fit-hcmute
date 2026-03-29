@@ -213,7 +213,7 @@ export default function FormDetailsPage() {
 
   const exportCSV = () => {
     if (!form || submissions.length === 0) return;
-    const cols = form.fields.slice().sort((a, b) => a.order - b.order).map((f) => ({ name: f.name, label: f.label }));
+    const cols = [...fieldNames];
     const headers = ['#', ...cols.map((f) => f.label), 'Trạng thái', 'Thời gian gửi'];
     const rows = filteredSubmissions.map((sub, idx) => [
       String(idx + 1),
@@ -257,7 +257,12 @@ export default function FormDetailsPage() {
     );
   }
 
-  const fieldNames = form.fields.slice().sort((a, b) => a.order - b.order).map((f) => ({ name: f.name, label: f.label }));
+  const baseFieldNames = form.fields.slice().sort((a, b) => a.order - b.order).map((f) => ({ name: f.name, label: f.label }));
+  // Add image_url column if any submission has it (injected by backend, not a form field)
+  const hasImageUrl = submissions.some((s) => s.data.image_url);
+  const fieldNames = hasImageUrl && !baseFieldNames.some((f) => f.name === 'image_url')
+    ? [...baseFieldNames, { name: 'image_url', label: 'Ảnh kỷ niệm' }]
+    : baseFieldNames;
 
   return (
     <div className="space-y-6">
@@ -555,11 +560,27 @@ export default function FormDetailsPage() {
                   {filteredSubmissions.map((sub, idx) => (
                     <tr key={sub.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                       <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{idx + 1}</td>
-                      {fieldNames.map((f) => (
-                        <td key={f.name} className="px-4 py-3 text-slate-900 dark:text-slate-100 max-w-[200px] truncate">
-                          {sub.data[f.name] ?? <span className="text-slate-400 italic">—</span>}
-                        </td>
-                      ))}
+                      {fieldNames.map((f) => {
+                        const val = sub.data[f.name];
+                        const isImage = f.name.includes('image') && val && (val.startsWith('http') || val.startsWith('/'));
+                        return (
+                          <td key={f.name} className="px-4 py-3 text-slate-900 dark:text-slate-100 max-w-[200px]">
+                            {!val ? (
+                              <span className="text-slate-400 italic">—</span>
+                            ) : isImage ? (
+                              <a href={val} target="_blank" rel="noopener noreferrer">
+                                <img
+                                  src={val}
+                                  alt="Ảnh"
+                                  className="w-16 h-16 object-cover rounded-lg border border-slate-200 dark:border-slate-600 hover:opacity-80 transition-opacity"
+                                />
+                              </a>
+                            ) : (
+                              <span className="truncate block break-words">{val}</span>
+                            )}
+                          </td>
+                        );
+                      })}
                       <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${STATUS_STYLES[sub.status]}`}>
                           {STATUS_LABELS[sub.status]}
