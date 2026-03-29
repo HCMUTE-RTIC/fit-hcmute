@@ -179,6 +179,7 @@ export default function Achievements() {
             src="/thu-vien/thuvienkiniem2.jpg"
             alt="Thành tựu Khoa CNTT"
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -348,12 +349,12 @@ export default function Achievements() {
                 "logo-lampart.png",
                 "logo-tma.png",
                 "logo_gameloft_black.png",
-                "Hitachi-Shield-Mark-Red-White-Background-200x200-removebg-preview.png",
+                "hitachi-logo.png",
                 "OSD-Logo1-Black.png",
-                "VNG_Corp._logo.svg.png",
+                "vng-logo.png",
                 "aws.png",
-                "fpt_software_new-02_.1m.jpg",
-                "saritasa_logo_vertical@3x.png",
+                "fpt-software-logo.jpg",
+                "saritasa-logo.png",
               ].map((logo, i) => (
                 <motion.div
                   key={i}
@@ -386,6 +387,7 @@ export default function Achievements() {
                 src="/thanh-tuu/hop-tac-quoc-te/KOREAN-BRIDGE-1.jpg"
                 alt="Hợp tác doanh nghiệp"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
             </motion.div>
