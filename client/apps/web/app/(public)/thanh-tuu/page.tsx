@@ -352,7 +352,7 @@ export default function Achievements() {
                 "hitachi-logo.png",
                 "OSD-Logo1-Black.png",
                 "vng-logo.png",
-                "aws.png",
+                "aws.svg",
                 "fpt-software-logo.jpg",
                 "saritasa-logo.png",
               ].map((logo, i) => (
@@ -370,6 +370,7 @@ export default function Achievements() {
                       alt={`Partner ${i + 1}`}
                       fill
                       sizes="80px"
+                      unoptimized={logo.endsWith(".svg")}
                       className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
                     />
                   </div>
