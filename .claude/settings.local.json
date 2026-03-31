@@ -55,7 +55,8 @@
       "Bash(find /d/RTIC/fit-hcmute -type f -name *loi-chuc*)",
       "Bash(find /d/RTIC/fit-hcmute/server -name *seed* -type f)",
       "Bash(find /d/RTIC/fit-hcmute -path */prisma/* -name *.ts -type f)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(curl -L \"https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg\" -o \"d:/RTIC/fit-hcmute/client/apps/web/public/thanh-tuu/source-doi-tac/aws.png\")"
     ]
   }
 }

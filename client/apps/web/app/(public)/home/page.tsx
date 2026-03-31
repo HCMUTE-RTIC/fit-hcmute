@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronUp, Lightbulb, Globe, Award, Mail } from "lucide-react";
 import { WishesWall } from "@/components/wishes/wishes-wall";
-import CountdownSection from "@/components/countdown/CountdownSection";
 import { useState, useEffect } from "react";
 
 const imgImageHcmuteCampus = "/trang-chu-home/banner_trangchu.jpg";
@@ -56,10 +55,7 @@ export default function Home() {
 
       </section>
 
-      {/* ─── Countdown Section ──────────────────────────────────────── */}
-      <CountdownSection />
-
-      {/* ─── Kỷ Yếu & Lời Tri Ân Section ─────────────────────────────── */}
+{/* ─── Kỷ Yếu & Lời Tri Ân Section ─────────────────────────────── */}
       <section
         className="relative overflow-hidden"
         style={{
