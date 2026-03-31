@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { FormsService, type PublicWish } from "@/services/forms.service";
@@ -43,6 +43,24 @@ function Lightbox({
   const name = memory.data.full_name || "Ẩn danh";
   const caption = memory.data.caption || "";
   const imageUrl = memory.data.image_url;
+
+  // Auto-scale: thu nhỏ font chữ caption nếu quá dài
+  const captionRef = useRef<HTMLParagraphElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = captionRef.current;
+    const wrapper = wrapperRef.current;
+    if (!el || !wrapper) return;
+    const BASE = 16, MIN = 10;
+    let size = BASE;
+    el.style.fontSize = `${size}px`;
+    // Kiểm tra: nếu tổng nội dung vượt quá 90vh thì thu nhỏ font
+    const maxH = window.innerHeight * 0.85;
+    while (wrapper.scrollHeight > maxH && size > MIN) {
+      size -= 0.5;
+      el.style.fontSize = `${size}px`;
+    }
+  }, [caption, memory.id]);
 
   return (
     <motion.div
@@ -87,6 +105,7 @@ function Lightbox({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.2 }}
+        ref={wrapperRef}
         className="flex flex-col items-center max-w-4xl w-full mx-4"
         onClick={(e) => e.stopPropagation()}
       >
@@ -94,11 +113,14 @@ function Lightbox({
           <img
             src={resolveImageUrl(imageUrl)}
             alt={`Kỷ niệm của ${name}`}
-            className="max-h-[70vh] w-auto rounded-lg object-contain"
+            className="max-h-[50vh] w-auto rounded-lg object-contain shrink-0"
           />
         )}
-        <div className="mt-5 text-center max-w-xl">
-          <p className="text-white/90 text-base leading-relaxed mb-3 break-words">
+        <div className="mt-5 text-center max-w-xl px-4 pb-4">
+          <p
+            ref={captionRef}
+            className="text-white/90 text-base leading-relaxed mb-3 break-words"
+          >
             &ldquo;{caption}&rdquo;
           </p>
           <p className="text-white/50 text-sm font-medium">{name}</p>
