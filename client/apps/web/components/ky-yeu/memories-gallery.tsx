@@ -106,20 +106,21 @@ function Lightbox({
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.2 }}
         ref={wrapperRef}
-        className="flex flex-col items-center max-w-4xl w-full mx-4"
+        className="flex flex-col items-center max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+        style={{ scrollbarWidth: "none" }}
         onClick={(e) => e.stopPropagation()}
       >
         {imageUrl && (
           <img
             src={resolveImageUrl(imageUrl)}
             alt={`Kỷ niệm của ${name}`}
-            className="max-h-[50vh] w-auto rounded-lg object-contain shrink-0"
+            className="max-h-[35vh] sm:max-h-[50vh] w-auto rounded-lg object-contain shrink-0"
           />
         )}
-        <div className="mt-5 text-center max-w-xl px-4 pb-4">
+        <div className="mt-5 text-center max-w-xl px-4 pb-4 shrink-0">
           <p
             ref={captionRef}
-            className="text-white/90 text-base leading-relaxed mb-3 break-words"
+            className="text-white/90 text-base leading-relaxed mb-3 break-words whitespace-pre-wrap"
           >
             &ldquo;{caption}&rdquo;
           </p>

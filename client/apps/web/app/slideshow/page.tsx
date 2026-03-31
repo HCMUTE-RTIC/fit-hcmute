@@ -434,7 +434,8 @@ export default function SlideshowPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "60px 40px 60px",
+            padding: "80px 24px 40px",
+            overflow: "hidden",
           }}
         >
           {hasImage ? (
@@ -444,9 +445,12 @@ export default function SlideshowPage() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: 32,
+                gap: 24,
                 maxWidth: 800,
                 width: "100%",
+                maxHeight: "calc(100vh - 120px)",
+                overflowY: "auto",
+                scrollbarWidth: "none",
               }}
             >
               {/* Image */}
@@ -486,10 +490,10 @@ export default function SlideshowPage() {
                   <p
                     style={{
                       color: "rgba(255,255,255,0.85)",
-                      fontSize: "clamp(18px, 2.5vw, 28px)",
+                      fontSize: slide.message.length > 200 ? "clamp(14px, 1.8vw, 18px)" : "clamp(16px, 2.2vw, 24px)",
                       fontStyle: "italic",
                       lineHeight: 1.6,
-                      marginBottom: 20,
+                      marginBottom: 16,
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
                     }}
@@ -544,6 +548,9 @@ export default function SlideshowPage() {
                 textAlign: "center",
                 maxWidth: 900,
                 width: "100%",
+                maxHeight: "calc(100vh - 120px)",
+                overflowY: "auto",
+                scrollbarWidth: "none",
               }}
             >
               {/* Big quote mark background */}
@@ -597,10 +604,14 @@ export default function SlideshowPage() {
                 transition={{ delay: 0.3, duration: 0.6 }}
                 style={{
                   color: "rgba(255,255,255,0.9)",
-                  fontSize: "clamp(22px, 3.5vw, 48px)",
+                  fontSize: slide.message.length > 300
+                    ? "clamp(14px, 1.8vw, 20px)"
+                    : slide.message.length > 150
+                      ? "clamp(16px, 2.5vw, 28px)"
+                      : "clamp(20px, 3.5vw, 44px)",
                   fontWeight: 300,
                   lineHeight: 1.5,
-                  marginBottom: 40,
+                  marginBottom: 32,
                   fontStyle: "italic",
                   textShadow: "0 2px 20px rgba(0,0,0,0.3)",
                   position: "relative",
