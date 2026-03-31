@@ -109,7 +109,7 @@ export default function Home() {
                 {/* Dean Card */}
                 <button
                   onClick={() => setShowLetter(true)}
-                  className="w-full rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
+                  className="w-full rounded-2xl overflow-hidden shadow-xl cursor-pointer"
                   style={{ border: "1px solid #e2e8f0" }}
                 >
                   <div className="flex items-stretch bg-white">
