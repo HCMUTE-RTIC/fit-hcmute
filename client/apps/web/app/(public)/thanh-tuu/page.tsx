@@ -352,7 +352,7 @@ export default function Achievements() {
                 "hitachi-logo.png",
                 "OSD-Logo1-Black.png",
                 "vng-logo.png",
-                "aws.svg",
+                "aws.png",
                 "fpt-software-logo.jpg",
                 "saritasa-logo.png",
               ].map((logo, i) => (
