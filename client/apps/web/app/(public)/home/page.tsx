@@ -37,7 +37,6 @@ export default function Home() {
           height={1080}
           className="w-full h-auto"
           priority
-          unoptimized
         />
       </section>
 
@@ -50,7 +49,6 @@ export default function Home() {
           className="object-cover"
           sizes="100vw"
           priority
-          unoptimized
         />
 
       </section>
