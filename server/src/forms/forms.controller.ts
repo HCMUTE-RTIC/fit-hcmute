@@ -30,6 +30,7 @@ import {
 } from 'src/forms/dto/create-form.dto';
 import { FormsService } from 'src/forms/forms.service';
 import { SubmitFormDto } from './dto/submit-form.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('forms')
 export class FormsController {
@@ -37,12 +38,14 @@ export class FormsController {
 
   @Post(':slug/submit')
   @HttpCode(HttpStatus.CREATED)
+  @Throttle({ default: { ttl: 60_000, limit: 5 } })
   submit(@Param('slug') slug: string, @Body() dto: SubmitFormDto) {
     return this.formsService.submit(slug, dto);
   }
 
   @Post(':slug/submit-with-media')
   @HttpCode(HttpStatus.CREATED)
+  @Throttle({ default: { ttl: 60_000, limit: 3 } })
   @UseInterceptors(
     FileInterceptor('image', {
       limits: { fileSize: MAX_PUBLIC_IMAGE_BYTES },
