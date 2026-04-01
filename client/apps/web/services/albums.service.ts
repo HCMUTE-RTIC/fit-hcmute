@@ -20,12 +20,17 @@ export const albumsService = {
   },
 
   /**
-   * Lấy chi tiết một album theo slug, bao gồm cả các media bên trong
+   * Lấy chi tiết một album theo slug, có pagination
    */
-  async getAlbumBySlug(slug: string): Promise<MediaAlbum> {
-    const res = await fetch(`${API_URL}/api/albums/${slug}`, {
-      cache: "no-store",
-    });
+  async getAlbumBySlug(
+    slug: string,
+    page = 1,
+    limit = 20
+  ): Promise<MediaAlbum> {
+    const res = await fetch(
+      `${API_URL}/api/albums/${slug}?page=${page}&limit=${limit}`,
+      { cache: "no-store" }
+    );
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));

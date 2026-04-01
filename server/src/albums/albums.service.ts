@@ -67,17 +67,33 @@ export class AlbumsService {
     });
   }
 
-  async findOne(slug: string) {
+  async findOne(slug: string, page = 1, limit = 20) {
     const album = await this.prisma.mediaAlbum.findUnique({
       where: { slug },
       include: {
-        medias: true,
+        medias: {
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        },
         user: { select: { name: true } },
+        _count: { select: { medias: true } },
       },
     });
 
     if (!album) throw new NotFoundException(`Không tìm thấy Album: ${slug}`);
-    return album;
+
+    const total = album._count.medias;
+    return {
+      ...album,
+      _count: undefined,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findById(id: string) {
