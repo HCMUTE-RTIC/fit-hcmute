@@ -76,7 +76,7 @@ export default function AlbumDetail() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore) {
+        if (entries[0]?.isIntersecting && hasMore && !loadingMore) {
           loadMore();
         }
       },
