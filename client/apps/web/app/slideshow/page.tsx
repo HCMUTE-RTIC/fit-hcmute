@@ -107,7 +107,7 @@ function getInitials(name: string) {
 }
 
 /* ─────────── Constants ─────────── */
-const SLIDE_DURATION = 5000;
+const SLIDE_DURATION = 15000;
 
 /* ─────────── Main component ─────────── */
 
@@ -438,30 +438,31 @@ export default function SlideshowPage() {
           }}
         >
           {hasImage ? (
-            /* ── Memory with image — centered vertical layout ── */
+            /* ── Memory with image — horizontal layout: ảnh trái, chữ phải ── */
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 alignItems: "center",
-                gap: 32,
-                maxWidth: 800,
+                gap: 48,
+                maxWidth: 1100,
                 width: "100%",
+                padding: "0 20px",
               }}
             >
-              {/* Image */}
+              {/* Image — bên trái */}
               <motion.div
                 style={{
                   position: "relative",
-                  width: "100%",
-                  maxWidth: 500,
+                  flex: "0 0 50%",
+                  maxWidth: 520,
                   aspectRatio: "4/3",
                   borderRadius: 16,
                   overflow: "hidden",
                   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
                 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15, duration: 0.5 }}
               >
                 <img
@@ -475,23 +476,34 @@ export default function SlideshowPage() {
                 />
               </motion.div>
 
-              {/* Caption + Name */}
+              {/* Caption + Name — bên phải */}
               <motion.div
-                style={{ textAlign: "center", maxWidth: 600 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  flex: 1,
+                  textAlign: "left",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
                 {slide.message && (
                   <p
                     style={{
                       color: "rgba(255,255,255,0.85)",
-                      fontSize: "clamp(18px, 2.5vw, 28px)",
+                      fontSize: "clamp(16px, 2vw, 26px)",
                       fontStyle: "italic",
-                      lineHeight: 1.6,
-                      marginBottom: 20,
+                      lineHeight: 1.7,
+                      marginBottom: 24,
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 8,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
                     }}
                   >
                     &ldquo;{slide.message}&rdquo;
@@ -501,14 +513,13 @@ export default function SlideshowPage() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
                     gap: 12,
                   }}
                 >
                   <div
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 44,
+                      height: 44,
                       borderRadius: "50%",
                       background: avatarGradient,
                       display: "flex",
@@ -516,7 +527,8 @@ export default function SlideshowPage() {
                       justifyContent: "center",
                       color: "white",
                       fontWeight: 700,
-                      fontSize: 14,
+                      fontSize: 15,
+                      flexShrink: 0,
                     }}
                   >
                     {getInitials(slide.name)}
