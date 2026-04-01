@@ -13,6 +13,7 @@ interface Slide {
   name: string;
   message: string;
   graduationYear?: string;
+  role?: string;
   imageUrl?: string;
   createdAt: string;
 }
@@ -134,6 +135,7 @@ export default function SlideshowPage() {
           name: w.data.full_name || "Ẩn danh",
           message: w.data.message || "",
           graduationYear: w.data.graduation_year,
+          role: w.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien,
           createdAt: w.createdAt,
         }));
 
@@ -142,6 +144,7 @@ export default function SlideshowPage() {
           type: "memory" as const,
           name: m.data.full_name || "Ẩn danh",
           message: m.data.caption || "",
+          role: m.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien,
           imageUrl: m.data.image_url,
           createdAt: m.createdAt,
         }));
@@ -533,15 +536,28 @@ export default function SlideshowPage() {
                   >
                     {getInitials(slide.name)}
                   </div>
-                  <span
-                    style={{
-                      color: "rgba(255,255,255,0.7)",
-                      fontSize: 18,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {slide.name}
-                  </span>
+                  <div>
+                    <span
+                      style={{
+                        color: "rgba(255,255,255,0.7)",
+                        fontSize: 18,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {slide.name}
+                    </span>
+                    {slide.role && (
+                      <p
+                        style={{
+                          color: "rgba(217,183,130,0.6)",
+                          fontSize: 14,
+                          marginTop: 2,
+                        }}
+                      >
+                        {slide.role}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -640,14 +656,14 @@ export default function SlideshowPage() {
                 >
                   {slide.name}
                 </p>
-                {slide.graduationYear && (
+                {(slide.graduationYear || slide.role) && (
                   <p
                     style={{
                       color: "rgba(217,183,130,0.6)",
                       fontSize: "clamp(13px, 1.5vw, 18px)",
                     }}
                   >
-                    Khóa {slide.graduationYear}
+                    {slide.role || (slide.graduationYear ? `Khóa ${slide.graduationYear}` : "")}
                   </p>
                 )}
               </motion.div>

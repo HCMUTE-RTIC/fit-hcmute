@@ -32,6 +32,7 @@ function WishCard({ wish, index }: { wish: PublicWish; index: number }) {
   const name = wish.data.full_name || "Ẩn danh";
   const message = wish.data.message || "";
   const graduationYear = wish.data.graduation_year;
+  const role = wish.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien;
   const initials = getInitials(name);
   const grad = AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]!;
   const uid = `qg-${index}`;
@@ -139,7 +140,7 @@ function WishCard({ wish, index }: { wish: PublicWish; index: number }) {
             <p className="text-sm font-bold" style={{ color: "#1e293b" }}>
               {name}
             </p>
-            {graduationYear ? (
+            {(role || graduationYear) ? (
               <span
                 className="inline-block text-xs font-semibold mt-0.5 px-2 py-0.5 rounded-full"
                 style={{
@@ -148,7 +149,7 @@ function WishCard({ wish, index }: { wish: PublicWish; index: number }) {
                   border: `1px solid ${grad.from}30`,
                 }}
               >
-                {graduationYear}
+                {role || graduationYear}
               </span>
             ) : (
               <p className="text-xs mt-0.5" style={{ color: "#94a3b8" }}>
