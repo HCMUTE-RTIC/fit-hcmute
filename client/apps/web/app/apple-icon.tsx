@@ -2,10 +2,10 @@ import { ImageResponse } from 'next/og';
 import fs from 'fs';
 import path from 'path';
 
-export const size = { width: 32, height: 32 };
+export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 
-export default async function Icon() {
+export default async function AppleIcon() {
   const logoData = fs.readFileSync(path.join(process.cwd(), 'public/logo-50-nam-4x.png'));
   const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`;
 
@@ -13,18 +13,19 @@ export default async function Icon() {
     (
       <div
         style={{
-          width: 32,
-          height: 32,
+          width: 180,
+          height: 180,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'transparent',
+          background: 'white',
+          borderRadius: 36,
         }}
       >
         <img
           src={logoBase64}
           alt="FIT HCMUTE"
-          style={{ width: 32, height: 32, objectFit: 'contain' }}
+          style={{ width: 160, height: 160, objectFit: 'contain' }}
         />
       </div>
     ),
