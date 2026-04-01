@@ -8,7 +8,6 @@ import * as Minio from 'minio';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   assertSafeUploadFile,
-  getSafeOriginalFileName,
   getSafeStoredExtension,
 } from '../common/utils/file-security.util';
 
@@ -43,8 +42,8 @@ export class MediaService {
       assertSafeUploadFile(file, 'private-media');
 
       const extension = getSafeStoredExtension(file);
-      const uuidStr = crypto.randomUUID();
-      const key = `${Date.now()}_${uuidStr.split('-')[0]}.${extension}`;
+      const uuidStr = crypto.randomUUID().replace(/-/g, '');
+      const key = `${Date.now()}_${uuidStr}.${extension}`;
 
       await this.minioClient.putObject(
         this.bucketName,
@@ -69,7 +68,7 @@ export class MediaService {
         data: {
           key,
           url: publicUrl,
-          fileName: getSafeOriginalFileName(file.originalname),
+          fileName: `${uuidStr}.${extension}`,
           mimeType: file.mimetype,
           size: file.size,
           category,
@@ -89,8 +88,8 @@ export class MediaService {
     assertSafeUploadFile(file, 'public-image');
 
     const extension = getSafeStoredExtension(file);
-    const uuidStr = crypto.randomUUID();
-    const key = `public/${Date.now()}_${uuidStr.split('-')[0]}.${extension}`;
+    const uuidStr = crypto.randomUUID().replace(/-/g, '');
+    const key = `public/${Date.now()}_${uuidStr}.${extension}`;
 
     await this.minioClient.putObject(
       this.bucketName,

@@ -16,10 +16,20 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { BullModule } from '@nestjs/bullmq';
 import { MailModule } from './mail/mail.module';
 import { SettingsModule } from './settings/settings.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+
+    // Rate limiting global — mặc định 60 request / 60 giây mỗi IP
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: 60_000,
+        limit: 60,
+      },
+    ]),
 
     // BullMQ Global – dùng chung Redis connection cho tất cả queue
     BullModule.forRootAsync({
