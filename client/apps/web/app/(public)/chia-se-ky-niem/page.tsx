@@ -2,13 +2,14 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Camera, Upload, User, Mail, MessageSquare, AlertCircle, CheckCircle, X, Image as ImageIcon } from "lucide-react";
+import { Camera, Upload, User, Mail, MessageSquare, AlertCircle, CheckCircle, X, Image as ImageIcon, BadgeCheck } from "lucide-react";
 import { FormsService } from "@/services/forms.service";
 
 export default function ChiaSeKyNiemPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    vai_tro: "",
     caption: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -60,6 +61,7 @@ export default function ChiaSeKyNiemPage() {
         {
           full_name: formData.fullName,
           email: formData.email,
+          vai_tro_sv_khoa_cuu_sv_khoa_giang_vien: formData.vai_tro,
           caption: formData.caption,
         },
         imageFile,
@@ -73,7 +75,7 @@ export default function ChiaSeKyNiemPage() {
   };
 
   const handleReset = () => {
-    setFormData({ fullName: "", email: "", caption: "" });
+    setFormData({ fullName: "", email: "", vai_tro: "", caption: "" });
     setImageFile(null);
     setImagePreview(null);
     setError(null);
@@ -247,6 +249,31 @@ export default function ChiaSeKyNiemPage() {
                       onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
                       onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
                       placeholder="email@example.com"
+                    />
+                  </div>
+
+                  {/* Vai trò */}
+                  <div>
+                    <label
+                      htmlFor="cs-vai_tro"
+                      className="flex items-center space-x-2 mb-2 font-semibold"
+                      style={{ color: "var(--color-primary-900)" }}
+                    >
+                      <BadgeCheck size={18} />
+                      <span>Vai trò (SV khóa ..., Cựu SV khóa ..., Giảng viên, ...) *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="cs-vai_tro"
+                      name="vai_tro"
+                      value={formData.vai_tro}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-lg border focus:outline-none transition-colors bg-white text-gray-900"
+                      style={{ borderColor: "#E2E8F0" }}
+                      onFocus={(e) => { e.target.style.borderColor = "var(--color-primary-600)"; }}
+                      onBlur={(e) => { e.target.style.borderColor = "#E2E8F0"; }}
+                      placeholder="VD: SV khóa 2020, Cựu SV khóa 2015, Giảng viên..."
                     />
                   </div>
 

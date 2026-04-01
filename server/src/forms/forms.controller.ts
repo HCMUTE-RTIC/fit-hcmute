@@ -121,6 +121,16 @@ export class FormsController {
     return this.formsService.updateSubmissionStatus(id, dto.status);
   }
 
+  @Patch('submissions/:id/data')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.SUPER_ADMIN, Role.EDITOR)
+  updateSubmissionData(
+    @Param('id') id: string,
+    @Body() dto: SubmitFormDto,
+  ) {
+    return this.formsService.updateSubmissionData(id, dto.data);
+  }
+
   @Get(':slug/public-submissions')
   getApprovedSubmissions(@Param('slug') slug: string) {
     return this.formsService.getApprovedSubmissions(slug);

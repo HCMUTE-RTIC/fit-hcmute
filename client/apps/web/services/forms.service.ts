@@ -208,6 +208,29 @@ export const FormsService = {
     return res.json();
   },
 
+  updateSubmissionData: async (
+    submissionId: string,
+    data: Record<string, unknown>,
+  ): Promise<FormSubmission> => {
+    const token = getAuthToken();
+    const res = await fetch(
+      `${API_URL}/api/forms/submissions/${submissionId}/data`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ data }),
+      },
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Không thể cập nhật submission");
+    }
+    return res.json();
+  },
+
   submitWithMedia: async (
     slug: string,
     data: Record<string, unknown>,
