@@ -124,10 +124,7 @@ export class FormsController {
   @Patch('submissions/:id/data')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.SUPER_ADMIN, Role.EDITOR)
-  updateSubmissionData(
-    @Param('id') id: string,
-    @Body() dto: SubmitFormDto,
-  ) {
+  updateSubmissionData(@Param('id') id: string, @Body() dto: SubmitFormDto) {
     return this.formsService.updateSubmissionData(id, dto.data);
   }
 

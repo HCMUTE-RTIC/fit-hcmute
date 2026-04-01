@@ -69,4 +69,3 @@ import { ThrottlerModule } from '@nestjs/throttler';
   ],
 })
 export class AppModule {}
-

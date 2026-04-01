@@ -3,12 +3,12 @@ import { renderApiDocs } from './common/templates/api-docs.template';
 
 @Injectable()
 export class AppService {
-    getDocs(): string {
-        return renderApiDocs();
-    }
+  getDocs(): string {
+    return renderApiDocs();
+  }
 
-    getWarning(): string {
-        return `
+  getWarning(): string {
+    return `
       <!DOCTYPE html>
       <html lang="vi">
       <head>
@@ -127,5 +127,5 @@ export class AppService {
       </body>
       </html>
     `;
-    }
+  }
 }

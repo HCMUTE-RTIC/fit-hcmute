@@ -29,7 +29,7 @@ export class AuditLogInterceptor implements NestInterceptor {
       // If there's no authenticated user, we skip (e.g. login, public interactions)
       return next.handle();
     }
-    
+
     const userId = user.id || user.sub;
 
     let action = '';
@@ -40,10 +40,13 @@ export class AuditLogInterceptor implements NestInterceptor {
     const pathParts = request.path.replace('/api/', '').split('/');
     const cleanPath = pathParts[0];
     const entity = cleanPath.charAt(0).toUpperCase() + cleanPath.slice(1); // e.g., 'Articles', 'Albums'
-    
+
     const newValues = method === 'DELETE' ? null : request.body;
     const xForwardedFor = request.headers['x-forwarded-for'];
-    let ipAddress = request.ip || (Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor) || null;
+    let ipAddress =
+      request.ip ||
+      (Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor) ||
+      null;
     if (ipAddress && ipAddress.includes(':')) {
       ipAddress = ipAddress.split(':').pop() || ipAddress; // Basic IPv4 cleanup
     }
@@ -52,56 +55,58 @@ export class AuditLogInterceptor implements NestInterceptor {
       tap({
         next: (responseData) => {
           // Attempt to extract entity ID (for creations it's in the response, for updates/deletes in params)
-          const rawId = method === 'POST' ? (responseData?.id || responseData?.data?.id) : request.params.id;
+          const rawId =
+            method === 'POST'
+              ? responseData?.id || responseData?.data?.id
+              : request.params.id;
           let entityId: string | null = null;
 
           if (rawId) {
-             entityId = Array.isArray(rawId) ? rawId[0] : String(rawId);
+            entityId = Array.isArray(rawId) ? rawId[0] : String(rawId);
           }
 
           // In case we can't find an exact entity ID, we try not to crash but fallback
           // 'UNKNOWN_ID' could violate Prisma type (UUID), so we might just skip if really missing,
           // though most of our endpoints return `id` properly.
           if (entityId) {
-             this.saveAuditLog(
-               userId, 
-               action, 
-               entity, 
-               entityId, 
-               newValues, 
-               ipAddress?.slice(0, 45) || null // Keep length safe for VarChar(45)
-             );
+            void this.saveAuditLog(
+              userId,
+              action,
+              entity,
+              entityId,
+              newValues,
+              ipAddress?.slice(0, 45) || null, // Keep length safe for VarChar(45)
+            );
           }
         },
-        error: (error) => {
-          // Depending on requirements, we usually only log successful mutations.
-          // Failure captures can be added here if needed.
-        }
+        error: () => {
+          // Only log successful mutations; failure captures can be added if needed.
+        },
       }),
     );
   }
 
   private async saveAuditLog(
-    userId: string, 
-    action: string, 
-    entity: string, 
-    entityId: string, 
-    newValues: any, 
-    ipAddress: string | null
+    userId: string,
+    action: string,
+    entity: string,
+    entityId: string,
+    newValues: any,
+    ipAddress: string | null,
   ) {
-      try {
-        await this.prisma.auditLog.create({
-           data: {
-             userId,
-             action,
-             entity,
-             entityId,
-             newValues,
-             ipAddress
-           }
-        });
-      } catch (err) {
-        console.error('❌ Failed to save Audit Log:', err);
-      }
+    try {
+      await this.prisma.auditLog.create({
+        data: {
+          userId,
+          action,
+          entity,
+          entityId,
+          newValues,
+          ipAddress,
+        },
+      });
+    } catch (err) {
+      console.error('❌ Failed to save Audit Log:', err);
+    }
   }
 }

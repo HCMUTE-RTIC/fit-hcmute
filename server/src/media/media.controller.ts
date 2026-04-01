@@ -62,7 +62,11 @@ export class MediaController {
     assertSafeUploadFile(file, 'private-media');
 
     const userId = req.user.id;
-    const media = await this.mediaService.uploadSingleFile(file, userId, albumId);
+    const media = await this.mediaService.uploadSingleFile(
+      file,
+      userId,
+      albumId,
+    );
 
     return {
       success: true,
