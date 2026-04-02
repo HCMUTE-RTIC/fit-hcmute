@@ -337,24 +337,24 @@ export default function Achievements() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
               {[
-                "logo-KMS.png",
-                "dxc-logo.png",
                 "fujinet-logo.png",
-                "hvn_logo.png",
-                "logo-csc.png",
-                "logo-dek.png",
-                "logo-elca.png",
-                "logo-global-cybersoft.png",
-                "logo-lacviet.png",
-                "logo-lampart.png",
-                "logo-tma.png",
-                "logo_gameloft_black.png",
-                "hitachi-logo.png",
-                "OSD-Logo1-Black.png",
-                "vng-logo.png",
-                "aws.svg",
                 "fpt-software-logo.jpg",
-                "saritasa-logo.png",
+                "logo_gameloft_black.png",
+                "endava.png",
+                "logo-KMS.png",
+                "nashtech.jpg",
+                "logo-tma.png",
+                "hitachi-logo.png",
+                "htp.jpg",
+                "tech-horizon.jpg",
+                "tr-viet.png",
+                "zix.jpg",
+                "oracle.png",
+                "aws.png",
+                "kps.jpg",
+                "orient.png",
+                "yedda_ai.jpg",
+                "vng-logo.png",
               ].map((logo, i) => (
                 <motion.div
                   key={i}
@@ -370,7 +370,7 @@ export default function Achievements() {
                       alt={`Partner ${i + 1}`}
                       fill
                       sizes="80px"
-                      unoptimized={logo.endsWith(".svg")}
+
                       className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
                     />
                   </div>
