@@ -5,7 +5,7 @@ import { generateSlug } from 'src/common/utils/slug.util';
 
 @Injectable()
 export class AlbumsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   private async generateUniqueSlug(title: string): Promise<string> {
     let slug = generateSlug(title);
@@ -21,7 +21,7 @@ export class AlbumsService {
   }
 
   async create(userId: string, dto: CreateAlbumDto) {
-    const slug = dto.slug || await this.generateUniqueSlug(dto.title);
+    const slug = dto.slug || (await this.generateUniqueSlug(dto.title));
 
     let coverPhotoId: string | null = null;
     if (dto.mediaIds && dto.mediaIds.length > 0) {
@@ -67,17 +67,33 @@ export class AlbumsService {
     });
   }
 
-  async findOne(slug: string) {
+  async findOne(slug: string, page = 1, limit = 20) {
     const album = await this.prisma.mediaAlbum.findUnique({
       where: { slug },
       include: {
-        medias: true,
+        medias: {
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        },
         user: { select: { name: true } },
+        _count: { select: { medias: true } },
       },
     });
 
     if (!album) throw new NotFoundException(`Không tìm thấy Album: ${slug}`);
-    return album;
+
+    const total = album._count.medias;
+    return {
+      ...album,
+      _count: undefined,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findById(id: string) {
@@ -89,7 +105,8 @@ export class AlbumsService {
       },
     });
 
-    if (!album) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
+    if (!album)
+      throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
     return album;
   }
 
@@ -97,7 +114,8 @@ export class AlbumsService {
     const existingAlbum = await this.prisma.mediaAlbum.findUnique({
       where: { id },
     });
-    if (!existingAlbum) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
+    if (!existingAlbum)
+      throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
 
     const data: any = {};
 
@@ -113,7 +131,8 @@ export class AlbumsService {
     if (dto.coverPhotoId !== undefined) data.coverPhotoId = dto.coverPhotoId;
     if (dto.status !== undefined) data.status = dto.status;
     if (dto.metaTitle !== undefined) data.metaTitle = dto.metaTitle;
-    if (dto.metaDescription !== undefined) data.metaDescription = dto.metaDescription;
+    if (dto.metaDescription !== undefined)
+      data.metaDescription = dto.metaDescription;
 
     if (dto.mediaIds) {
       data.medias = { set: dto.mediaIds.map((mediaId) => ({ id: mediaId })) };
@@ -130,7 +149,8 @@ export class AlbumsService {
     const existingAlbum = await this.prisma.mediaAlbum.findUnique({
       where: { id },
     });
-    if (!existingAlbum) throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
+    if (!existingAlbum)
+      throw new NotFoundException(`Không tìm thấy Album với ID: ${id}`);
 
     return this.prisma.mediaAlbum.delete({ where: { id } });
   }

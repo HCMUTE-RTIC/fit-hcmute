@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto/create-album.dto';
@@ -18,7 +19,7 @@ import { Role } from '@prisma/client';
 
 @Controller('albums')
 export class AlbumsController {
-  constructor(private readonly albumsService: AlbumsService) { }
+  constructor(private readonly albumsService: AlbumsService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,8 +48,17 @@ export class AlbumsController {
   }
 
   @Get(':slug')
-  findOne(@Param('slug') slug: string) {
-    return this.albumsService.findOne(slug);
+  findOne(
+    @Param('slug') slug: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const pageNum = Math.max(1, parseInt(page || '1', 10) || 1);
+    const limitNum = Math.min(
+      100,
+      Math.max(1, parseInt(limit || '20', 10) || 20),
+    );
+    return this.albumsService.findOne(slug, pageNum, limitNum);
   }
 
   @Patch(':id')

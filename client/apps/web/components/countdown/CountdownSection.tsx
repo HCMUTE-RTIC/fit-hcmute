@@ -126,7 +126,6 @@ export default function CountdownSection() {
                 width={100}
                 height={100}
                 className="w-16 sm:w-20 h-auto opacity-90"
-                unoptimized
               />
             </div>
 

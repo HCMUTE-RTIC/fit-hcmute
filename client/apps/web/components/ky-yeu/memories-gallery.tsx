@@ -43,6 +43,7 @@ function Lightbox({
   const name = memory.data.full_name || "Ẩn danh";
   const caption = memory.data.caption || "";
   const imageUrl = memory.data.image_url;
+  const role = memory.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien;
 
   // Auto-scale: thu nhỏ font chữ caption nếu quá dài
   const captionRef = useRef<HTMLParagraphElement>(null);
@@ -125,6 +126,9 @@ function Lightbox({
             &ldquo;{caption}&rdquo;
           </p>
           <p className="text-white/50 text-sm font-medium">{name}</p>
+          {role && (
+            <span className="inline-block text-xs text-white/40 mt-0.5">{role}</span>
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -144,6 +148,7 @@ function MemoryCard({
   const name = memory.data.full_name || "Ẩn danh";
   const caption = memory.data.caption || "";
   const imageUrl = memory.data.image_url;
+  const role = memory.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien;
   const initials = getInitials(name);
 
   return (
@@ -180,9 +185,14 @@ function MemoryCard({
             >
               {initials}
             </div>
-            <span className="text-sm font-semibold" style={{ color: "#1e293b" }}>
-              {name}
-            </span>
+            <div>
+              <span className="text-sm font-semibold" style={{ color: "#1e293b" }}>
+                {name}
+              </span>
+              {role && (
+                <p className="text-[11px]" style={{ color: "#64748b" }}>{role}</p>
+              )}
+            </div>
           </div>
           <span className="text-[11px]" style={{ color: "#cbd5e1" }}>
             {formatDate(memory.createdAt)}

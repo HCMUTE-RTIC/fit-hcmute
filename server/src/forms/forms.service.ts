@@ -153,6 +153,25 @@ export class FormsService {
     });
   }
 
+  async updateSubmissionData(submissionId: string, data: Record<string, any>) {
+    const submission = await this.prisma.formSubmission.findUnique({
+      where: { id: submissionId },
+    });
+    if (!submission) throw new NotFoundException('Submission not found');
+
+    // Merge dữ liệu cũ với dữ liệu mới (giữ lại image_url nếu không gửi lên)
+    const currentData =
+      typeof submission.data === 'object' && submission.data !== null
+        ? (submission.data as Record<string, any>)
+        : {};
+    const mergedData = { ...currentData, ...data };
+
+    return this.prisma.formSubmission.update({
+      where: { id: submissionId },
+      data: { data: mergedData },
+    });
+  }
+
   async getApprovedSubmissions(slug: string) {
     const form = await this.prisma.formDefinition.findUnique({
       where: { slug },
@@ -215,7 +234,11 @@ export class FormsService {
     return submission;
   }
 
-  async submitWithMedia(slug: string, dto: SubmitFormDto, image?: Express.Multer.File) {
+  async submitWithMedia(
+    slug: string,
+    dto: SubmitFormDto,
+    image?: Express.Multer.File,
+  ) {
     const formDef = await this.prisma.formDefinition.findUnique({
       where: { slug },
       include: { fields: { orderBy: { order: 'asc' } } },
@@ -231,11 +254,17 @@ export class FormsService {
 
       if (field.type === 'FILE') continue; // handled separately
 
-      if (field.required && (userValue === undefined || userValue === null || userValue === '')) {
+      if (
+        field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
         throw new BadRequestException(`Trường "${field.label}" là bắt buộc`);
       }
 
-      if (!field.required && (userValue === undefined || userValue === null || userValue === '')) {
+      if (
+        !field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
         continue;
       }
 
@@ -302,4 +331,3 @@ export class FormsService {
       );
   }
 }
-

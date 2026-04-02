@@ -71,6 +71,11 @@ export default function FormDetailsPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  // Modal xem/sửa submission
+  const [editingSub, setEditingSub] = useState<FormSubmission | null>(null);
+  const [editSubData, setEditSubData] = useState<Record<string, string>>({});
+  const [savingSub, setSavingSub] = useState(false);
+
   useEffect(() => {
     fetchForm();
   }, [slug]);
@@ -138,6 +143,28 @@ export default function FormDetailsPage() {
       toast.error(err instanceof Error ? err.message : 'Không thể cập nhật trạng thái');
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const openEditSub = (sub: FormSubmission) => {
+    setEditingSub(sub);
+    setEditSubData({ ...sub.data });
+  };
+
+  const handleSaveSub = async () => {
+    if (!editingSub) return;
+    setSavingSub(true);
+    try {
+      const updated = await FormsService.updateSubmissionData(editingSub.id, editSubData);
+      setSubmissions((prev) =>
+        prev.map((s) => (s.id === editingSub.id ? { ...s, data: updated.data } : s))
+      );
+      setEditingSub(null);
+      toast.success('Đã cập nhật nội dung submission!');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Không thể cập nhật');
+    } finally {
+      setSavingSub(false);
     }
   };
 
@@ -590,47 +617,143 @@ export default function FormDetailsPage() {
                         {new Date(sub.createdAt).toLocaleString('vi-VN')}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        {sub.status === 'PENDING' && (
-                          <div className="flex gap-1.5">
-                            <button
-                              onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
-                              disabled={updatingId === sub.id}
-                              className="px-2.5 py-1 text-xs bg-green-600 hover:bg-green-700 text-white rounded font-medium disabled:opacity-50 transition-colors"
-                            >
-                              ✓ Duyệt
-                            </button>
+                        <div className="flex gap-1.5 items-center">
+                          <button
+                            onClick={() => openEditSub(sub)}
+                            className="px-2.5 py-1 text-xs bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded font-medium transition-colors"
+                          >
+                            ✎ Xem/Sửa
+                          </button>
+                          {sub.status === 'PENDING' && (
+                            <>
+                              <button
+                                onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
+                                disabled={updatingId === sub.id}
+                                className="px-2.5 py-1 text-xs bg-green-600 hover:bg-green-700 text-white rounded font-medium disabled:opacity-50 transition-colors"
+                              >
+                                ✓ Duyệt
+                              </button>
+                              <button
+                                onClick={() => handleStatusUpdate(sub.id, 'REJECTED')}
+                                disabled={updatingId === sub.id}
+                                className="px-2.5 py-1 text-xs bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded font-medium disabled:opacity-50 transition-colors"
+                              >
+                                ✕ Từ chối
+                              </button>
+                            </>
+                          )}
+                          {sub.status === 'APPROVED' && (
                             <button
                               onClick={() => handleStatusUpdate(sub.id, 'REJECTED')}
                               disabled={updatingId === sub.id}
-                              className="px-2.5 py-1 text-xs bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/70 text-red-700 dark:text-red-300 rounded font-medium disabled:opacity-50 transition-colors"
+                              className="px-2.5 py-1 text-xs text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded font-medium disabled:opacity-50 transition-colors"
                             >
-                              ✕ Từ chối
+                              Thu hồi
                             </button>
-                          </div>
-                        )}
-                        {sub.status === 'APPROVED' && (
-                          <button
-                            onClick={() => handleStatusUpdate(sub.id, 'REJECTED')}
-                            disabled={updatingId === sub.id}
-                            className="px-2.5 py-1 text-xs text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded font-medium disabled:opacity-50 transition-colors"
-                          >
-                            Thu hồi
-                          </button>
-                        )}
-                        {sub.status === 'REJECTED' && (
-                          <button
-                            onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
-                            disabled={updatingId === sub.id}
-                            className="px-2.5 py-1 text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded font-medium disabled:opacity-50 transition-colors"
-                          >
-                            Duyệt lại
-                          </button>
-                        )}
+                          )}
+                          {sub.status === 'REJECTED' && (
+                            <button
+                              onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
+                              disabled={updatingId === sub.id}
+                              className="px-2.5 py-1 text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded font-medium disabled:opacity-50 transition-colors"
+                            >
+                              Duyệt lại
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {/* ── Modal xem/sửa submission ── */}
+          {editingSub && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setEditingSub(null)}>
+              <div
+                className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Chi tiết Submission</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      Gửi lúc: {new Date(editingSub.createdAt).toLocaleString('vi-VN')} •{' '}
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${STATUS_STYLES[editingSub.status]}`}>
+                        {STATUS_LABELS[editingSub.status]}
+                      </span>
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setEditingSub(null)}
+                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* Body — fields */}
+                <div className="px-6 py-5 space-y-4">
+                  {fieldNames.map((f) => {
+                    const val = editSubData[f.name] ?? '';
+                    const isImage = f.name.includes('image') && val && (val.startsWith('http') || val.startsWith('/'));
+
+                    return (
+                      <div key={f.name}>
+                        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                          {f.label}
+                        </label>
+                        {isImage ? (
+                          <div className="space-y-2">
+                            <a href={val} target="_blank" rel="noopener noreferrer">
+                              <img
+                                src={val}
+                                alt="Ảnh"
+                                className="w-full max-w-xs h-48 object-cover rounded-lg border border-slate-200 dark:border-slate-600 hover:opacity-80 transition-opacity"
+                              />
+                            </a>
+                            <p className="text-xs text-slate-400 break-all">{val}</p>
+                          </div>
+                        ) : f.name === 'caption' || f.name === 'message' ? (
+                          <textarea
+                            rows={4}
+                            value={val}
+                            onChange={(e) => setEditSubData((prev) => ({ ...prev, [f.name]: e.target.value }))}
+                            className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            value={val}
+                            onChange={(e) => setEditSubData((prev) => ({ ...prev, [f.name]: e.target.value }))}
+                            className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700">
+                  <button
+                    onClick={() => setEditingSub(null)}
+                    className="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 font-medium text-slate-700 dark:text-slate-300 transition-colors"
+                  >
+                    Đóng
+                  </button>
+                  <button
+                    onClick={handleSaveSub}
+                    disabled={savingSub}
+                    className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-60 transition-colors"
+                  >
+                    {savingSub ? 'Đang lưu...' : 'Lưu thay đổi'}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

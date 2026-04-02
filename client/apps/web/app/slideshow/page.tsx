@@ -13,6 +13,7 @@ interface Slide {
   name: string;
   message: string;
   graduationYear?: string;
+  role?: string;
   imageUrl?: string;
   createdAt: string;
 }
@@ -107,7 +108,7 @@ function getInitials(name: string) {
 }
 
 /* ─────────── Constants ─────────── */
-const SLIDE_DURATION = 5000;
+const SLIDE_DURATION = 15000;
 
 /* ─────────── Main component ─────────── */
 
@@ -134,6 +135,7 @@ export default function SlideshowPage() {
           name: w.data.full_name || "Ẩn danh",
           message: w.data.message || "",
           graduationYear: w.data.graduation_year,
+          role: w.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien,
           createdAt: w.createdAt,
         }));
 
@@ -142,6 +144,7 @@ export default function SlideshowPage() {
           type: "memory" as const,
           name: m.data.full_name || "Ẩn danh",
           message: m.data.caption || "",
+          role: m.data.vai_tro_sv_khoa_cuu_sv_khoa_giang_vien,
           imageUrl: m.data.image_url,
           createdAt: m.createdAt,
         }));
@@ -439,33 +442,31 @@ export default function SlideshowPage() {
           }}
         >
           {hasImage ? (
-            /* ── Memory with image — centered vertical layout ── */
+            /* ── Memory with image — horizontal layout: ảnh trái, chữ phải ── */
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 alignItems: "center",
-                gap: 24,
-                maxWidth: 800,
+                gap: 48,
+                maxWidth: 1100,
                 width: "100%",
-                maxHeight: "calc(100vh - 120px)",
-                overflowY: "auto",
-                scrollbarWidth: "none",
+                padding: "0 20px",
               }}
             >
-              {/* Image */}
+              {/* Image — bên trái */}
               <motion.div
                 style={{
                   position: "relative",
-                  width: "100%",
-                  maxWidth: 500,
+                  flex: "0 0 50%",
+                  maxWidth: 520,
                   aspectRatio: "4/3",
                   borderRadius: 16,
                   overflow: "hidden",
                   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
                 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15, duration: 0.5 }}
               >
                 <img
@@ -479,23 +480,34 @@ export default function SlideshowPage() {
                 />
               </motion.div>
 
-              {/* Caption + Name */}
+              {/* Caption + Name — bên phải */}
               <motion.div
-                style={{ textAlign: "center", maxWidth: 600 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  flex: 1,
+                  textAlign: "left",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
                 {slide.message && (
                   <p
                     style={{
                       color: "rgba(255,255,255,0.85)",
-                      fontSize: slide.message.length > 200 ? "clamp(14px, 1.8vw, 18px)" : "clamp(16px, 2.2vw, 24px)",
+                      fontSize: "clamp(16px, 2vw, 26px)",
                       fontStyle: "italic",
-                      lineHeight: 1.6,
-                      marginBottom: 16,
+                      lineHeight: 1.7,
+                      marginBottom: 24,
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 8,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
                     }}
                   >
                     &ldquo;{slide.message}&rdquo;
@@ -505,14 +517,13 @@ export default function SlideshowPage() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
                     gap: 12,
                   }}
                 >
                   <div
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 44,
+                      height: 44,
                       borderRadius: "50%",
                       background: avatarGradient,
                       display: "flex",
@@ -520,20 +531,34 @@ export default function SlideshowPage() {
                       justifyContent: "center",
                       color: "white",
                       fontWeight: 700,
-                      fontSize: 14,
+                      fontSize: 15,
+                      flexShrink: 0,
                     }}
                   >
                     {getInitials(slide.name)}
                   </div>
-                  <span
-                    style={{
-                      color: "rgba(255,255,255,0.7)",
-                      fontSize: 18,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {slide.name}
-                  </span>
+                  <div>
+                    <span
+                      style={{
+                        color: "rgba(255,255,255,0.7)",
+                        fontSize: 18,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {slide.name}
+                    </span>
+                    {slide.role && (
+                      <p
+                        style={{
+                          color: "rgba(217,183,130,0.6)",
+                          fontSize: 14,
+                          marginTop: 2,
+                        }}
+                      >
+                        {slide.role}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -639,14 +664,14 @@ export default function SlideshowPage() {
                 >
                   {slide.name}
                 </p>
-                {slide.graduationYear && (
+                {(slide.graduationYear || slide.role) && (
                   <p
                     style={{
                       color: "rgba(217,183,130,0.6)",
                       fontSize: "clamp(13px, 1.5vw, 18px)",
                     }}
                   >
-                    Khóa {slide.graduationYear}
+                    {slide.role || (slide.graduationYear ? `Khóa ${slide.graduationYear}` : "")}
                   </p>
                 )}
               </motion.div>

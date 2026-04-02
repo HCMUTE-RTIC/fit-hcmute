@@ -20,7 +20,10 @@ import { LoginAttemptsService } from './login-attempts.service';
         signOptions: {
           expiresIn: configService.get<string>('JWT_EXPIRES_IN', '12h') as any,
           issuer: configService.get<string>('JWT_ISSUER', 'fit-hcmute-api'),
-          audience: configService.get<string>('JWT_AUDIENCE', 'fit-hcmute-admin'),
+          audience: configService.get<string>(
+            'JWT_AUDIENCE',
+            'fit-hcmute-admin',
+          ),
         },
       }),
       inject: [ConfigService],

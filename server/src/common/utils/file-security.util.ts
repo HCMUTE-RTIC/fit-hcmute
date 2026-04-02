@@ -50,7 +50,9 @@ export function assertSafeUploadFile(
   }
 
   const maxSize =
-    scope === 'public-image' ? MAX_PUBLIC_IMAGE_BYTES : MAX_PRIVATE_UPLOAD_BYTES;
+    scope === 'public-image'
+      ? MAX_PUBLIC_IMAGE_BYTES
+      : MAX_PRIVATE_UPLOAD_BYTES;
   if (file.size > maxSize) {
     throw new BadRequestException('Uploaded file is too large.');
   }

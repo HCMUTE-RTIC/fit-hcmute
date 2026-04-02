@@ -2,9 +2,11 @@
  * HTML Template cho email cảm ơn khi user gửi lời chúc.
  * Branded theo FIT HCMUTE 25 năm.
  */
+
 export function thankYouEmailHtml(
   recipientName: string,
-  formTitle: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  formTitle?: string,
 ): string {
   return `
 <!DOCTYPE html>

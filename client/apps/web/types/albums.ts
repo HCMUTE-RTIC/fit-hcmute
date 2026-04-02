@@ -11,6 +11,13 @@ export interface Media {
   createdAt: string;
 }
 
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 export interface MediaAlbum {
   id: string;
   title: string;
@@ -23,4 +30,5 @@ export interface MediaAlbum {
   createdAt: string;
   updatedAt: string;
   medias?: Media[];
+  pagination?: Pagination;
 }

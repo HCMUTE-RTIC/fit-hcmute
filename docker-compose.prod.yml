@@ -48,7 +48,7 @@ services:
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000" # Cloudflare Tunnel: 25namminio.hcmutertic.com -> localhost:9000
-      - "9001:9001" # MinIO Console (nội bộ, không expose Cloudflare)
+      - "127.0.0.1:9001:9001" # MinIO Console — chỉ truy cập từ localhost (SSH tunnel)
     volumes:
       - minio_data_prod:/data
     networks:
@@ -67,7 +67,7 @@ services:
         sleep 10;
         /usr/bin/mc alias set myminio http://minio-prod:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
         /usr/bin/mc mb myminio/${MINIO_BUCKET_NAME} || true;
-        /usr/bin/mc anonymous set public myminio/${MINIO_BUCKET_NAME} || true;
+        /usr/bin/mc anonymous set download myminio/${MINIO_BUCKET_NAME} || true;
         exit 0;
       "
     networks:
