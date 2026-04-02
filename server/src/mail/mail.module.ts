@@ -4,9 +4,7 @@ import { MailService } from './mail.service';
 import { MailProcessor } from './mail.processor';
 
 @Module({
-  imports: [
-    BullModule.registerQueue({ name: 'mail' }),
-  ],
+  imports: [BullModule.registerQueue({ name: 'mail' })],
   providers: [MailService, MailProcessor],
   exports: [MailService],
 })

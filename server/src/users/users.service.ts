@@ -1,15 +1,20 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   // Utility to remove password from user object
   private excludePassword(user: any) {
     if (!user) return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
@@ -35,11 +40,11 @@ export class UsersService {
 
     const whereClause: Prisma.UserWhereInput = search
       ? {
-        OR: [
-          { name: { contains: search, mode: 'insensitive' } },
-          { email: { contains: search, mode: 'insensitive' } },
-        ],
-      }
+          OR: [
+            { name: { contains: search, mode: 'insensitive' } },
+            { email: { contains: search, mode: 'insensitive' } },
+          ],
+        }
       : {};
 
     const [users, total] = await Promise.all([
@@ -55,8 +60,8 @@ export class UsersService {
           role: true,
           avatar: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       }),
       this.prisma.user.count({ where: whereClause }),
     ]);
@@ -122,9 +127,13 @@ export class UsersService {
     }
 
     if (user.role === Role.SUPER_ADMIN) {
-      const superAdminsCount = await this.prisma.user.count({ where: { role: Role.SUPER_ADMIN } });
+      const superAdminsCount = await this.prisma.user.count({
+        where: { role: Role.SUPER_ADMIN },
+      });
       if (superAdminsCount <= 1) {
-        throw new ConflictException('Không thể xóa SUPER_ADMIN cuối cùng của hệ thống');
+        throw new ConflictException(
+          'Không thể xóa SUPER_ADMIN cuối cùng của hệ thống',
+        );
       }
     }
 

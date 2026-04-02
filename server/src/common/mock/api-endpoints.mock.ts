@@ -29,7 +29,7 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
     path: '/v1/users',
     description: 'Tạo tài khoản người dùng mới (Admin)',
     auth: true,
-    body: { name: 'Nguyen Van A', email: 'a@hcmute.edu.vn', role: 'USER' }
+    body: { name: 'Nguyen Van A', email: 'a@hcmute.edu.vn', role: 'USER' },
   },
   {
     tag: 'Users',
@@ -51,7 +51,7 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
     path: '/v1/users/:id',
     description: 'Cập nhật thông tin tài khoản',
     auth: true,
-    body: { name: 'Nguyen Van B' }
+    body: { name: 'Nguyen Van B' },
   },
   {
     tag: 'Users',
@@ -94,7 +94,7 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
     path: '/articles/:id',
     description: 'Chỉnh sửa bài viết (Chỉ Author/Admin)',
     auth: true,
-    body: { title: 'Tiêu đề mới' }
+    body: { title: 'Tiêu đề mới' },
   },
   {
     tag: 'Articles',
@@ -133,7 +133,7 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
     path: '/albums/:id',
     description: 'Cập nhật Album ảnh',
     auth: true,
-    body: { coverId: 'uuid-123' }
+    body: { coverId: 'uuid-123' },
   },
   {
     tag: 'Albums',
@@ -175,7 +175,7 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
     path: '/forms/:id',
     description: 'Cập nhật cấu trúc của biểu mẫu',
     auth: true,
-    body: { isActive: false }
+    body: { isActive: false },
   },
   {
     tag: 'Forms',

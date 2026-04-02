@@ -153,10 +153,7 @@ export class FormsService {
     });
   }
 
-  async updateSubmissionData(
-    submissionId: string,
-    data: Record<string, any>,
-  ) {
+  async updateSubmissionData(submissionId: string, data: Record<string, any>) {
     const submission = await this.prisma.formSubmission.findUnique({
       where: { id: submissionId },
     });
@@ -237,7 +234,11 @@ export class FormsService {
     return submission;
   }
 
-  async submitWithMedia(slug: string, dto: SubmitFormDto, image?: Express.Multer.File) {
+  async submitWithMedia(
+    slug: string,
+    dto: SubmitFormDto,
+    image?: Express.Multer.File,
+  ) {
     const formDef = await this.prisma.formDefinition.findUnique({
       where: { slug },
       include: { fields: { orderBy: { order: 'asc' } } },
@@ -253,11 +254,17 @@ export class FormsService {
 
       if (field.type === 'FILE') continue; // handled separately
 
-      if (field.required && (userValue === undefined || userValue === null || userValue === '')) {
+      if (
+        field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
         throw new BadRequestException(`Trường "${field.label}" là bắt buộc`);
       }
 
-      if (!field.required && (userValue === undefined || userValue === null || userValue === '')) {
+      if (
+        !field.required &&
+        (userValue === undefined || userValue === null || userValue === '')
+      ) {
         continue;
       }
 
@@ -324,4 +331,3 @@ export class FormsService {
       );
   }
 }
-

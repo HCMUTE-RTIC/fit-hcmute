@@ -61,20 +61,22 @@ const generateBashCurl = (endpoint: ApiEndpoint): string => {
 
 export const renderApiDocs = (): string => {
   // Group endpoints by tag
-  const groupedEndpoints = API_ENDPOINTS.reduce((acc, ep) => {
-    if (!acc[ep.tag]) {
-      acc[ep.tag] = [];
-    }
-    acc[ep.tag].push(ep);
-    return acc;
-  }, {} as Record<string, typeof API_ENDPOINTS>);
+  const groupedEndpoints = API_ENDPOINTS.reduce(
+    (acc, ep) => {
+      if (!acc[ep.tag]) {
+        acc[ep.tag] = [];
+      }
+      acc[ep.tag].push(ep);
+      return acc;
+    },
+    {} as Record<string, typeof API_ENDPOINTS>,
+  );
 
   // Render HTML based on grouped sections
   const sectionsHtml = Object.entries(groupedEndpoints)
     .map(([tag, endpoints]) => {
       const rowsHtml = endpoints
-        .map((ep, index) => {
-          const uniqueId = `ep-${tag.replace(/\s+/g, '-')}-${index}`;
+        .map((ep) => {
           const methodColorClass = getMethodColor(ep.method);
           const methodBadgeClass = getMethodBadge(ep.method);
           const bashCodeEncoded = encodeURIComponent(generateBashCurl(ep));
@@ -83,7 +85,9 @@ export const renderApiDocs = (): string => {
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
 
-          const bodyDisplay = ep.body ? formatJson(ep.body).replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+          const bodyDisplay = ep.body
+            ? formatJson(ep.body).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            : '';
 
           return `
         <details class="endpoint-row group mb-3 rounded border ${methodColorClass} bg-white shadow-sm overflow-hidden transition-all duration-200">
@@ -95,10 +99,11 @@ export const renderApiDocs = (): string => {
             <span class="text-slate-600 ml-2 text-sm hidden md:inline-block flex-1 truncate">${ep.description}</span>
             
             <div class="ml-auto flex items-center gap-3">
-               ${ep.auth
-              ? '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400" title="Authorization Required"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>'
-              : ''
-            }
+               ${
+                 ep.auth
+                   ? '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400" title="Authorization Required"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>'
+                   : ''
+               }
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-slate-400 transition-transform duration-200 group-open:rotate-90">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                </svg>
@@ -111,8 +116,9 @@ export const renderApiDocs = (): string => {
                <p class="text-slate-700 text-sm">${ep.description}</p>
             </div>
 
-            ${ep.body
-              ? `
+            ${
+              ep.body
+                ? `
             <div class="mb-4">
                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Parameters</h4>
                <div class="bg-white border rounded p-3">
@@ -124,7 +130,7 @@ export const renderApiDocs = (): string => {
                   <pre class="font-mono text-[13px] text-slate-800 bg-[#f8f9fa] p-3 rounded overflow-x-auto leading-relaxed border border-slate-200"><code>${bodyDisplay}</code></pre>
                </div>
             </div>`
-              : ''
+                : ''
             }
 
             <div class="mb-2">

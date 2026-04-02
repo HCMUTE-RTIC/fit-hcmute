@@ -5,13 +5,16 @@ on:
     branches:
       - develop
       - main
+  schedule:
+    # Chạy DB backup lúc 19:00 UTC = 2:00 sáng UTC+7 mỗi ngày
+    - cron: "0 19 * * *"
 
 jobs:
   # ----------------------------------------------------
   # 1. CI: Chạy cho cả 2 nhánh (develop, main)
   # ----------------------------------------------------
   ci:
-    name: Continuous Integration (Build)
+    name: Continuous Integration
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Checkout Code
@@ -35,15 +38,35 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
+      # ── Install ──
       - name: Install Server Dependencies
-        run: cd server && pnpm install
+        run: cd server && pnpm install --frozen-lockfile
 
       - name: Install Client Dependencies
-        run: cd client/apps/web && pnpm install
+        run: cd client && pnpm install --frozen-lockfile
 
       - name: Generate Prisma Client
         run: cd server && pnpm exec prisma generate
 
+      # ── Lint ──
+      - name: Lint Server
+        run: cd server && pnpm run lint
+
+      - name: Lint Client
+        run: cd client && pnpm lint
+
+      # ── Type Check ──
+      - name: TypeCheck Client
+        run: cd client && pnpm typecheck
+
+      # ── Security Audit ──
+      - name: Audit Server Dependencies
+        run: cd server && pnpm audit --prod || true
+
+      - name: Audit Client Dependencies
+        run: cd client && pnpm audit --prod || true
+
+      # ── Build ──
       - name: Build Server
         run: cd server && pnpm run build
 
@@ -54,7 +77,7 @@ jobs:
           cp /home/sysadmin/env/server/.env.production ./server/.env.production || true
 
       - name: Build Web Client
-        run: cd client/apps/web && pnpm run build
+        run: cd client && pnpm build
 
   # ----------------------------------------------------
   # 2. CD: Chỉ chạy trên `main` VÀ sau khi `ci` thành công
@@ -68,20 +91,127 @@ jobs:
       name: production
       url: https://25nam.fit.hcmute.edu.vn
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      # ── Tag old images for rollback ──
+      - name: Tag current images for rollback
+        run: |
+          docker tag $(docker compose -f docker-compose.prod.yml images backend_api -q) backend_api:rollback 2>/dev/null || true
+          docker tag $(docker compose -f docker-compose.prod.yml images frontend_web -q) frontend_web:rollback 2>/dev/null || true
+
       - name: Deploy via Docker Compose
         run: |
-          # 1. Copy file cấu hình .env.production từ bên ngoài Server (Host) vào Repository
-          # Giúp tách biệt dữ liệu nhạy cảm khỏi Github 
+          # 1. Copy .env.production từ VPS vào repo
           echo "Sao chép cấu hình .env từ VPS..."
           cp /home/sysadmin/env/.env.production ./.env.production
           cp /home/sysadmin/env/server/.env.production ./server/.env.production
           cp /home/sysadmin/env/client/.env.production ./client/apps/web/.env.production
 
-          # 2. Tự động build file image mới nhất từ nhánh `main` 
-          # Lưu ý: docker-compose.prod.yml cần định nghĩa `build: ./client/apps/web` thay vì chỉ có image
-          # Dựa vào file prod, giả sử ta cần build lại
+          # 2. Build Docker images
           docker compose -f docker-compose.prod.yml --env-file .env.production build backend_api frontend_web
 
-          # 3. Khởi động lại toàn bộ container với cờ -d (chạy ngầm)
-          # Tự động thay thế container cũ rác zero-downtime nhất có thể
+          # 3. Deploy containers
           docker compose -f docker-compose.prod.yml --env-file .env.production up -d --force-recreate --remove-orphans
+
+      # ── Health Check ──
+      - name: Wait for services to start
+        run: sleep 10
+
+      - name: Health Check - Frontend
+        id: health_fe
+        continue-on-error: true
+        run: |
+          for i in 1 2 3; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://25nam.fit.hcmute.edu.vn || echo "000")
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
+              echo "✅ Frontend OK (HTTP $STATUS)"
+              exit 0
+            fi
+            echo "Attempt $i: HTTP $STATUS, retrying..."
+            sleep 5
+          done
+          echo "❌ Frontend FAILED after 3 attempts"
+          exit 1
+
+      - name: Health Check - Backend API
+        id: health_be
+        continue-on-error: true
+        run: |
+          for i in 1 2 3; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://api25nam.fit.hcmute.edu.vn/api || echo "000")
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
+              echo "✅ Backend API OK (HTTP $STATUS)"
+              exit 0
+            fi
+            echo "Attempt $i: HTTP $STATUS, retrying..."
+            sleep 5
+          done
+          echo "❌ Backend API FAILED after 3 attempts"
+          exit 1
+
+      # ── Auto Rollback nếu health check fail ──
+      - name: Rollback on failure
+        if: steps.health_fe.outcome == 'failure' || steps.health_be.outcome == 'failure'
+        run: |
+          echo "⚠️ Health check failed — rolling back to previous images..."
+          docker tag backend_api:rollback $(docker compose -f docker-compose.prod.yml images backend_api --format '{{.Repository}}:{{.Tag}}') 2>/dev/null || true
+          docker tag frontend_web:rollback $(docker compose -f docker-compose.prod.yml images frontend_web --format '{{.Repository}}:{{.Tag}}') 2>/dev/null || true
+          docker compose -f docker-compose.prod.yml --env-file .env.production up -d --force-recreate
+          echo "🔄 Rollback complete. Waiting for services..."
+          sleep 10
+          # Verify rollback
+          FE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://25nam.fit.hcmute.edu.vn || echo "000")
+          BE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://api25nam.fit.hcmute.edu.vn/api || echo "000")
+          echo "Rollback status — Frontend: $FE, Backend: $BE"
+
+      - name: Fail pipeline if health check failed
+        if: steps.health_fe.outcome == 'failure' || steps.health_be.outcome == 'failure'
+        run: |
+          echo "❌ Deploy failed and was rolled back. Check logs for details."
+          exit 1
+
+      # ── Docker Cleanup ──
+      - name: Cleanup old Docker resources
+        if: always()
+        run: |
+          echo "🧹 Cleaning up unused Docker resources..."
+          # Xóa images không còn dùng (dangling)
+          docker image prune -f
+          # Xóa images cũ hơn 7 ngày không được container nào dùng
+          docker image prune -a -f --filter "until=168h"
+          # Xóa build cache cũ
+          docker builder prune -f --filter "until=168h"
+          echo "✅ Cleanup done"
+          docker system df
+
+  # ----------------------------------------------------
+  # 3. Scheduled: DB Backup hàng ngày lúc 2h sáng (UTC+7)
+  # ----------------------------------------------------
+  db-backup:
+    name: Database Backup
+    if: github.event_name == 'schedule'
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Backup PostgreSQL
+        run: |
+          BACKUP_DIR="/home/sysadmin/backups/db"
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          BACKUP_FILE="$BACKUP_DIR/fit25_${TIMESTAMP}.sql.gz"
+
+          mkdir -p "$BACKUP_DIR"
+
+          # Dump từ container postgres
+          docker exec p_postgres_prod pg_dump -U "$( docker exec p_postgres_prod printenv POSTGRES_USER )" \
+            "$( docker exec p_postgres_prod printenv POSTGRES_DB )" | gzip > "$BACKUP_FILE"
+
+          SIZE=$(du -h "$BACKUP_FILE" | cut -f1)
+          echo "✅ Backup created: $BACKUP_FILE ($SIZE)"
+
+          # Xóa backup cũ hơn 30 ngày
+          find "$BACKUP_DIR" -name "fit25_*.sql.gz" -mtime +30 -delete
+          echo "🧹 Old backups (>30 days) cleaned up"
+
+          # Hiển thị danh sách backup
+          echo "📦 Current backups:"
+          ls -lh "$BACKUP_DIR"
