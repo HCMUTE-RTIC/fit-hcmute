@@ -94,11 +94,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      # ── Tag old images for rollback ──
-      - name: Tag current images for rollback
+      # ── Save old image IDs for rollback ──
+      - name: Save current image IDs for rollback
         run: |
-          docker tag $(docker compose -f docker-compose.prod.yml images backend_api -q) backend_api:rollback 2>/dev/null || true
-          docker tag $(docker compose -f docker-compose.prod.yml images frontend_web -q) frontend_web:rollback 2>/dev/null || true
+          docker image tag nestjs-backend:latest nestjs-backend:rollback 2>/dev/null || true
+          docker image tag nextjs-frontend:latest nextjs-frontend:rollback 2>/dev/null || true
 
       - name: Deploy via Docker Compose
         run: |
@@ -116,38 +116,38 @@ jobs:
 
       # ── Health Check ──
       - name: Wait for services to start
-        run: sleep 10
+        run: sleep 30
 
       - name: Health Check - Frontend
         id: health_fe
         continue-on-error: true
         run: |
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5 6; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://25nam.fit.hcmute.edu.vn || echo "000")
             if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
               echo "✅ Frontend OK (HTTP $STATUS)"
               exit 0
             fi
-            echo "Attempt $i: HTTP $STATUS, retrying..."
-            sleep 5
+            echo "Attempt $i/6: HTTP $STATUS, retrying in 10s..."
+            sleep 10
           done
-          echo "❌ Frontend FAILED after 3 attempts"
+          echo "❌ Frontend FAILED after 6 attempts"
           exit 1
 
       - name: Health Check - Backend API
         id: health_be
         continue-on-error: true
         run: |
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5 6; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://api25nam.fit.hcmute.edu.vn/api || echo "000")
             if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
               echo "✅ Backend API OK (HTTP $STATUS)"
               exit 0
             fi
-            echo "Attempt $i: HTTP $STATUS, retrying..."
-            sleep 5
+            echo "Attempt $i/6: HTTP $STATUS, retrying in 10s..."
+            sleep 10
           done
-          echo "❌ Backend API FAILED after 3 attempts"
+          echo "❌ Backend API FAILED after 6 attempts"
           exit 1
 
       # ── Auto Rollback nếu health check fail ──
@@ -155,11 +155,17 @@ jobs:
         if: steps.health_fe.outcome == 'failure' || steps.health_be.outcome == 'failure'
         run: |
           echo "⚠️ Health check failed — rolling back to previous images..."
-          docker tag backend_api:rollback $(docker compose -f docker-compose.prod.yml images backend_api --format '{{.Repository}}:{{.Tag}}') 2>/dev/null || true
-          docker tag frontend_web:rollback $(docker compose -f docker-compose.prod.yml images frontend_web --format '{{.Repository}}:{{.Tag}}') 2>/dev/null || true
-          docker compose -f docker-compose.prod.yml --env-file .env.production up -d --force-recreate
+
+          # Restore old images
+          docker image tag nestjs-backend:rollback nestjs-backend:latest 2>/dev/null || true
+          docker image tag nextjs-frontend:rollback nextjs-frontend:latest 2>/dev/null || true
+
+          # Restart containers with old images
+          docker compose -f docker-compose.prod.yml --env-file .env.production up -d --force-recreate backend_api frontend_web
+
           echo "🔄 Rollback complete. Waiting for services..."
-          sleep 10
+          sleep 30
+
           # Verify rollback
           FE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://25nam.fit.hcmute.edu.vn || echo "000")
           BE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://api25nam.fit.hcmute.edu.vn/api || echo "000")
