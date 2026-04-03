@@ -37,6 +37,7 @@ export default function FlipBook({
   const [totalPages, setTotalPages] = useState(0);
   const [bookSize, setBookSize] = useState({ width: 500, height: 700 });
   const [pageRatio, setPageRatio] = useState(1.414); // default A4, updated from actual PDF
+  const [isMobile, setIsMobile] = useState(false);
   const flipBookRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,25 +47,43 @@ export default function FlipBook({
       if (!containerRef.current) return;
       const cw = containerRef.current.clientWidth;
       const ch = containerRef.current.clientHeight;
+      const mobile = cw < 768;
+      setIsMobile(mobile);
 
-      // Each page is half the container width (book shows 2 pages)
-      const maxPageW = Math.min(cw / 2 - 20, 600);
-      const maxPageH = ch - 40;
+      if (mobile) {
+        // Portrait mode: single page, use full width
+        const maxPageW = cw - 32;
+        const maxPageH = ch - 40;
+        let pageW = maxPageW;
+        let pageH = pageW * pageRatio;
 
-      // Fit by height first, then check width
-      let pageW = maxPageH / pageRatio;
-      let pageH = maxPageH;
+        if (pageH > maxPageH) {
+          pageH = maxPageH;
+          pageW = pageH / pageRatio;
+        }
 
-      // If too wide, fit by width instead
-      if (pageW > maxPageW) {
-        pageW = maxPageW;
-        pageH = maxPageW * pageRatio;
+        setBookSize({
+          width: Math.round(pageW),
+          height: Math.round(pageH),
+        });
+      } else {
+        // Landscape mode: two pages side by side
+        const maxPageW = Math.min(cw / 2 - 20, 600);
+        const maxPageH = ch - 40;
+
+        let pageW = maxPageH / pageRatio;
+        let pageH = maxPageH;
+
+        if (pageW > maxPageW) {
+          pageW = maxPageW;
+          pageH = maxPageW * pageRatio;
+        }
+
+        setBookSize({
+          width: Math.round(pageW),
+          height: Math.round(pageH),
+        });
       }
-
-      setBookSize({
-        width: Math.round(pageW),
-        height: Math.round(pageH),
-      });
     }
     calcSize();
     window.addEventListener("resize", calcSize);
@@ -248,7 +267,7 @@ export default function FlipBook({
           onFlip={handleFlip}
           className="flipbook-shadow"
           flippingTime={800}
-          usePortrait={false}
+          usePortrait={isMobile}
           startPage={0}
           drawShadow={true}
           autoSize={true}
