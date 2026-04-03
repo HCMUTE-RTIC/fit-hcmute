@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Download,
   Maximize2,
+  Minimize2,
   Loader2,
 } from "lucide-react";
 
@@ -219,9 +220,28 @@ export default function FlipBook({
     link.click();
   };
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const handleFullscreen = () => {
     window.open(pdfUrl, "_blank");
   };
+
+  const toggleFullscreen = useCallback(() => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    function onFsChange() {
+      setIsFullscreen(!!document.fullscreenElement);
+    }
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
 
   // Keyboard navigation
   useEffect(() => {
@@ -260,7 +280,8 @@ export default function FlipBook({
 
   return (
     <div ref={containerRef} className="w-full h-full flex flex-col bg-gradient-to-b from-stone-100 to-stone-200">
-      {/* Toolbar */}
+      {/* Toolbar — ẩn khi fullscreen */}
+      {!isFullscreen && (
       <div className="flex items-center justify-between px-4 py-2 bg-white/80 backdrop-blur border-b border-slate-200">
         <div className="flex items-center gap-2">
           <button
@@ -286,11 +307,12 @@ export default function FlipBook({
 
         <div className="flex items-center gap-2">
           <button
-            onClick={handleFullscreen}
+            onClick={toggleFullscreen}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700"
+            title={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
           >
-            <Maximize2 size={16} />
-            <span className="hidden sm:inline">PDF gốc</span>
+            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+            <span className="hidden sm:inline">{isFullscreen ? "Thu nhỏ" : "Phóng to"}</span>
           </button>
           <button
             onClick={handleDownload}
@@ -302,6 +324,7 @@ export default function FlipBook({
           </button>
         </div>
       </div>
+      )}
 
       {/* Flipbook */}
       <div className="flex-1 flex items-center justify-center py-4 overflow-hidden">
@@ -347,11 +370,13 @@ export default function FlipBook({
       </div>
 
       {/* Hint */}
+      {!isFullscreen && (
       <div className="text-center pb-3">
         <p className="text-xs text-slate-400">
           Kéo góc trang hoặc dùng phím ← → để lật sách
         </p>
       </div>
+      )}
     </div>
   );
 }

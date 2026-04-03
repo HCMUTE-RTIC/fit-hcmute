@@ -437,7 +437,7 @@ export default function SlideshowPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "80px 24px 40px",
+            padding: "40px 16px 24px",
             overflow: "hidden",
           }}
         >
@@ -448,18 +448,18 @@ export default function SlideshowPage() {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                gap: 48,
-                maxWidth: 1100,
+                gap: slide.message.length > 100 ? 24 : 48,
+                maxWidth: slide.message.length > 100 ? "95vw" : 1100,
                 width: "100%",
-                padding: "0 20px",
+                padding: slide.message.length > 100 ? "0 24px" : "0 20px",
               }}
             >
               {/* Image — bên trái */}
               <motion.div
                 style={{
                   position: "relative",
-                  flex: "0 0 50%",
-                  maxWidth: 520,
+                  flex: slide.message.length > 100 ? "0 0 35%" : "0 0 50%",
+                  maxWidth: slide.message.length > 100 ? 420 : 520,
                   aspectRatio: "4/3",
                   borderRadius: 16,
                   overflow: "hidden",
@@ -505,7 +505,7 @@ export default function SlideshowPage() {
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
                       display: "-webkit-box",
-                      WebkitLineClamp: 8,
+                      WebkitLineClamp: 10,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                     }}
@@ -615,7 +615,7 @@ export default function SlideshowPage() {
                   color: "white",
                   fontWeight: 700,
                   fontSize: 28,
-                  marginBottom: 32,
+                  marginBottom: 20,
                   boxShadow: "0 0 0 4px rgba(255,255,255,0.1), 0 10px 40px rgba(0,0,0,0.3)",
                 }}
               >
@@ -636,7 +636,7 @@ export default function SlideshowPage() {
                       : "clamp(20px, 3.5vw, 44px)",
                   fontWeight: 300,
                   lineHeight: 1.5,
-                  marginBottom: 32,
+                  marginBottom: 20,
                   fontStyle: "italic",
                   textShadow: "0 2px 20px rgba(0,0,0,0.3)",
                   position: "relative",
