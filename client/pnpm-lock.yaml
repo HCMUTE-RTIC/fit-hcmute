@@ -56,6 +56,9 @@ importers:
       react-json-view:
         specifier: ^1.21.3
         version: 1.21.3(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -87,9 +90,6 @@ importers:
       playwright:
         specifier: ^1.58.2
         version: 1.58.2
-      sharp:
-        specifier: ^0.34.5
-        version: 0.34.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
