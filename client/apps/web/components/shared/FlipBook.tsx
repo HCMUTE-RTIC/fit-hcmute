@@ -253,14 +253,15 @@ export default function FlipBook({
       {/* Flipbook */}
       <div className="flex-1 flex items-center justify-center py-4 overflow-hidden">
         <HTMLFlipBook
+          key={isMobile ? "portrait" : "landscape"}
           ref={flipBookRef}
           width={bookSize.width}
           height={bookSize.height}
-          size="stretch"
-          minWidth={300}
-          maxWidth={600}
-          minHeight={424}
-          maxHeight={848}
+          size="fixed"
+          minWidth={200}
+          maxWidth={bookSize.width}
+          minHeight={300}
+          maxHeight={bookSize.height}
           showCover={true}
           maxShadowOpacity={0.5}
           mobileScrollSupport={true}
