@@ -90,15 +90,65 @@ export default function FlipBook({
     return () => window.removeEventListener("resize", calcSize);
   }, [pageRatio]);
 
-  // Render PDF pages to canvas images
+  // IndexedDB cache helpers
+  const cacheKey = `flipbook_${pdfUrl}`;
+
+  async function openCacheDB(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open("flipbook-cache", 1);
+      req.onupgradeneeded = () => {
+        req.result.createObjectStore("pages");
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function getCachedPages(): Promise<{ pages: string[]; ratio: number } | null> {
+    try {
+      const db = await openCacheDB();
+      return new Promise((resolve) => {
+        const tx = db.transaction("pages", "readonly");
+        const store = tx.objectStore("pages");
+        const req = store.get(cacheKey);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  async function setCachedPages(pagesData: string[], ratio: number) {
+    try {
+      const db = await openCacheDB();
+      const tx = db.transaction("pages", "readwrite");
+      tx.objectStore("pages").put({ pages: pagesData, ratio }, cacheKey);
+    } catch {
+      // Cache write failed, non-critical
+    }
+  }
+
+  // Render PDF pages to canvas images (with cache)
   useEffect(() => {
     let cancelled = false;
 
-    async function renderPDF() {
+    async function loadPages() {
+      // Try cache first
+      const cached = await getCachedPages();
+      if (cached && cached.pages.length > 0) {
+        setPageRatio(cached.ratio);
+        setTotalPages(cached.pages.length);
+        setPages(cached.pages);
+        setProgress(100);
+        setLoading(false);
+        return;
+      }
+
+      // No cache — render from PDF
       try {
         const pdfjsLib = await import("pdfjs-dist");
 
-        // Set worker
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
         const loadingTask = pdfjsLib.getDocument(pdfUrl);
@@ -107,12 +157,13 @@ export default function FlipBook({
         setTotalPages(numPages);
 
         const rendered: string[] = [];
-        const scale = 2; // High quality rendering
+        const scale = 2;
 
         // Get actual page ratio from first page
         const firstPage = await pdf.getPage(1);
         const firstVp = firstPage.getViewport({ scale: 1 });
-        setPageRatio(firstVp.height / firstVp.width);
+        const ratio = firstVp.height / firstVp.width;
+        setPageRatio(ratio);
 
         for (let i = 1; i <= numPages; i++) {
           if (cancelled) return;
@@ -134,6 +185,8 @@ export default function FlipBook({
         if (!cancelled) {
           setPages(rendered);
           setLoading(false);
+          // Save to cache for next visit
+          setCachedPages(rendered, ratio);
         }
       } catch (err) {
         console.error("Failed to render PDF:", err);
@@ -141,7 +194,7 @@ export default function FlipBook({
       }
     }
 
-    renderPDF();
+    loadPages();
     return () => {
       cancelled = true;
     };
