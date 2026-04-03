@@ -447,7 +447,7 @@ export default function SlideshowPage() {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center",
+                alignItems: "stretch",
                 gap: slide.message.length > 100 ? 24 : 48,
                 maxWidth: slide.message.length > 100 ? "95vw" : 1100,
                 width: "100%",
@@ -462,6 +462,7 @@ export default function SlideshowPage() {
                   borderRadius: 16,
                   overflow: "hidden",
                   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+                  alignSelf: "center",
                 }}
                 initial={{
                   opacity: 0,
@@ -501,8 +502,10 @@ export default function SlideshowPage() {
                   textAlign: "left",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
+                  alignSelf: "center",
                   overflow: "hidden",
+                  minHeight: 0,
                 }}
                 initial={{ opacity: 0, x: 60 }}
                 animate={{ opacity: 1, x: 0 }}
