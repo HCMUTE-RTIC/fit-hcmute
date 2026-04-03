@@ -3,7 +3,16 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
-import PDFViewer from "@/components/shared/PDFViewer";
+import dynamic from "next/dynamic";
+
+const FlipBook = dynamic(() => import("@/components/shared/FlipBook"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+    </div>
+  ),
+});
 import { SettingsService } from "@/services/settings.service";
 import { useRouter } from "next/navigation";
 
@@ -23,12 +32,11 @@ export default function KyYeuPage() {
 
       const url = config["ky_yeu_pdf_url"];
       if (url) {
-        // Resolve relative URL
         if (url.startsWith("http")) {
           setPdfUrl(url);
         } else {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-          setPdfUrl(`${apiUrl}${url}`);
+          // Use relative URL so Next.js rewrite handles /media_storage -> MinIO
+          setPdfUrl(url);
         }
       } else {
         // Fallback to static file
@@ -107,11 +115,11 @@ export default function KyYeuPage() {
               style={{
                 backgroundColor: "white",
                 boxShadow: "var(--shadow-soft)",
-                height: "calc(100vh - 200px)",
-                minHeight: "600px",
+                height: "calc(100vh - 100px)",
+                minHeight: "900px",
               }}
             >
-              <PDFViewer pdfUrl={pdfUrl} title="Kỷ yếu 25 năm CNTT HCMUTE" />
+              <FlipBook pdfUrl={pdfUrl} title="Kỷ yếu 25 năm CNTT HCMUTE" />
             </motion.div>
           </div>
         </section>
