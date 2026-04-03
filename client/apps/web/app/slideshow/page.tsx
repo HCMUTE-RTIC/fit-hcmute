@@ -442,7 +442,7 @@ export default function SlideshowPage() {
           }}
         >
           {hasImage ? (
-            /* ── Memory with image — horizontal layout: ảnh trái, chữ phải ── */
+            /* ── Memory with image — full ảnh → thu nhỏ trái → chữ hiện phải ── */
             <div
               style={{
                 display: "flex",
@@ -454,20 +454,34 @@ export default function SlideshowPage() {
                 padding: slide.message.length > 100 ? "0 24px" : "0 20px",
               }}
             >
-              {/* Image — bên trái */}
+              {/* Image — full → thu nhỏ sang trái */}
               <motion.div
                 style={{
                   position: "relative",
-                  flex: slide.message.length > 100 ? "0 0 35%" : "0 0 50%",
-                  maxWidth: slide.message.length > 100 ? 420 : 520,
                   aspectRatio: "4/3",
                   borderRadius: 16,
                   overflow: "hidden",
                   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
                 }}
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15, duration: 0.5 }}
+                initial={{
+                  opacity: 0,
+                  scale: 1.8,
+                  x: "30%",
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                  flex: slide.message.length > 100 ? "0 0 35%" : "0 0 50%",
+                  maxWidth: slide.message.length > 100 ? 420 : 520,
+                }}
+                transition={{
+                  opacity: { duration: 0.4 },
+                  scale: { delay: 0.8, duration: 1, ease: "easeInOut" },
+                  x: { delay: 0.8, duration: 1, ease: "easeInOut" },
+                  flex: { delay: 0.8, duration: 1, ease: "easeInOut" },
+                  maxWidth: { delay: 0.8, duration: 1, ease: "easeInOut" },
+                }}
               >
                 <img
                   src={slide.imageUrl}
@@ -480,7 +494,7 @@ export default function SlideshowPage() {
                 />
               </motion.div>
 
-              {/* Caption + Name — bên phải */}
+              {/* Caption + Name — hiện sau khi ảnh thu nhỏ */}
               <motion.div
                 style={{
                   flex: 1,
@@ -490,9 +504,9 @@ export default function SlideshowPage() {
                   justifyContent: "center",
                   overflow: "hidden",
                 }}
-                initial={{ opacity: 0, x: 40 }}
+                initial={{ opacity: 0, x: 60 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                transition={{ delay: 2, duration: 0.6, ease: "easeOut" }}
               >
                 {slide.message && (
                   <p
