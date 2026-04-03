@@ -447,7 +447,7 @@ export default function SlideshowPage() {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "stretch",
+                alignItems: "center",
                 gap: 48,
                 maxWidth: 1100,
                 width: "100%",
@@ -464,7 +464,6 @@ export default function SlideshowPage() {
                   borderRadius: 16,
                   overflow: "hidden",
                   boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
-                  alignSelf: "center",
                 }}
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -481,17 +480,15 @@ export default function SlideshowPage() {
                 />
               </motion.div>
 
-              {/* Caption + Name — bên phải, canh đều theo chiều cao ảnh */}
+              {/* Caption + Name — bên phải */}
               <motion.div
                 style={{
                   flex: 1,
                   textAlign: "left",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
-                  alignSelf: "center",
+                  justifyContent: "center",
                   overflow: "hidden",
-                  minHeight: 0,
                 }}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
