@@ -39,7 +39,7 @@ jobs:
         run: cd server && pnpm install
 
       - name: Install Client Dependencies
-        run: cd client/apps/web && pnpm install
+        run: cd client && pnpm install
 
       - name: Generate Prisma Client
         run: cd server && pnpm exec prisma generate
@@ -54,7 +54,7 @@ jobs:
           cp /home/sysadmin/env/server/.env.production ./server/.env.production || true
 
       - name: Build Web Client
-        run: cd client/apps/web && pnpm run build
+        run: cd client && pnpm build
 
   # ----------------------------------------------------
   # 2. CD: Chỉ chạy trên `main` VÀ sau khi `ci` thành công
